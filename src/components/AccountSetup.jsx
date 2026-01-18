@@ -1,12 +1,43 @@
 import { useState } from 'react';
 import { usePiggy } from '../context/PiggyContext';
-import { Plus, CreditCard, Trash2, Save, ArrowRight } from 'lucide-react';
+import { Plus, CreditCard, Trash2, Save, ArrowRight, Lock } from 'lucide-react';
 
 export default function AccountSetup() {
     const { accounts, addAccount, deleteAccount } = usePiggy();
     const [upiId, setUpiId] = useState('');
     const [name, setName] = useState('');
     const [showForm, setShowForm] = useState(false);
+
+    // Security State
+    const [pin, setPin] = useState('');
+    const [storedPin, setStoredPin] = useState(() => localStorage.getItem('piggy_pin'));
+    const [isUnlocked, setIsUnlocked] = useState(false);
+    const [error, setError] = useState('');
+
+    const handleSetPin = (e) => {
+        e.preventDefault();
+        if (pin.length !== 4 || isNaN(pin)) {
+            setError('PIN must be 4 digits');
+            return;
+        }
+        localStorage.setItem('piggy_pin', pin);
+        setStoredPin(pin);
+        setIsUnlocked(true);
+        setPin('');
+        setError('');
+    };
+
+    const handleUnlock = (e) => {
+        e.preventDefault();
+        if (pin === storedPin) {
+            setIsUnlocked(true);
+            setPin('');
+            setError('');
+        } else {
+            setError('Incorrect PIN');
+            setPin('');
+        }
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -18,6 +49,44 @@ export default function AccountSetup() {
         }
     };
 
+    if (!isUnlocked) {
+        return (
+            <div className="flex flex-col items-center justify-center p-8 space-y-6 font-['Courier_Prime'] animate-fade-in bg-[#1A0B08] rounded-2xl border-4 border-[#FFD700] m-4 shadow-2xl">
+                <div className="mb-2 p-4 bg-[#2C1810] rounded-full border-2 border-[#5D4037]">
+                    <CreditCard className="w-8 h-8 text-[#FFD700]" />
+                </div>
+                <div className="text-center">
+                    <h3 className="text-xl font-bold text-[#FFD700] font-['Righteous'] tracking-wide">
+                        {storedPin ? 'SECURITY CHECK' : 'SETUP SECURITY'}
+                    </h3>
+                    <p className="text-xs text-[#A1887F] uppercase tracking-widest mt-2">
+                        {storedPin ? 'Enter PIN to access accounts' : 'Create 4-digit PIN for protection'}
+                    </p>
+                </div>
+
+                <form onSubmit={storedPin ? handleUnlock : handleSetPin} className="w-full max-w-xs space-y-4">
+                    <input
+                        type="password"
+                        inputMode="numeric"
+                        maxLength="4"
+                        value={pin}
+                        onChange={(e) => setPin(e.target.value)}
+                        className="w-full bg-[#0F0502] border-2 border-[#5D4037] rounded-xl py-4 text-center text-[#00FF41] font-['VT323'] text-3xl tracking-[1em] focus:outline-none focus:border-[#FFD700] transition-all placeholder:text-[#2C1810] placeholder:tracking-normal"
+                        placeholder="••••"
+                        autoFocus
+                    />
+                    {error && <p className="text-[#FF5252] text-xs text-center font-bold">{error}</p>}
+                    <button
+                        type="submit"
+                        className="w-full py-3 bg-[#FFD700] text-[#2C1810] font-black uppercase tracking-widest rounded-xl hover:bg-[#FFF8E7] transition-all shadow-lg border-b-4 border-[#D7CCC8] active:border-b-0 active:translate-y-1"
+                    >
+                        {storedPin ? 'UNLOCK' : 'SET PIN'}
+                    </button>
+                </form>
+            </div>
+        );
+    }
+
     return (
         <div className="space-y-6 font-['Courier_Prime'] animate-fade-in pb-20">
             <div className="flex items-center justify-between bg-[#1A0B08] p-4 rounded-2xl border-2 border-[#5D4037] shadow-lg">
@@ -25,12 +94,21 @@ export default function AccountSetup() {
                     <h3 className="text-xl font-bold text-[#FFD700] font-['Righteous'] tracking-wide">LINK SAVINGS UPI</h3>
                     <p className="text-xs text-[#A1887F] uppercase tracking-widest">Where should your savings go?</p>
                 </div>
-                <button
-                    onClick={() => setShowForm(!showForm)}
-                    className="p-3 bg-[#FFD700] text-[#2C1810] rounded-xl hover:bg-[#FFF8E7] transition-all shadow-[0_0_15px_rgba(255,215,0,0.3)] active:scale-95"
-                >
-                    <Plus className={`w-6 h-6 transition-transform ${showForm ? 'rotate-45' : ''}`} />
-                </button>
+                <div className="flex gap-2">
+                    <button
+                        onClick={() => setIsUnlocked(false)}
+                        className="p-3 bg-[#2C1810] text-[#A1887F] rounded-xl hover:text-[#FFD700] border border-[#5D4037] transition-all"
+                        title="Lock"
+                    >
+                        <Lock className="w-6 h-6" />
+                    </button>
+                    <button
+                        onClick={() => setShowForm(!showForm)}
+                        className="p-3 bg-[#FFD700] text-[#2C1810] rounded-xl hover:bg-[#FFF8E7] transition-all shadow-[0_0_15px_rgba(255,215,0,0.3)] active:scale-95"
+                    >
+                        <Plus className={`w-6 h-6 transition-transform ${showForm ? 'rotate-45' : ''}`} />
+                    </button>
+                </div>
             </div>
 
             {showForm && (

@@ -109,7 +109,7 @@ export default function Header() {
                                             theme === 'retro' ? "bg-[#FFD700] text-[#2C1810]" : "text-[#FFF8E7] hover:bg-[#2C1810]"
                                         )}
                                     >
-                                        🎮 Retro
+                                        Retro
                                     </button>
                                     <button
                                         onClick={() => { setTheme('cyber'); setShowThemeMenu(false); }}
@@ -118,16 +118,25 @@ export default function Header() {
                                             theme === 'cyber' ? "bg-[#FFD700] text-[#2C1810]" : "text-[#FFF8E7] hover:bg-[#2C1810]"
                                         )}
                                     >
-                                        ⚡ Cyber
+                                        Cyber
                                     </button>
                                     <button
                                         onClick={() => { setTheme('minimal'); setShowThemeMenu(false); }}
                                         className={cn(
-                                            "w-full px-4 py-3 text-left text-xs font-bold uppercase tracking-widest transition-colors",
+                                            "w-full px-4 py-3 text-left text-xs font-bold uppercase tracking-widest transition-colors border-b border-[#5D4037]",
                                             theme === 'minimal' ? "bg-[#FFD700] text-[#2C1810]" : "text-[#FFF8E7] hover:bg-[#2C1810]"
                                         )}
                                     >
-                                        ✨ Minimal
+                                        Minimal
+                                    </button>
+                                    <button
+                                        onClick={() => { setTheme('professional'); setShowThemeMenu(false); }}
+                                        className={cn(
+                                            "w-full px-4 py-3 text-left text-xs font-bold uppercase tracking-widest transition-colors",
+                                            theme === 'professional' ? "bg-[#FFD700] text-[#2C1810]" : "text-[#FFF8E7] hover:bg-[#2C1810]"
+                                        )}
+                                    >
+                                        Professional
                                     </button>
                                 </div>
                             </>
