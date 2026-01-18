@@ -21,7 +21,7 @@ export default function Header() {
                         alt="DigiPiggy"
                         className="w-10 h-10 rounded-lg border-2 border-[#FFD700] group-hover:scale-110 transition-transform"
                     />
-                    <div>
+                    <div className="hidden sm:block">
                         <h1 className="text-xl font-['Righteous'] text-[#FFD700] tracking-wide">
                             DIGIPIGGY
                         </h1>
