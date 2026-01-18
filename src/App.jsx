@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { usePiggy, PiggyProvider } from './context/PiggyContext';
 import { ToastProvider } from './context/ToastContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import Header from './components/Header';
 import GoalForm from './components/GoalForm';
 import CreateGoal from './pages/CreateGoal';
@@ -55,6 +56,7 @@ function App() {
                     <PiggyProvider>
                         <AppContent />
                     </PiggyProvider>
+                    <SpeedInsights />
                 </ToastProvider>
             </ThemeProvider>
         </BrowserRouter>
