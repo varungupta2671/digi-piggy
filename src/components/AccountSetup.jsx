@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { usePiggy } from '../context/PiggyContext';
-import { Plus, CreditCard, Trash2, Save, ArrowRight, Lock } from 'lucide-react';
+import { Plus, CreditCard, Trash2, Save, Lock, Wallet, ShieldCheck, Unlock } from 'lucide-react';
+import { cn } from '../utils/cn';
 
 export default function AccountSetup() {
     const { accounts, addAccount, deleteAccount } = usePiggy();
@@ -51,36 +52,39 @@ export default function AccountSetup() {
 
     if (!isUnlocked) {
         return (
-            <div className="flex flex-col items-center justify-center p-8 space-y-6 font-['Courier_Prime'] animate-fade-in bg-[#1A0B08] rounded-2xl border-4 border-[#FFD700] m-4 shadow-2xl">
-                <div className="mb-2 p-4 bg-[#2C1810] rounded-full border-2 border-[#5D4037]">
-                    <CreditCard className="w-8 h-8 text-[#FFD700]" />
-                </div>
-                <div className="text-center">
-                    <h3 className="text-xl font-bold text-[#FFD700] font-['Righteous'] tracking-wide">
-                        {storedPin ? 'SECURITY CHECK' : 'SETUP SECURITY'}
-                    </h3>
-                    <p className="text-xs text-[#A1887F] uppercase tracking-widest mt-2">
-                        {storedPin ? 'Enter PIN to access accounts' : 'Create 4-digit PIN for protection'}
-                    </p>
+            <div className="flex flex-col items-center justify-center py-12 px-4 animate-fade-in max-w-sm mx-auto">
+                <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+                    <ShieldCheck className="w-8 h-8" />
                 </div>
 
-                <form onSubmit={storedPin ? handleUnlock : handleSetPin} className="w-full max-w-xs space-y-4">
-                    <input
-                        type="password"
-                        inputMode="numeric"
-                        maxLength="4"
-                        value={pin}
-                        onChange={(e) => setPin(e.target.value)}
-                        className="w-full bg-[#0F0502] border-2 border-[#5D4037] rounded-xl py-4 text-center text-[#00FF41] font-['VT323'] text-3xl tracking-[1em] focus:outline-none focus:border-[#FFD700] transition-all placeholder:text-[#2C1810] placeholder:tracking-normal"
-                        placeholder="••••"
-                        autoFocus
-                    />
-                    {error && <p className="text-[#FF5252] text-xs text-center font-bold">{error}</p>}
+                <h3 className="text-2xl font-bold text-slate-900 mb-2">
+                    {storedPin ? 'Security Check' : 'Set Security PIN'}
+                </h3>
+                <p className="text-slate-500 text-sm text-center mb-8">
+                    {storedPin ? 'Please enter your PIN to manage accounts' : 'Create a 4-digit PIN to secure your savings accounts'}
+                </p>
+
+                <form onSubmit={storedPin ? handleUnlock : handleSetPin} className="w-full space-y-6">
+                    <div className="relative">
+                        <input
+                            type="password"
+                            inputMode="numeric"
+                            maxLength="4"
+                            value={pin}
+                            onChange={(e) => setPin(e.target.value)}
+                            className="input text-center text-4xl tracking-[1em] font-bold h-20 placeholder:tracking-normal placeholder:text-4xl"
+                            placeholder="••••"
+                            autoFocus
+                        />
+                    </div>
+
+                    {error && <p className="text-red-500 text-sm text-center font-medium bg-red-50 py-2 rounded-lg">{error}</p>}
+
                     <button
                         type="submit"
-                        className="w-full py-3 bg-[#FFD700] text-[#2C1810] font-black uppercase tracking-widest rounded-xl hover:bg-[#FFF8E7] transition-all shadow-lg border-b-4 border-[#D7CCC8] active:border-b-0 active:translate-y-1"
+                        className="w-full py-4 btn-primary text-base"
                     >
-                        {storedPin ? 'UNLOCK' : 'SET PIN'}
+                        {storedPin ? 'Unlock' : 'Set PIN'}
                     </button>
                 </form>
             </div>
@@ -88,80 +92,80 @@ export default function AccountSetup() {
     }
 
     return (
-        <div className="space-y-6 font-['Courier_Prime'] animate-fade-in pb-20">
-            <div className="flex items-center justify-between bg-[#1A0B08] p-4 rounded-2xl border-2 border-[#5D4037] shadow-lg">
-                <div>
-                    <h3 className="text-xl font-bold text-[#FFD700] font-['Righteous'] tracking-wide">LINK SAVINGS UPI</h3>
-                    <p className="text-xs text-[#A1887F] uppercase tracking-widest">Where should your savings go?</p>
+        <div className="space-y-6 pb-24">
+            <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-6 text-white shadow-xl">
+                <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-lg font-bold">Linked Accounts</h3>
+                    <div className="flex gap-2">
+                        <button
+                            onClick={() => setIsUnlocked(false)}
+                            className="p-2 bg-white/10 hover:bg-white/20 rounded-xl transition-colors"
+                            title="Lock"
+                        >
+                            <Lock className="w-5 h-5" />
+                        </button>
+                        <button
+                            onClick={() => setShowForm(!showForm)}
+                            className="p-2 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl transition-colors shadow-lg shadow-emerald-500/30"
+                        >
+                            <Plus className={cn("w-5 h-5 transition-transform", showForm && "rotate-45")} />
+                        </button>
+                    </div>
                 </div>
-                <div className="flex gap-2">
-                    <button
-                        onClick={() => setIsUnlocked(false)}
-                        className="p-3 bg-[#2C1810] text-[#A1887F] rounded-xl hover:text-[#FFD700] border border-[#5D4037] transition-all"
-                        title="Lock"
-                    >
-                        <Lock className="w-6 h-6" />
-                    </button>
-                    <button
-                        onClick={() => setShowForm(!showForm)}
-                        className="p-3 bg-[#FFD700] text-[#2C1810] rounded-xl hover:bg-[#FFF8E7] transition-all shadow-[0_0_15px_rgba(255,215,0,0.3)] active:scale-95"
-                    >
-                        <Plus className={`w-6 h-6 transition-transform ${showForm ? 'rotate-45' : ''}`} />
-                    </button>
-                </div>
+                <p className="text-slate-400 text-sm">Manage where your savings are transferred to.</p>
             </div>
 
             {showForm && (
-                <form onSubmit={handleSubmit} className="p-6 bg-[#1A0B08] rounded-2xl border-4 border-[#FFD700] shadow-2xl relative overflow-hidden animate-slide-in-down space-y-4">
-                    <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] mix-blend-overlay pointer-events-none"></div>
-
-                    <div className="relative z-10 space-y-4">
-                        <div>
-                            <label className="text-xs font-bold text-[#A1887F] uppercase tracking-widest block mb-2">Account Name</label>
+                <div className="card animate-fade-in relative z-10 border-emerald-100 ring-4 ring-emerald-50/50">
+                    <h4 className="font-bold text-slate-900 mb-4 flex items-center gap-2">
+                        <Wallet className="w-4 h-4 text-emerald-500" />
+                        Add New Account
+                    </h4>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="space-y-1.5">
+                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Account Name</label>
                             <input
-                                className="w-full bg-[#0F0502] border-2 border-[#5D4037] rounded-xl p-3 text-[#FFF8E7] focus:outline-none focus:border-[#FFD700] transition-colors font-bold placeholder:text-[#A1887F]/50"
+                                className="input"
                                 value={name}
                                 onChange={e => setName(e.target.value)}
                                 placeholder="e.g. My Savings"
                                 autoFocus
                             />
                         </div>
-                        <div>
-                            <label className="text-xs font-bold text-[#A1887F] uppercase tracking-widest block mb-2">UPI ID</label>
+                        <div className="space-y-1.5">
+                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">UPI ID</label>
                             <input
-                                className="w-full bg-[#0F0502] border-2 border-[#5D4037] rounded-xl p-3 text-[#00FF41] font-['VT323'] text-xl focus:outline-none focus:border-[#FFD700] transition-colors placeholder:text-[#A1887F]/50"
+                                className="input"
                                 value={upiId}
                                 onChange={e => setUpiId(e.target.value)}
-                                placeholder="user@upi"
+                                placeholder="name@upi"
                             />
                         </div>
-                        <button className="w-full py-4 bg-[#FFD700] text-[#2C1810] font-black uppercase tracking-widest rounded-xl hover:bg-[#FFF8E7] transition-all flex items-center justify-center gap-2 shadow-lg border-b-4 border-[#D7CCC8] active:border-b-0 active:translate-y-1">
-                            <Save className="w-5 h-5" />
+                        <button className="w-full py-3 btn-primary flex items-center justify-center gap-2">
+                            <Save className="w-4 h-4" />
                             Save Account
                         </button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             )}
 
             <div className="space-y-3">
                 {accounts.map((account, index) => (
                     <div
                         key={account.id}
-                        className="p-4 bg-[#1A0B08] rounded-2xl border-2 border-[#5D4037] flex items-center gap-4 hover:border-[#FFD700] transition-colors group relative overflow-hidden animate-fade-in-up"
+                        className="p-4 bg-white rounded-2xl border border-slate-100 hover:border-emerald-200 hover:shadow-md transition-all flex items-center gap-4 group animate-fade-in"
                         style={{ animationDelay: `${index * 100}ms` }}
                     >
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#FFD700]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-
-                        <div className="w-12 h-12 rounded-xl bg-[#2C1810] border border-[#5D4037] flex items-center justify-center text-[#FFD700] shadow-inner flex-shrink-0">
+                        <div className="w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-emerald-50 group-hover:text-emerald-600 transition-colors">
                             <CreditCard className="w-6 h-6" />
                         </div>
                         <div className="min-w-0 flex-1">
-                            <p className="font-bold text-[#FFF8E7] truncate">{account.name}</p>
-                            <p className="text-sm text-[#A1887F] font-['VT323'] tracking-widest truncate">{account.upiId}</p>
+                            <p className="font-bold text-slate-900 truncate">{account.name}</p>
+                            <p className="text-sm text-slate-500 font-mono truncate">{account.upiId}</p>
                         </div>
                         <button
                             onClick={() => deleteAccount(account.id)}
-                            className="p-2 text-[#5D4037] hover:text-[#FF5252] hover:bg-[#2C1810] rounded-lg transition-colors"
+                            className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                             title="Delete Account"
                         >
                             <Trash2 className="w-5 h-5" />
@@ -170,10 +174,10 @@ export default function AccountSetup() {
                 ))}
 
                 {accounts.length === 0 && !showForm && (
-                    <div className="text-center p-12 border-2 border-dashed border-[#5D4037] rounded-3xl opacity-50">
-                        <ArrowRight className="w-8 h-8 mx-auto mb-2 text-[#5D4037] -rotate-45" />
-                        <p className="text-[#A1887F] font-bold uppercase tracking-widest">No accounts linked</p>
-                        <p className="text-xs text-[#5D4037] mt-1">Tap the + button to add a destination for your savings</p>
+                    <div className="text-center py-12 px-6 border-2 border-dashed border-slate-200 rounded-3xl bg-slate-50/50">
+                        <CreditCard className="w-10 h-10 mx-auto mb-3 text-slate-300" />
+                        <p className="text-slate-500 font-medium">No accounts linked</p>
+                        <p className="text-xs text-slate-400 mt-1">Tap the + button above to add a destination</p>
                     </div>
                 )}
             </div>

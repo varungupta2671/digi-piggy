@@ -7,12 +7,11 @@ export function useTheme() {
 }
 
 export function ThemeProvider({ children }) {
-    const [theme, setTheme] = useState(() => localStorage.getItem('piggy_theme') || 'retro');
+    const [theme, setTheme] = useState('modern');
 
     useEffect(() => {
         // Apply theme to body element
         document.body.setAttribute('data-theme', theme);
-        localStorage.setItem('piggy_theme', theme);
     }, [theme]);
 
     return (

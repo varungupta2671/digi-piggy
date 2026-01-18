@@ -11,13 +11,14 @@ import GoalDetail from './pages/GoalDetail';
 import Achievements from './pages/Achievements';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import BottomNav from './components/BottomNav';
 
 function AppContent() {
     const { goal, isEditing, isLoading } = usePiggy();
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-slate-950 flex items-center justify-center text-white">
+            <div className="min-h-screen bg-slate-50 flex items-center justify-center text-slate-800">
                 <div className="animate-pulse">Loading Savings...</div>
             </div>
         );
@@ -26,14 +27,14 @@ function AppContent() {
     // Show goal form if editing (modal mode)
     if (isEditing) {
         return (
-            <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black">
+            <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4">
                 <GoalForm />
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-slate-950">
+        <div className="min-h-screen bg-slate-50 pb-20 md:pb-0">
             <Header />
             <Routes>
                 <Route path="/" element={<GoalsList />} />
@@ -44,6 +45,7 @@ function AppContent() {
                 <Route path="/contact" element={<Contact />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
+            <BottomNav />
         </div>
     );
 }

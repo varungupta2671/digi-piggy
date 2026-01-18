@@ -1,173 +1,102 @@
-import { Trophy, Target, Zap, Shield, Sparkles, Heart, Users, Rocket, Code, Lock } from 'lucide-react';
+import { Trophy, Target, Zap, Shield, Sparkles, Heart, Rocket, Code, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function About() {
-    return (
-        <div className="min-h-screen bg-gradient-to-br from-[#FAFBFC] via-[#F0F4F8] to-[#E8F0FE] p-6 md:p-12 animate-fade-in">
-            <div className="max-w-6xl mx-auto space-y-16">
-                {/* Floating Gradient Orbs */}
-                <div className="fixed inset-0 pointer-events-none overflow-hidden">
-                    <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-indigo-400/20 to-purple-400/20 rounded-full blur-3xl animate-float"></div>
-                    <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-br from-pink-400/20 to-rose-400/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
-                    <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-gradient-to-br from-cyan-400/20 to-blue-400/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '4s' }}></div>
-                </div>
+    const navigate = useNavigate();
 
-                {/* Hero Section */}
-                <div className="text-center mb-16 relative animate-fade-in-up">
-                    <div className="inline-block mb-6">
-                        <div className="w-28 h-28 mx-auto bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-2xl transform hover:scale-110 hover:rotate-12 transition-all duration-500 relative group">
-                            <div className="absolute inset-0 bg-gradient-to-br from-indigo-400 via-purple-400 to-pink-400 rounded-3xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity"></div>
-                            <Trophy className="w-16 h-16 text-white relative z-10" />
-                        </div>
+    return (
+        <div className="min-h-screen bg-slate-50 pb-24 md:pb-8 font-sans animate-fade-in">
+            {/* Mobile-First Header Image/Hero */}
+            <div className="bg-white pb-6 pt-8 px-6 rounded-b-[2.5rem] shadow-sm mb-6 text-center relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-full blur-3xl -mr-10 -mt-10"></div>
+                <div className="absolute bottom-0 left-0 w-32 h-32 bg-emerald-50 rounded-full blur-3xl -ml-10 -mb-10"></div>
+
+                <div className="relative z-10">
+                    <div className="w-16 h-16 mx-auto bg-gradient-to-tr from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-200 mb-4 transform rotate-3">
+                        <Trophy className="w-8 h-8 text-white" />
                     </div>
-                    <h1 className="text-6xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                        DigiPiggy
-                    </h1>
-                    <p className="text-slate-600 text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed">
-                        Your Smart Companion for Achieving Financial Dreams 💰
+                    <h1 className="text-3xl font-extrabold text-slate-900 mb-2 tracking-tight">DigiPiggy</h1>
+                    <p className="text-slate-500 text-sm font-medium max-w-xs mx-auto leading-relaxed">
+                        Your smart companion for financial freedom. Saving money shouldn't feel like a chore.
                     </p>
                 </div>
+            </div>
 
-                {/* Mission Statement */}
-                <div className="bg-white/70 backdrop-blur-xl rounded-3xl p-8 md:p-12 border border-indigo-100 shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden group animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-indigo-400/10 to-purple-400/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
-
-                    <div className="relative z-10">
-                        <div className="flex items-center gap-3 mb-6">
-                            <Heart className="w-8 h-8 text-pink-500 animate-pulse" />
-                            <h2 className="text-3xl font-bold text-slate-800">Our Mission</h2>
+            <div className="px-4 space-y-4 max-w-3xl mx-auto">
+                {/* Mission Card - Compact */}
+                <div className="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm relative overflow-hidden">
+                    <div className="flex items-start gap-4 relaltive z-10">
+                        <div className="p-3 bg-rose-50 rounded-2xl shrink-0">
+                            <Heart className="w-6 h-6 text-rose-500 fill-current" />
                         </div>
-                        <p className="text-slate-700 text-lg leading-relaxed">
-                            We believe saving money shouldn't feel like a chore. <span className="font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">DigiPiggy</span> transforms
-                            your financial journey into an exciting adventure! Break down those big dreams into bite-sized "tickets"
-                            and watch your progress soar. Every small step counts, and we're here to celebrate each one with you! 🎉
-                        </p>
+                        <div>
+                            <h2 className="font-bold text-slate-900 text-lg mb-1">Our Mission</h2>
+                            <p className="text-slate-500 text-sm leading-relaxed">
+                                We transform your financial journey into an exciting adventure. Break down big dreams into small, achievable tickets.
+                            </p>
+                        </div>
                     </div>
                 </div>
 
-                {/* Features Grid */}
-                <div className="mb-16">
-                    <div className="flex items-center justify-center gap-3 mb-12 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-                        <Sparkles className="w-8 h-8 text-indigo-600" />
-                        <h2 className="text-4xl font-bold text-slate-800 text-center">Why You'll Love It</h2>
-                        <Sparkles className="w-8 h-8 text-indigo-600" />
+                {/* Features - Horizontal Scroll or Compact Grid? Let's do Compact Grid 2x2 for mobile compatibility */}
+                <div>
+                    <div className="flex items-center gap-2 mb-3 px-2">
+                        <Sparkles className="w-4 h-4 text-emerald-500" />
+                        <h2 className="font-bold text-slate-800">Why DigiPiggy?</h2>
                     </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-2 gap-3">
                         {[
-                            {
-                                icon: Trophy,
-                                title: "Gamified Savings",
-                                description: "Turn saving into a game! Check off tickets and unlock achievements.",
-                                gradient: "from-yellow-500 to-orange-500"
-                            },
-                            {
-                                icon: Target,
-                                title: "Smart Tracking",
-                                description: "Set unlimited goals and track progress in real-time with beautiful charts.",
-                                gradient: "from-green-500 to-emerald-500"
-                            },
-                            {
-                                icon: Shield,
-                                title: "Privacy First",
-                                description: "Your data stays on your device. No cloud, no tracking, no worries.",
-                                gradient: "from-blue-500 to-cyan-500"
-                            },
-                            {
-                                icon: Zap,
-                                title: "Lightning Fast",
-                                description: "PWA that works offline, loads instantly, and feels native.",
-                                gradient: "from-purple-500 to-pink-500"
-                            }
-                        ].map((feature, index) => (
-                            <div
-                                key={index}
-                                className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-indigo-100 hover:border-indigo-300 transition-all duration-300 group hover:scale-105 hover:-translate-y-2 shadow-lg hover:shadow-2xl relative overflow-hidden animate-fade-in-up"
-                                style={{ animationDelay: `${(index + 3) * 100}ms` }}
-                            >
-                                <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${feature.gradient} rounded-full blur-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-500`}></div>
-
-                                <div className="relative z-10">
-                                    <div className={`w-14 h-14 bg-gradient-to-br ${feature.gradient} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 shadow-lg`}>
-                                        <feature.icon className="w-7 h-7 text-white" />
-                                    </div>
-                                    <h3 className="text-xl font-bold text-slate-800 mb-3">{feature.title}</h3>
-                                    <p className="text-slate-600 leading-relaxed text-sm">{feature.description}</p>
+                            { icon: Trophy, title: "Gamified", desc: "Unlock badges", color: "bg-amber-100 text-amber-600" },
+                            { icon: Target, title: "Goals", desc: "Track smart", color: "bg-emerald-100 text-emerald-600" },
+                            { icon: Shield, title: "Private", desc: "Offline first", color: "bg-blue-100 text-blue-600" },
+                            { icon: Zap, title: "Fast", desc: "Instant load", color: "bg-purple-100 text-purple-600" }
+                        ].map((item, i) => (
+                            <div key={i} className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center text-center">
+                                <div className={`w-10 h-10 ${item.color} rounded-xl flex items-center justify-center mb-2`}>
+                                    <item.icon className="w-5 h-5" />
                                 </div>
+                                <h3 className="font-bold text-slate-900 text-sm">{item.title}</h3>
+                                <p className="text-xs text-slate-400">{item.desc}</p>
                             </div>
                         ))}
                     </div>
                 </div>
 
-                {/* Tech Stack */}
-                <div className="bg-white/70 backdrop-blur-xl rounded-3xl p-8 md:p-12 border border-indigo-100 shadow-xl relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '700ms' }}>
-                    <div className="relative z-10">
-                        <div className="flex items-center justify-center gap-3 mb-8">
-                            <Code className="w-8 h-8 text-indigo-600" />
-                            <h2 className="text-3xl font-bold text-slate-800 text-center">Built With Modern Tech</h2>
+                {/* Tech & Stats - Very Compact List */}
+                <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+                    <div className="p-4 border-b border-slate-50 bg-slate-50/50">
+                        <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
+                            <Code className="w-4 h-4 text-slate-400" />
+                            Under the Hood
+                        </h3>
+                    </div>
+                    <div className="p-4 grid grid-cols-3 gap-y-4">
+                        <div className="text-center">
+                            <div className="font-bold text-slate-900 text-lg">100%</div>
+                            <div className="text-[10px] text-slate-400 uppercase tracking-wide">Secure</div>
                         </div>
-
-                        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                            {[
-                                { name: 'React', icon: '⚛️' },
-                                { name: 'Vite', icon: '⚡' },
-                                { name: 'Tailwind', icon: '🎨' },
-                                { name: 'IndexedDB', icon: '💾' },
-                                { name: 'PWA', icon: '📱' },
-                                { name: 'Router', icon: '🛣️' },
-                                { name: 'Lucide', icon: '🎭' },
-                                { name: 'Context', icon: '🔄' },
-                                { name: 'Hooks', icon: '🪝' },
-                                { name: 'ES6+', icon: '🚀' }
-                            ].map((tech, index) => (
-                                <div
-                                    key={index}
-                                    className="bg-gradient-to-br from-white to-indigo-50 p-4 rounded-xl text-center border border-indigo-100 hover:border-indigo-300 transition-all hover:scale-110 cursor-pointer group shadow-sm hover:shadow-lg"
-                                    style={{ animationDelay: `${index * 50}ms` }}
-                                >
-                                    <div className="text-3xl mb-2 group-hover:scale-125 transition-transform">{tech.icon}</div>
-                                    <p className="font-bold text-slate-700 text-sm group-hover:text-indigo-600 transition-colors">{tech.name}</p>
-                                </div>
-                            ))}
+                        <div className="text-center border-x border-slate-100">
+                            <div className="font-bold text-slate-900 text-lg">0</div>
+                            <div className="text-[10px] text-slate-400 uppercase tracking-wide">Ads</div>
+                        </div>
+                        <div className="text-center">
+                            <div className="font-bold text-slate-900 text-lg">MIT</div>
+                            <div className="text-[10px] text-slate-400 uppercase tracking-wide">License</div>
                         </div>
                     </div>
                 </div>
 
-                {/* Stats Section */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in-up" style={{ animationDelay: '800ms' }}>
-                    {[
-                        { icon: Users, label: "Active Users", value: "1000+", gradient: "from-blue-500 to-cyan-500" },
-                        { icon: Lock, label: "Secure & Private", value: "100%", gradient: "from-green-500 to-emerald-500" },
-                        { icon: Rocket, label: "Goals Achieved", value: "5000+", gradient: "from-purple-500 to-pink-500" }
-                    ].map((stat, index) => (
-                        <div
-                            key={index}
-                            className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-indigo-100 shadow-lg hover:shadow-xl transition-all text-center group hover:scale-105"
-                        >
-                            <div className={`w-16 h-16 mx-auto bg-gradient-to-br ${stat.gradient} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-12 transition-all shadow-lg`}>
-                                <stat.icon className="w-8 h-8 text-white" />
-                            </div>
-                            <div className="text-3xl font-bold text-slate-800 mb-2">{stat.value}</div>
-                            <div className="text-slate-600">{stat.label}</div>
-                        </div>
-                    ))}
-                </div>
-
                 {/* CTA */}
-                <div className="text-center mt-12 animate-fade-in-up" style={{ animationDelay: '900ms' }}>
-                    <p className="text-slate-600 text-lg mb-6">Ready to start your savings journey?</p>
-                    <button className="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white rounded-2xl font-bold text-lg shadow-xl hover:shadow-2xl transition-all hover:scale-105 group">
-                        <Rocket className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
-                        Get Started Today!
+                <div className="pt-4 pb-2">
+                    <button
+                        onClick={() => navigate('/create')}
+                        className="w-full py-4 bg-slate-900 text-white rounded-2xl font-bold shadow-lg shadow-slate-200 flex items-center justify-center gap-2 active:scale-95 transition-transform"
+                    >
+                        Start Saving Now
+                        <ArrowRight className="w-5 h-5 opacity-80" />
                     </button>
-                </div>
-
-                {/* Footer */}
-                <div className="mt-12 text-center animate-fade-in">
-                    <p className="text-slate-500 text-sm mb-2">
-                        Made with ❤️ by developers who love saving
-                    </p>
-                    <p className="text-slate-400 text-xs">
-                        DigiPiggy © 2026 • Open Source • MIT License
+                    <p className="text-center text-xs text-slate-400 mt-4">
+                        v2.0 • Made with ❤️ for savers
                     </p>
                 </div>
             </div>

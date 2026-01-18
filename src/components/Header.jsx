@@ -1,147 +1,83 @@
-import { Home, Info, Mail, Palette, Trophy } from 'lucide-react';
+import { Home, Info, Mail, Trophy, PiggyBank } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-import { useTheme } from '../context/ThemeContext';
-import { useState } from 'react';
 import { cn } from '../utils/cn';
 
 export default function Header() {
-    const { theme, setTheme } = useTheme();
-    const [showThemeMenu, setShowThemeMenu] = useState(false);
     const location = useLocation();
 
     const isActive = (path) => location.pathname === path;
 
     return (
-        <header className="bg-[#1A0B08] border-b-4 border-[#FFD700] shadow-lg relative z-50">
+        <header className="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm/50 backdrop-blur-md bg-white/80">
             <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
                 {/* Logo and Title */}
                 <Link to="/" className="flex items-center gap-3 group">
-                    <img
-                        src="/pwa-192x192.png"
-                        alt="DigiPiggy"
-                        className="w-10 h-10 rounded-lg border-2 border-[#FFD700] group-hover:scale-110 transition-transform"
-                    />
-                    <div className="hidden sm:block">
-                        <h1 className="text-xl font-['Righteous'] text-[#FFD700] tracking-wide">
+                    <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center border border-emerald-200 group-hover:bg-emerald-200 transition-colors shadow-sm">
+                        <PiggyBank className="w-6 h-6 text-emerald-600" />
+                    </div>
+                    <div>
+                        <h1 className="text-xl font-bold text-slate-900 tracking-tight leading-none group-hover:text-emerald-700 transition-colors">
                             DIGIPIGGY
                         </h1>
-                        <p className="text-[8px] text-[#A1887F] uppercase tracking-widest font-bold">
-                            Smart Digital Savings
+                        <p className="text-[10px] text-slate-500 font-medium tracking-wide uppercase">
+                            Smart Savings
                         </p>
                     </div>
                 </Link>
 
-                {/* Navigation */}
-                <nav className="flex items-center gap-2">
+                {/* Navigation - Desktop Only */}
+                <nav className="hidden md:flex items-center gap-1">
                     <Link
                         to="/"
                         className={cn(
-                            "flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm font-bold uppercase tracking-wider",
+                            "flex items-center gap-2 px-4 py-2 rounded-full transition-all text-sm font-medium",
                             isActive('/')
-                                ? "bg-[#FFD700] text-[#2C1810]"
-                                : "text-[#FFF8E7] hover:bg-[#2C1810]"
+                                ? "bg-emerald-50 text-emerald-700 shadow-sm ring-1 ring-emerald-500/20"
+                                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                         )}
                     >
                         <Home className="w-4 h-4" />
-                        <span className="hidden sm:inline">Home</span>
-                    </Link>
-
-                    <Link
-                        to="/about"
-                        className={cn(
-                            "flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm font-bold uppercase tracking-wider",
-                            isActive('/about')
-                                ? "bg-[#FFD700] text-[#2C1810]"
-                                : "text-[#FFF8E7] hover:bg-[#2C1810]"
-                        )}
-                    >
-                        <Info className="w-4 h-4" />
-                        <span className="hidden sm:inline">About</span>
-                    </Link>
-
-                    <Link
-                        to="/contact"
-                        className={cn(
-                            "flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm font-bold uppercase tracking-wider",
-                            isActive('/contact')
-                                ? "bg-[#FFD700] text-[#2C1810]"
-                                : "text-[#FFF8E7] hover:bg-[#2C1810]"
-                        )}
-                    >
-                        <Mail className="w-4 h-4" />
-                        <span className="hidden sm:inline">Contact</span>
+                        <span>Home</span>
                     </Link>
 
                     <Link
                         to="/achievements"
                         className={cn(
-                            "flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm font-bold uppercase tracking-wider",
+                            "flex items-center gap-2 px-4 py-2 rounded-full transition-all text-sm font-medium",
                             isActive('/achievements')
-                                ? "bg-[#FFD700] text-[#2C1810]"
-                                : "text-[#FFF8E7] hover:bg-[#2C1810]"
+                                ? "bg-emerald-50 text-emerald-700 shadow-sm ring-1 ring-emerald-500/20"
+                                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                         )}
                     >
                         <Trophy className="w-4 h-4" />
-                        <span className="hidden sm:inline">Trophies</span>
+                        <span>Trophies</span>
                     </Link>
 
-                    {/* Theme Switcher */}
-                    <div className="relative ml-2">
-                        <button
-                            onClick={() => setShowThemeMenu(!showThemeMenu)}
-                            className="bg-[#2C1810] text-[#FFD700] p-2 rounded-lg border border-[#5D4037] hover:bg-[#3E2723] hover:border-[#FFD700] transition-all shadow-lg active:scale-95"
-                            title="Change Theme"
-                        >
-                            <Palette className="w-4 h-4" />
-                        </button>
-
-                        {showThemeMenu && (
-                            <>
-                                <div
-                                    className="fixed inset-0 z-[998]"
-                                    onClick={() => setShowThemeMenu(false)}
-                                />
-                                <div className="absolute top-full right-0 mt-2 bg-[#1A0B08] border-2 border-[#FFD700] rounded-lg shadow-2xl overflow-hidden z-[999] min-w-[150px]">
-                                    <button
-                                        onClick={() => { setTheme('retro'); setShowThemeMenu(false); }}
-                                        className={cn(
-                                            "w-full px-4 py-3 text-left text-xs font-bold uppercase tracking-widest transition-colors border-b border-[#5D4037]",
-                                            theme === 'retro' ? "bg-[#FFD700] text-[#2C1810]" : "text-[#FFF8E7] hover:bg-[#2C1810]"
-                                        )}
-                                    >
-                                        Retro
-                                    </button>
-                                    <button
-                                        onClick={() => { setTheme('cyber'); setShowThemeMenu(false); }}
-                                        className={cn(
-                                            "w-full px-4 py-3 text-left text-xs font-bold uppercase tracking-widest transition-colors border-b border-[#5D4037]",
-                                            theme === 'cyber' ? "bg-[#FFD700] text-[#2C1810]" : "text-[#FFF8E7] hover:bg-[#2C1810]"
-                                        )}
-                                    >
-                                        Cyber
-                                    </button>
-                                    <button
-                                        onClick={() => { setTheme('minimal'); setShowThemeMenu(false); }}
-                                        className={cn(
-                                            "w-full px-4 py-3 text-left text-xs font-bold uppercase tracking-widest transition-colors border-b border-[#5D4037]",
-                                            theme === 'minimal' ? "bg-[#FFD700] text-[#2C1810]" : "text-[#FFF8E7] hover:bg-[#2C1810]"
-                                        )}
-                                    >
-                                        Minimal
-                                    </button>
-                                    <button
-                                        onClick={() => { setTheme('professional'); setShowThemeMenu(false); }}
-                                        className={cn(
-                                            "w-full px-4 py-3 text-left text-xs font-bold uppercase tracking-widest transition-colors",
-                                            theme === 'professional' ? "bg-[#FFD700] text-[#2C1810]" : "text-[#FFF8E7] hover:bg-[#2C1810]"
-                                        )}
-                                    >
-                                        Professional
-                                    </button>
-                                </div>
-                            </>
+                    <Link
+                        to="/about"
+                        className={cn(
+                            "flex items-center gap-2 px-4 py-2 rounded-full transition-all text-sm font-medium",
+                            isActive('/about')
+                                ? "bg-emerald-50 text-emerald-700 shadow-sm ring-1 ring-emerald-500/20"
+                                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                         )}
-                    </div>
+                    >
+                        <Info className="w-4 h-4" />
+                        <span>About</span>
+                    </Link>
+
+                    <Link
+                        to="/contact"
+                        className={cn(
+                            "flex items-center gap-2 px-4 py-2 rounded-full transition-all text-sm font-medium",
+                            isActive('/contact')
+                                ? "bg-emerald-50 text-emerald-700 shadow-sm ring-1 ring-emerald-500/20"
+                                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                        )}
+                    >
+                        <Mail className="w-4 h-4" />
+                        <span>Contact</span>
+                    </Link>
                 </nav>
             </div>
         </header>

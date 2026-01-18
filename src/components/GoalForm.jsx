@@ -74,18 +74,11 @@ export default function GoalForm() {
         const safeName = name.trim();
 
         try {
-            // Await the creation
             await createGoal(safeName, amount, estimatedSlots, frequency, durationValue, durationUnit);
         } catch (error) {
             console.error("Goal creation error:", error);
-            // We might want to show a toast here, but we proceed to redirect usually or stay?
-            // If it failed, maybe we shouldn't redirect? 
-            // But the user issue is "not redirecting". 
-            // Let's assume if it fails partially, we still want to go home or at least not hang.
-            // For now, let's log and proceed if it's likely a non-critical error (like achievement check).
         }
 
-        // Redirect immediately after
         if (isEditing) {
             cancelEditing();
         } else {
@@ -102,56 +95,52 @@ export default function GoalForm() {
     };
 
     return (
-        <div className="w-full max-w-md mx-auto p-6 bg-[#1A0B08] rounded-3xl border-4 border-[#FFD700] shadow-[0_0_30px_rgba(255,215,0,0.3)] animate-fade-in relative font-['Courier_Prime'] text-[#FFF8E7]">
-            <div className="absolute top-2 left-2 w-2 h-2 bg-[#FFD700] rounded-full"></div>
-            <div className="absolute top-2 right-2 w-2 h-2 bg-[#FFD700] rounded-full"></div>
-            <div className="absolute bottom-2 left-2 w-2 h-2 bg-[#FFD700] rounded-full"></div>
-            <div className="absolute bottom-2 right-2 w-2 h-2 bg-[#FFD700] rounded-full"></div>
-
+        <div className="w-full max-w-md mx-auto p-6 bg-white rounded-3xl shadow-xl animate-fade-in relative z-50">
             {(isEditing || isCreating) && (
                 <button
                     onClick={handleClose}
-                    className="absolute top-4 right-4 p-2 text-[#FFF8E7] hover:text-[#FFD700] bg-[#0F0502] rounded-full transition-colors border border-[#5D4037]"
+                    className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors"
                 >
-                    <X className="w-4 h-4" />
+                    <X className="w-5 h-5" />
                 </button>
             )}
 
-            <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-[#FFD700] font-['Righteous'] uppercase tracking-wider mb-2 drop-shadow-md">
-                    {isEditing ? 'MODIFY TARGET' : 'NEW MISSION'}
+            <div className="text-center mb-6">
+                <h2 className="text-2xl font-bold text-slate-900 mb-1">
+                    {isEditing ? 'Edit Goal' : 'New Goal'}
                 </h2>
-                <div className="h-1 w-24 mx-auto bg-[#5D4037] rounded-full"></div>
+                <div className="h-1 w-12 mx-auto bg-emerald-500 rounded-full"></div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-5">
 
-                <div className="space-y-2">
-                    <label className="text-xs font-bold text-[#A1887F] uppercase tracking-widest flex items-center gap-2">
-                        <Type className="w-4 h-4 text-[#FFD700]" />
-                        Mission Name
+                <div className="space-y-1.5">
+                    <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                        <Type className="w-4 h-4 text-emerald-500" />
+                        Goal Name
                     </label>
                     <input
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="w-full bg-[#0F0502] border-2 border-[#5D4037] rounded-xl py-4 px-4 text-[#00FF41] font-['VT323'] text-2xl placeholder:text-[#A1887F]/50 focus:outline-none focus:border-[#FFD700] transition-all"
+                        className="input text-lg font-medium placeholder:font-normal"
                         placeholder="e.g. Dream Car"
+                        autoFocus={!isEditing}
                     />
                 </div>
 
-                <div className="space-y-2">
-                    <label className="text-xs font-bold text-[#A1887F] uppercase tracking-widest flex items-center gap-2">
-                        <Target className="w-4 h-4 text-[#FFD700]" />
+                <div className="space-y-1.5">
+                    <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                        <Target className="w-4 h-4 text-emerald-500" />
                         Target Amount
                     </label>
                     <div className="relative">
-                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#A1887F] font-bold">₹</span>
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">₹</span>
                         <input
                             type="number"
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
-                            className="w-full bg-[#0F0502] border-2 border-[#5D4037] rounded-xl py-4 pl-10 pr-4 text-[#00FF41] font-['VT323'] text-2xl placeholder:text-[#A1887F]/50 focus:outline-none focus:border-[#FFD700] transition-all"
+                            className="input pl-10 text-lg font-medium placeholder:font-normal"
                             placeholder="50000"
                             required
                         />
@@ -159,9 +148,9 @@ export default function GoalForm() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                        <label className="text-xs font-bold text-[#A1887F] uppercase tracking-widest flex items-center gap-2">
-                            <Clock className="w-4 h-4 text-[#FFD700]" />
+                    <div className="space-y-1.5">
+                        <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                            <Clock className="w-4 h-4 text-emerald-500" />
                             Duration
                         </label>
                         <div className="flex gap-2">
@@ -169,13 +158,13 @@ export default function GoalForm() {
                                 type="number"
                                 value={durationValue}
                                 onChange={(e) => setDurationValue(e.target.value)}
-                                className="w-1/3 bg-[#0F0502] border-2 border-[#5D4037] rounded-xl py-4 px-2 text-center text-[#FFF8E7] focus:outline-none focus:border-[#FFD700] transition-all font-bold"
+                                className="input text-center font-bold px-1"
                                 required
                             />
                             <select
                                 value={durationUnit}
                                 onChange={(e) => setDurationUnit(e.target.value)}
-                                className="w-2/3 bg-[#2C1810] border-2 border-[#5D4037] rounded-xl py-4 px-2 text-[#FFF8E7] text-sm focus:outline-none focus:border-[#FFD700] transition-all"
+                                className="input px-2 text-sm"
                             >
                                 <option value="days">Days</option>
                                 <option value="weeks">Weeks</option>
@@ -184,15 +173,15 @@ export default function GoalForm() {
                             </select>
                         </div>
                     </div>
-                    <div className="space-y-2">
-                        <label className="text-xs font-bold text-[#A1887F] uppercase tracking-widest flex items-center gap-2">
-                            <Calendar className="w-4 h-4 text-[#FFD700]" />
+                    <div className="space-y-1.5">
+                        <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                            <Calendar className="w-4 h-4 text-emerald-500" />
                             Frequency
                         </label>
                         <select
                             value={frequency}
                             onChange={(e) => setFrequency(e.target.value)}
-                            className="w-full bg-[#2C1810] border-2 border-[#5D4037] rounded-xl py-4 px-4 text-[#FFF8E7] focus:outline-none focus:border-[#FFD700] transition-all h-[64px]"
+                            className="input"
                         >
                             <option value="daily">Daily</option>
                             <option value="weekly">Weekly</option>
@@ -202,16 +191,16 @@ export default function GoalForm() {
                     </div>
                 </div>
 
-                <div className="text-center text-xs text-[#A1887F] bg-[#0F0502] rounded-lg p-3 border border-[#5D4037] font-['VT323']">
-                    CALCULATED: <span className="text-[#FFD700] font-bold text-lg">{estimatedSlots}</span> DEPOSITS
+                <div className="text-center text-sm text-slate-500 bg-slate-50 rounded-xl p-3 border border-slate-100">
+                    Estimated: <span className="text-emerald-600 font-bold text-base">{estimatedSlots}</span> deposits
                 </div>
 
                 <button
                     type="submit"
-                    className="w-full py-4 bg-[#CDA434] text-[#2C1810] font-black uppercase tracking-widest rounded-xl shadow-lg transform transition-all active:scale-[0.98] flex items-center justify-center group border-b-4 border-[#8D6E63] active:border-b-0 active:translate-y-1"
+                    className="w-full py-3.5 btn-primary flex items-center justify-center gap-2 group mt-4"
                 >
-                    {isEditing ? 'SAVE CHANGES' : 'INITIALIZE'}
-                    <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                    {isEditing ? 'Save Changes' : 'Create Goal'}
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
             </form>
         </div>

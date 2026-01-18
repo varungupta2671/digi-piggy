@@ -1,34 +1,29 @@
 import { usePiggy, ACHIEVEMENT_DEFINITIONS } from '../context/PiggyContext';
-import { Lock } from 'lucide-react';
+import { Lock, Trophy } from 'lucide-react';
+import { cn } from '../utils/cn';
 
 export default function Achievements() {
     const { unlockedAchievements } = usePiggy();
 
-    // Helper to format date
-    const formatDate = (dateString) => {
-        if (!dateString) return '';
-        return new Date(dateString).toLocaleDateString(undefined, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-        });
-    };
-
     return (
-        <div className="min-h-screen bg-[#0F0502] text-[#FFF8E7] font-['Courier_Prime'] p-4 md:p-8 animate-fade-in">
+        <div className="min-h-screen bg-slate-50 p-4 md:p-8 animate-fade-in pb-24">
             <div className="max-w-6xl mx-auto">
                 {/* Page Header */}
                 <div className="text-center mb-12">
-                    <h1 className="text-4xl md:text-5xl font-['Righteous'] text-[#FFD700] mb-4">
-                        TROPHY CASE
+                    <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce-slow">
+                        <Trophy className="w-10 h-10 text-emerald-600" />
+                    </div>
+                    <h1 className="text-3xl md:text-5xl font-bold text-slate-900 mb-4">
+                        Trophy Case
                     </h1>
-                    <p className="text-[#A1887F] text-lg">
-                        Unlock badges by hitting savings milestones!
+                    <p className="text-slate-500 text-lg max-w-xl mx-auto">
+                        Unlock badges by hitting savings milestones! Keep saving to earn them all.
                     </p>
-                    <div className="mt-4 inline-block bg-[#1A0B08] px-6 py-2 rounded-full border border-[#5D4037]">
-                        <span className="text-[#FFD700] font-bold text-xl">{unlockedAchievements.length}</span>
-                        <span className="text-[#A1887F] mx-2">/</span>
-                        <span className="text-[#A1887F] text-sm">{ACHIEVEMENT_DEFINITIONS.length} UNLOCKED</span>
+
+                    <div className="mt-8 inline-flex items-center bg-white px-6 py-3 rounded-full shadow-sm border border-slate-200">
+                        <span className="text-emerald-600 font-bold text-xl">{unlockedAchievements.length}</span>
+                        <span className="text-slate-300 mx-2">/</span>
+                        <span className="text-slate-500 text-sm font-medium">{ACHIEVEMENT_DEFINITIONS.length} Unlocked</span>
                     </div>
                 </div>
 
@@ -41,53 +36,50 @@ export default function Achievements() {
                         return (
                             <div
                                 key={achievement.id}
-                                className={`
-                                    relative p-6 rounded-2xl border-4 transition-all duration-300 overflow-hidden group
-                                    ${isUnlocked
-                                        ? 'bg-[#1A0B08] border-[#FFD700] shadow-[0_0_20px_rgba(255,215,0,0.1)] scale-100 opacity-100'
-                                        : 'bg-[#0F0502] border-[#2C1810] opacity-60 grayscale scale-95'
-                                    }
-                                `}
+                                className={cn(
+                                    "relative p-6 rounded-3xl border transition-all duration-300 overflow-hidden group",
+                                    isUnlocked
+                                        ? "bg-white border-emerald-100 shadow-lg shadow-emerald-500/5 hover:-translate-y-1 hover:shadow-xl"
+                                        : "bg-slate-50 border-slate-200 opacity-70 grayscale hover:opacity-100 transition-opacity"
+                                )}
                             >
-                                {/* Background Texture */}
-                                <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] mix-blend-overlay pointer-events-none"></div>
-
                                 {/* Shine Effect for Unlocked */}
                                 {isUnlocked && (
-                                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                                    <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/40 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 pointer-events-none"></div>
                                 )}
 
                                 <div className="relative z-10 flex items-start gap-4">
                                     {/* Icon Container */}
-                                    <div className={`
-                                        w-16 h-16 rounded-xl flex items-center justify-center shrink-0 border-2
-                                        ${isUnlocked
-                                            ? `bg-[#2C1810] border-[#FFD700] ${achievement.color}`
-                                            : 'bg-[#1A0B08] border-[#2C1810] text-[#5D4037]'
-                                        }
-                                    `}>
+                                    <div className={cn(
+                                        "w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 shadow-sm transition-colors",
+                                        isUnlocked
+                                            ? "bg-emerald-50 text-emerald-600"
+                                            : "bg-slate-200 text-slate-400"
+                                    )}>
                                         {isUnlocked ? <Icon className="w-8 h-8" /> : <Lock className="w-6 h-6" />}
                                     </div>
 
                                     {/* Content */}
                                     <div>
-                                        <h3 className={`font-['Righteous'] text-xl mb-1 ${isUnlocked ? 'text-[#FFD700]' : 'text-[#5D4037]'}`}>
+                                        <h3 className={cn(
+                                            "font-bold text-lg mb-1 transition-colors",
+                                            isUnlocked ? "text-slate-900" : "text-slate-500"
+                                        )}>
                                             {achievement.title}
                                         </h3>
-                                        <p className="text-[#A1887F] text-sm leading-tight mb-2">
+                                        <p className="text-slate-500 text-sm leading-snug mb-3">
                                             {achievement.description}
                                         </p>
 
                                         {/* Status Tag */}
                                         <div className="flex items-center gap-2">
-                                            <span className={`
-                                                text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-md
-                                                ${isUnlocked
-                                                    ? 'bg-[#FFD700] text-[#2C1810]'
-                                                    : 'bg-[#2C1810] text-[#5D4037]'
-                                                }
-                                            `}>
-                                                {isUnlocked ? 'UNLOCKED' : 'LOCKED'}
+                                            <span className={cn(
+                                                "text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full",
+                                                isUnlocked
+                                                    ? "bg-emerald-100 text-emerald-700"
+                                                    : "bg-slate-200 text-slate-500"
+                                            )}>
+                                                {isUnlocked ? 'Unlocked' : 'Locked'}
                                             </span>
                                         </div>
                                     </div>

@@ -3,793 +3,94 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --primary: #10b981;
+    /* Emerald 500 */
+    --primary-foreground: #ffffff;
+    --secondary: #fbbf24;
+    /* Amber 400 */
+    --secondary-foreground: #1e293b;
+    --background: #f8fafc;
+    /* Slate 50 */
+    --foreground: #334155;
+    /* Slate 700 */
+    --card: #ffffff;
+    --card-foreground: #0f172a;
+    --muted: #f1f5f9;
+    --muted-foreground: #64748b;
+    --accent: #f0fdf4;
+    --accent-foreground: #166534;
+    --border: #e2e8f0;
+  }
+
   body {
-    @apply bg-slate-900 text-white min-h-screen;
-    font-family: 'Inter', sans-serif;
-    transition: background-color 0.5s ease, color 0.5s ease;
+    @apply bg-slate-50 text-slate-800 antialiased min-h-screen pb-24 md:pb-0;
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
   }
 
-  /* Retro Theme - Current default, no changes */
-  body[data-theme="retro"] {
-    /* All current styles remain as-is */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold tracking-tight text-slate-900;
   }
+}
 
-  /* ========================================
-     CYBERPUNK THEME - Neon Futuristic
-     ======================================== */
-  body[data-theme="cyber"] {
-    background: linear-gradient(135deg, #0a0015 0%, #1a0033 50%, #0f001a 100%);
-    font-family: 'Rajdhani', sans-serif;
+@layer components {
+  .btn-primary {
+    @apply bg-emerald-500 text-white px-4 py-2 rounded-xl font-semibold shadow-lg shadow-emerald-200 hover:bg-emerald-600 hover:scale-[1.02] active:scale-95 transition-all duration-200;
   }
 
-  /* Main backgrounds */
-  body[data-theme="cyber"] [class*="bg-[#0F0502]"] {
-    background: linear-gradient(135deg, #0a0015 0%, #1a0033 100%) !important;
+  .btn-secondary {
+    @apply bg-white text-slate-700 border border-slate-200 px-4 py-2 rounded-xl font-medium shadow-sm hover:bg-slate-50 hover:border-slate-300 active:scale-95 transition-all duration-200;
   }
 
-  body[data-theme="cyber"] [class*="bg-[#1A0B08]"] {
-    background: linear-gradient(135deg, #1a0033 0%, #2d0052 100%) !important;
-    box-shadow: 0 0 20px rgba(217, 70, 239, 0.3), inset 0 0 30px rgba(0, 255, 255, 0.05) !important;
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-slate-100 p-5 transition-all duration-300 hover:shadow-md;
   }
 
-  body[data-theme="cyber"] [class*="bg-[#2C1810]"] {
-    background: linear-gradient(135deg, #2d0052 0%, #1a0033 100%) !important;
-    box-shadow: 0 0 10px rgba(217, 70, 239, 0.2) !important;
+  .input {
+    @apply w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all;
   }
+}
 
-  body[data-theme="cyber"] [class*="bg-[#3E2723]"] {
-    background: linear-gradient(135deg, #3d0066 0%, #2d0052 100%) !important;
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
 
-  /* Accent colors - Neon Pink */
-  body[data-theme="cyber"] [class*="text-[#FFD700]"],
-  body[data-theme="cyber"] [class*="border-[#FFD700]"] {
-    color: #FF00FF !important;
-    border-color: #FF00FF !important;
-    text-shadow: 0 0 10px rgba(255, 0, 255, 0.8), 0 0 20px rgba(255, 0, 255, 0.4) !important;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
+}
 
-  body[data-theme="cyber"] [class*="bg-[#FFD700]"] {
-    background: linear-gradient(135deg, #FF00FF 0%, #D946EF 100%) !important;
-    box-shadow: 0 0 20px rgba(255, 0, 255, 0.6), 0 0 40px rgba(255, 0, 255, 0.3) !important;
-  }
-
-  /* Primary text - Cyan glow */
-  body[data-theme="cyber"] [class*="text-[#FFF8E7]"] {
-    color: #00FFFF !important;
-    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5) !important;
-  }
-
-  body[data-theme="cyber"] [class*="text-[#A1887F]"] {
-    color: #8B5CF6 !important;
-  }
-
-  /* CRT Green -> Neon Cyan */
-  body[data-theme="cyber"] [class*="text-[#00FF41]"] {
-    color: #00FFFF !important;
-    text-shadow: 0 0 15px rgba(0, 255, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.4) !important;
-    animation: cyber-pulse 2s ease-in-out infinite !important;
-  }
-
-  /* Tickets - Neon cards */
-  body[data-theme="cyber"] [class*="bg-[#FFFDE7]"] {
-    background: linear-gradient(135deg, #1a0033 0%, #2d0052 100%) !important;
-    border: 2px solid #FF00FF !important;
-    box-shadow: 0 0 15px rgba(255, 0, 255, 0.5), inset 0 0 20px rgba(0, 255, 255, 0.1) !important;
-  }
-
-  body[data-theme="cyber"] [class*="text-[#1A0B08]"] {
-    color: #00FFFF !important;
-    text-shadow: 0 0 5px rgba(0, 255, 255, 0.6) !important;
-  }
-
-  body[data-theme="cyber"] [class*="text-[#2C1810]"] {
-    color: #0a0015 !important;
-    text-shadow: none !important;
-  }
-
-  /* Borders */
-  body[data-theme="cyber"] [class*="border-[#5D4037]"] {
-    border-color: #8B5CF6 !important;
-  }
-
-  /* Buttons - Glowing effect */
-  body[data-theme="cyber"] button:hover {
-    transform: scale(1.05) !important;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  }
-
-  /* Animations */
-  @keyframes cyber-pulse {
-
-    0%,
-    100% {
-      text-shadow: 0 0 15px rgba(0, 255, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.4);
-    }
-
-    50% {
-      text-shadow: 0 0 25px rgba(0, 255, 255, 1), 0 0 50px rgba(0, 255, 255, 0.6);
-    }
-  }
-
-  @keyframes fade-in-up {
-    0% {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes scale-in {
-    0% {
-      opacity: 0;
-      transform: scale(0.9);
-    }
-
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  @keyframes slide-in-right {
-    0% {
-      opacity: 0;
-      transform: translateX(20px);
-    }
-
-    100% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes pulse-glow {
-
-    0%,
-    100% {
-      box-shadow: 0 0 0 rgba(255, 215, 0, 0);
-    }
-
-    50% {
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-    }
-  }
-
-  @keyframes celebrate {
-    0% {
-      transform: scale(1);
-    }
-
-    50% {
-      transform: scale(1.2) rotate(10deg);
-    }
-
-    100% {
-      transform: scale(1) rotate(0);
-    }
-  }
-
-  .animate-fade-in-up {
-    animation: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-
-  .animate-scale-in {
-    animation: scale-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-
-  .animate-slide-in-right {
-    animation: slide-in-right 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-
-  .animate-pulse-glow {
-    animation: pulse-glow 2s infinite;
-  }
-
-  .animate-celebrate {
-    animation: celebrate 0.5s ease-in-out;
-  }
-
-  /* Stagger Delays */
-  .delay-100 {
-    animation-delay: 100ms;
-  }
-
-  .delay-200 {
-    animation-delay: 200ms;
-  }
-
-  .delay-300 {
-    animation-delay: 300ms;
-  }
-
-  .delay-400 {
-    animation-delay: 400ms;
-  }
-
-  .delay-500 {
-    animation-delay: 500ms;
-  }
-
-  .delay-75 {
-    animation-delay: 75ms;
-  }
-
-
-  /* ========================================
-     MINIMAL THEME - Black & White Brutalist
-     ======================================== */
-  body[data-theme="minimal"] {
-    background: #FFFFFF;
-    font-family: 'Space Grotesk', 'JetBrains Mono', monospace;
-  }
-
-  /* Main backgrounds */
-  body[data-theme="minimal"] [class*="bg-[#0F0502]"] {
-    background: #FFFFFF !important;
-  }
-
-  body[data-theme="minimal"] [class*="bg-[#1A0B08]"] {
-    background: #FFFFFF !important;
-    border: 3px solid #000000 !important;
-    box-shadow: 8px 8px 0 #000000 !important;
-  }
-
-  body[data-theme="minimal"] [class*="bg-[#2C1810]"] {
-    background: #000000 !important;
-  }
-
-  body[data-theme="minimal"] [class*="bg-[#3E2723]"] {
-    background: #1A1A1A !important;
-  }
-
-  /* Accent colors - Black */
-  body[data-theme="minimal"] [class*="text-[#FFD700]"],
-  body[data-theme="minimal"] [class*="from-[#FFD700]"],
-  body[data-theme="minimal"] [class*="to-[#FFD700]"],
-  body[data-theme="minimal"] [class*="via-[#FFD700]"] {
-    color: #000000 !important;
-    text-shadow: none !important;
-  }
-
-  body[data-theme="minimal"] [class*="border-[#FFD700]"] {
-    border-color: #000000 !important;
-  }
-
-  body[data-theme="minimal"] [class*="bg-[#FFD700]"],
-  body[data-theme="minimal"] [class*="from-yellow-"],
-  body[data-theme="minimal"] [class*="to-yellow-"],
-  body[data-theme="minimal"] [class*="from-orange-"],
-  body[data-theme="minimal"] [class*="to-orange-"] {
-    background: #000000 !important;
-    box-shadow: none !important;
-  }
-
-  /* Primary text - Black on white */
-  body[data-theme="minimal"] [class*="text-[#FFF8E7]"] {
-    color: #000000 !important;
-    text-shadow: none !important;
-  }
-
-  body[data-theme="minimal"] [class*="text-[#A1887F]"] {
-    color: #666666 !important;
-  }
-
-  /* CRT Green -> Black */
-  body[data-theme="minimal"] [class*="text-[#00FF41]"] {
-    color: #000000 !important;
-    text-shadow: none !important;
-  }
-
-  /* Tickets - White with black border */
-  body[data-theme="minimal"] [class*="bg-[#FFFDE7]"] {
-    background: #FFFFFF !important;
-    border: 3px solid #000000 !important;
-    box-shadow: 4px 4px 0 #000000 !important;
-  }
-
-  body[data-theme="minimal"] [class*="text-[#1A0B08]"] {
-    color: #000000 !important;
-    text-shadow: none !important;
-  }
-
-  body[data-theme="minimal"] [class*="text-[#2C1810]"] {
-    color: #FFFFFF !important;
-    text-shadow: none !important;
-  }
-
-  /* Borders */
-  body[data-theme="minimal"] [class*="border-[#5D4037]"] {
-    border-color: #000000 !important;
-  }
-
-  body[data-theme="minimal"] [class*="border-[#D7CCC8]"] {
-    border-color: #000000 !important;
-  }
-
-  /* Gradient backgrounds -> Solid colors */
-  body[data-theme="minimal"] [class*="bg-gradient"] {
-    background: #FFFFFF !important;
-  }
-
-  body[data-theme="minimal"] [class*="from-blue-"],
-  body[data-theme="minimal"] [class*="to-blue-"],
-  body[data-theme="minimal"] [class*="from-green-"],
-  body[data-theme="minimal"] [class*="to-green-"],
-  body[data-theme="minimal"] [class*="from-purple-"],
-  body[data-theme="minimal"] [class*="to-purple-"],
-  body[data-theme="minimal"] [class*="from-pink-"],
-  body[data-theme="minimal"] [class*="to-pink-"],
-  body[data-theme="minimal"] [class*="from-gray-"],
-  body[data-theme="minimal"] [class*="to-gray-"] {
-    background: #FFFFFF !important;
-  }
-
-  /* Remove all shadows and glows */
-  body[data-theme="minimal"] * {
-    box-shadow: none !important;
-  }
-
-  body[data-theme="minimal"] [class*="shadow"] {
-    box-shadow: none !important;
-  }
-
-  /* Sharp edges - no rounded corners on main elements */
-  body[data-theme="minimal"] [class*="rounded-3xl"],
-  body[data-theme="minimal"] [class*="rounded-2xl"] {
-    border-radius: 0 !important;
-  }
-
-  /* Keep small rounded corners for buttons */
-  body[data-theme="minimal"] [class*="rounded-xl"],
-  body[data-theme="minimal"] [class*="rounded-lg"] {
-    border-radius: 4px !important;
-  }
-
-  /* Transitions - Sharp/instant */
-  body[data-theme="minimal"] * {
-    transition: all 0.1s steps(3) !important;
-  }
-
-  /* Hover effects - Invert colors */
-  body[data-theme="minimal"] button:hover,
-  body[data-theme="minimal"] a:hover {
-    background: #000000 !important;
-    color: #FFFFFF !important;
-    transform: translate(4px, 4px) !important;
-  }
-
-  /* Remove blur effects */
-  body[data-theme="minimal"] [class*="blur"] {
-    filter: none !important;
-  }
-
-  /* Disable animations */
-  body[data-theme="minimal"] [class*="animate-"] {
-    animation: none !important;
-  }
-
-  /* Goal Name / Headings */
-  body[data-theme="minimal"] h1,
-  body[data-theme="minimal"] h2,
-  body[data-theme="minimal"] h3,
-  body[data-theme="minimal"] h4,
-  body[data-theme="minimal"] [class*="font-['Righteous'"] {
-    color: #000000 !important;
-    text-shadow: none !important;
-  }
-
-  /* Theme Selection & My Goals Buttons */
-  body[data-theme="minimal"] [class*="bg-[#1A0B08]"] button,
-  body[data-theme="minimal"] [class*="bg-[#2C1810]"],
-  body[data-theme="minimal"] button.group {
-    background-color: #FFFFFF !important;
-    color: #000000 !important;
-    border: 2px solid #000000 !important;
-  }
-
-  body[data-theme="minimal"] [class*="bg-[#1A0B08]"] button:hover,
-  body[data-theme="minimal"] [class*="bg-[#2C1810]"]:hover,
-  body[data-theme="minimal"] button.group:hover {
-    background-color: #000000 !important;
-    color: #FFFFFF !important;
-    transform: translate(-2px, -2px) !important;
-    box-shadow: 4px 4px 0px #000000 !important;
-  }
-
-  /* Navbar / Top Bar Elements Override */
-  body[data-theme="minimal"] nav,
-  body[data-theme="minimal"] header {
-    background-color: #FFFFFF !important;
-    border-bottom: 2px solid #000000 !important;
-  }
-
-  /* Standardize ALL Button Hovers */
-  body[data-theme="minimal"] button:hover {
-    background-color: #000000 !important;
-    color: #FFFFFF !important;
-    border-color: #000000 !important;
-    box-shadow: 6px 6px 0px #000000 !important;
-    transform: translate(-2px, -2px) !important;
-  }
-
-  /* Select Text Color */
-  body[data-theme="minimal"] select {
-    color: #000000 !important;
-    background-color: #FFFFFF !important;
-    border: 2px solid #000000 !important;
-  }
-
-  /* Ensure text inside dark containers is visible */
-  body[data-theme="minimal"] [class*="text-[#FFF8E7]"] {
-    color: #000000 !important;
-  }
-
-  /* Grid Tile Fixes */
-  body[data-theme='minimal'] button[class*='aspect-square'] span,
-  body[data-theme='minimal'] button[class*='aspect-square'] div {
-    color: #000000 !important;
-  }
-
-  body[data-theme='minimal'] button[class*='aspect-square']:hover span,
-  body[data-theme='minimal'] button[class*='aspect-square']:hover div {
-    color: #FFFFFF !important;
-  }
-
-  body[data-theme='minimal'] button[disabled] span,
-  body[data-theme='minimal'] button[disabled] div {
-    color: #888888 !important;
-  }
-
-  /* Pay Button Fixes */
-  body[data-theme='minimal'] button[class*='bg-white'] {
-    background-color: #000000 !important;
-    color: #FFFFFF !important;
-    border: 2px solid #000000 !important;
-  }
-
-  body[data-theme='minimal'] button[class*='bg-white'] span.text-slate-700 {
-    color: #FFFFFF !important;
-  }
-
-  body[data-theme='minimal'] button[class*='bg-white']:hover {
-    background-color: #FFFFFF !important;
-    color: #000000 !important;
-  }
-
-  body[data-theme='minimal'] button[class*='bg-white']:hover span.text-slate-700 {
-    color: #000000 !important;
-  }
-
-  /* Fix SVG icons inside buttons */
-  body[data-theme='minimal'] button svg {
-    color: currentColor !important;
-  }
-
-  /* Force external link icon color */
-  body[data-theme='minimal'] .text-slate-400 {
-    color: currentColor !important;
-  }
-
-  /* Additional fixes for About/Contact pages */
-  body[data-theme="minimal"] [class*="bg-clip-text"] {
-    -webkit-background-clip: text !important;
-    background-clip: text !important;
-    color: #000000 !important;
-  }
-
-  body[data-theme="minimal"] [class*="text-transparent"] {
-    color: #000000 !important;
-  }
-
-  /* Override all gradient text */
-  body[data-theme="minimal"] .bg-gradient-to-r,
-  body[data-theme="minimal"] .bg-gradient-to-br {
-    background: #FFFFFF !important;
-  }
-
-  /* Icon colors */
-  body[data-theme="minimal"] svg {
-    color: #000000 !important;
-  }
-
-  body[data-theme="minimal"] [class*="text-white"] {
-    color: #000000 !important;
-  }
-
-  /* Custom Scrollbar for Minimal */
-  body[data-theme="minimal"] ::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  body[data-theme="minimal"] ::-webkit-scrollbar-track {
-    background: #FFFFFF;
-    border-left: 1px solid #000000;
-  }
-
-  body[data-theme="minimal"] ::-webkit-scrollbar-thumb {
-    background: #000000;
-  }
-
-  /* ========================================
-     PROFESSIONAL THEME - "Mobile App" 
-     Inspired by: Instagram, Spotify, Revolut, N26
-     Clean, Card-based, Mobile-first
-     ======================================== */
-  body[data-theme="professional"] {
-    background: #F7F8FA;
-    color: #1C1C1E;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  }
-
-  /* Smooth transitions globally */
-  body[data-theme="professional"] * {
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  /* --- Clean Card Containers --- */
-  body[data-theme="professional"] [class*="bg-[#0F0502]"],
-  body[data-theme="professional"] [class*="bg-[#1A0B08]"],
-  body[data-theme="professional"] [class*="bg-[#2C1810]"],
-  body[data-theme="professional"] [class*="bg-slate-950"] {
-    background: #FFFFFF !important;
-    border: none !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
-    border-radius: 16px !important;
-  }
-
-  body[data-theme="professional"] [class*="bg-[#0F0502]"]:active,
-  body[data-theme="professional"] [class*="bg-[#1A0B08]"]:active {
-    transform: scale(0.98) !important;
-  }
-
-  /* Header - Instagram style */
-  body[data-theme="professional"] .rounded-b-3xl {
-    background: #FFFFFF !important;
-    border-bottom: 1px solid #EFEFEF !important;
-    border-radius: 0 !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
-  }
-
-  /* --- Typography - Clean & Readable --- */
-  body[data-theme="professional"] [class*="text-[#FFF8E7]"],
-  body[data-theme="professional"] [class*="text-[#E8DCC4]"],
-  body[data-theme="professional"] h1,
-  body[data-theme="professional"] h2,
-  body[data-theme="professional"] h3 {
-    color: #1C1C1E !important;
-    font-weight: 700 !important;
-    letter-spacing: -0.02em !important;
-    text-shadow: none !important;
-  }
-
-  body[data-theme="professional"] [class*="text-[#A1887F]"],
-  body[data-theme="professional"] [class*="text-slate-400"] {
-    color: #8E8E93 !important;
-    font-weight: 500 !important;
-  }
-
-  /* Accent Text - Spotify Green / Instagram Gradient */
-  body[data-theme="professional"] [class*="text-[#FFD700]"] {
-    color: #1DB954 !important;
-    /* Spotify green */
-    font-weight: 700 !important;
-    background: none !important;
-    -webkit-text-fill-color: initial !important;
-  }
-
-  /* Amounts - Clean Black */
-  body[data-theme="professional"] [class*="text-[#00FF41]"] {
-    color: #1C1C1E !important;
-    font-weight: 700 !important;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif !important;
-    letter-spacing: -0.5px !important;
-  }
-
-  /* --- Buttons - Modern App Style --- */
-  /* Primary Button - Solid, Bold */
-  body[data-theme="professional"] button[class*="bg-[#FFD700]"],
-  body[data-theme="professional"] button[class*="bg-[#CDA434]"] {
-    background: #1C1C1E !important;
-    /* Dark like Spotify/Apple */
-    color: #FFFFFF !important;
-    border: none !important;
-    box-shadow: 0 4px 12px rgba(28, 28, 30, 0.15) !important;
-    border-radius: 12px !important;
-    font-weight: 600 !important;
-    font-size: 16px !important;
-    padding: 14px 24px !important;
-    text-transform: none !important;
-  }
-
-  body[data-theme="professional"] button[class*="bg-[#FFD700]"]:active {
-    transform: scale(0.96) !important;
-    box-shadow: 0 2px 6px rgba(28, 28, 30, 0.2) !important;
-  }
-
-  /* Secondary Buttons - Outlined */
-  body[data-theme="professional"] button[class*="bg-[#1A0B08]"] {
-    background: #F7F8FA !important;
-    color: #1C1C1E !important;
-    border: 1px solid #E5E5EA !important;
-    box-shadow: none !important;
-    border-radius: 12px !important;
-  }
-
-  body[data-theme="professional"] button[class*="bg-[#1A0B08]"]:active {
-    background: #EFEFEF !important;
-  }
-
-  /* Cards - Instagram/Banking App Style */
-  body[data-theme="professional"] [class*="bg-[#FFFDE7]"] {
-    background: #FFFFFF !important;
-    border: none !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
-    border-radius: 16px !important;
-  }
-
-  body[data-theme="professional"] [class*="bg-[#FFFDE7]"]:active {
-    transform: scale(0.98) !important;
-  }
-
-  /* Disabled State */
-  body[data-theme="professional"] button[disabled] {
-    background: #F7F8FA !important;
-    color: #C7C7CC !important;
-    border: none !important;
-    box-shadow: none !important;
-    opacity: 1 !important;
-  }
-
-  /* --- Form Inputs - iOS Style --- */
-  body[data-theme="professional"] input,
-  body[data-theme="professional"] select {
-    background: #F7F8FA !important;
-    border: 1px solid #E5E5EA !important;
-    color: #1C1C1E !important;
-    border-radius: 12px !important;
-    padding: 14px 16px !important;
-    font-size: 16px !important;
-    height: auto !important;
-  }
-
-  body[data-theme="professional"] input::placeholder {
-    color: #C7C7CC !important;
-  }
-
-  body[data-theme="professional"] input:focus,
-  body[data-theme="professional"] select:focus {
-    border-color: #1C1C1E !important;
-    outline: none !important;
-    box-shadow: 0 0 0 4px rgba(28, 28, 30, 0.05) !important;
-    background: #FFFFFF !important;
-  }
-
-  /* --- Progress Bar - Spotify Style --- */
-  body[data-theme="professional"] .rounded-full.border.p-\[1px\] {
-    background: #E5E5EA !important;
-    border: none !important;
-    padding: 0 !important;
-    height: 6px !important;
-    border-radius: 3px !important;
-  }
-
-  body[data-theme="professional"] .bg-gradient-to-r.from-\[\#FFD700\] {
-    background: #1DB954 !important;
-    /* Spotify green */
-    box-shadow: none !important;
-    border-radius: 3px !important;
-  }
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
 
-  /* --- Theme Menu - Clean Dropdown --- */
-  body[data-theme="professional"] .animate-slide-in-down {
-    background: #FFFFFF !important;
-    border: 1px solid #E5E5EA !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
-    border-radius: 16px !important;
-    padding: 8px !important;
-  }
-
-  /* Active Tab - Solid Fill */
-  body[data-theme="professional"] button.bg-\[\#FFD700\].text-\[\#2C1810\] {
-    background: #1C1C1E !important;
-    color: #FFFFFF !important;
-    border: none !important;
-    border-radius: 10px !important;
-    box-shadow: none !important;
-  }
-
-  /* Inactive Tab */
-  body[data-theme="professional"] button.bg-\[\#1A0B08\] {
-    border-radius: 10px !important;
-    border: none !important;
-    background: transparent !important;
-    color: #8E8E93 !important;
-  }
-
-  body[data-theme="professional"] button.bg-\[\#1A0B08\]:hover {
-    background: #F7F8FA !important;
-    color: #1C1C1E !important;
-  }
-
-  /* Hide decorative elements */
-  body[data-theme="professional"] [class*="url('"] {
-    background-image: none !important;
-  }
-
-  body[data-theme="professional"] .absolute.rounded-full.bg-\[\#FFD700\] {
-    display: none !important;
-  }
-
-  /* Remove borders from retro theme */
-  body[data-theme="professional"] [class*="border-[#5D4037]"],
-  body[data-theme="professional"] [class*="border-[#FFD700]"],
-  body[data-theme="professional"] [class*="border-[#8D6E63]"] {
-    border: none !important;
-  }
-
-  /* Clean up shadows */
-  body[data-theme="professional"] .shadow-2xl,
-  body[data-theme="professional"] .shadow-xl {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
-  }
-
-  /* Mobile Bottom Navigation Feel */
-  @media (max-width: 768px) {
-    body[data-theme="professional"] {
-      background: #FFFFFF !important;
-    }
-
-    body[data-theme="professional"] [class*="bg-[#1A0B08]"] {
-      border-radius: 12px !important;
-      margin-bottom: 8px !important;
-    }
-
-    /* Bottom sheet style for modals */
-    body[data-theme="professional"] .fixed.inset-0 {
-      background: rgba(0, 0, 0, 0.4) !important;
-    }
-  }
-
-  /* Smooth scroll */
-  body[data-theme="professional"] {
-    scroll-behavior: smooth;
-  }
+/* Hard override for any lingering retro themes if classes are stuck */
+body[data-theme="modern"] {
+  /* Enforce variables */
+}
 
-  /* Card hover effects - subtle */
-  body[data-theme="professional"] [class*="hover:scale-"]:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
-  }
-
-  /* Remove excessive animations */
-  body[data-theme="professional"] .animate-pulse,
-  body[data-theme="professional"] .animate-bounce {
-    animation: none !important;
-  }
-
-  /* Clean, minimal badges */
-  body[data-theme="professional"] .bg-gradient-to-r {
-    background: #1C1C1E !important;
-  }
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
 
-  /* Icon colors */
-  body[data-theme="professional"] svg {
-    color: inherit !important;
-  }
+::-webkit-scrollbar-track {
+  background: transparent;
+}
 
-  /* Link colors */
-  body[data-theme="professional"] a {
-    color: #007AFF !important;
-    /* iOS blue */
-    text-decoration: none !important;
-  }
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-200 rounded-full;
+}
 
-  body[data-theme="professional"] a:active {
-    opacity: 0.6 !important;
-  }
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-300;
 }
