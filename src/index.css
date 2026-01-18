@@ -1,0 +1,517 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-900 text-white min-h-screen;
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+
+  /* Retro Theme - Current default, no changes */
+  body[data-theme="retro"] {
+    /* All current styles remain as-is */
+  }
+
+  /* ========================================
+     CYBERPUNK THEME - Neon Futuristic
+     ======================================== */
+  body[data-theme="cyber"] {
+    background: linear-gradient(135deg, #0a0015 0%, #1a0033 50%, #0f001a 100%);
+    font-family: 'Rajdhani', sans-serif;
+  }
+
+  /* Main backgrounds */
+  body[data-theme="cyber"] [class*="bg-[#0F0502]"] {
+    background: linear-gradient(135deg, #0a0015 0%, #1a0033 100%) !important;
+  }
+
+  body[data-theme="cyber"] [class*="bg-[#1A0B08]"] {
+    background: linear-gradient(135deg, #1a0033 0%, #2d0052 100%) !important;
+    box-shadow: 0 0 20px rgba(217, 70, 239, 0.3), inset 0 0 30px rgba(0, 255, 255, 0.05) !important;
+  }
+
+  body[data-theme="cyber"] [class*="bg-[#2C1810]"] {
+    background: linear-gradient(135deg, #2d0052 0%, #1a0033 100%) !important;
+    box-shadow: 0 0 10px rgba(217, 70, 239, 0.2) !important;
+  }
+
+  body[data-theme="cyber"] [class*="bg-[#3E2723]"] {
+    background: linear-gradient(135deg, #3d0066 0%, #2d0052 100%) !important;
+  }
+
+  /* Accent colors - Neon Pink */
+  body[data-theme="cyber"] [class*="text-[#FFD700]"],
+  body[data-theme="cyber"] [class*="border-[#FFD700]"] {
+    color: #FF00FF !important;
+    border-color: #FF00FF !important;
+    text-shadow: 0 0 10px rgba(255, 0, 255, 0.8), 0 0 20px rgba(255, 0, 255, 0.4) !important;
+  }
+
+  body[data-theme="cyber"] [class*="bg-[#FFD700]"] {
+    background: linear-gradient(135deg, #FF00FF 0%, #D946EF 100%) !important;
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.6), 0 0 40px rgba(255, 0, 255, 0.3) !important;
+  }
+
+  /* Primary text - Cyan glow */
+  body[data-theme="cyber"] [class*="text-[#FFF8E7]"] {
+    color: #00FFFF !important;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5) !important;
+  }
+
+  body[data-theme="cyber"] [class*="text-[#A1887F]"] {
+    color: #8B5CF6 !important;
+  }
+
+  /* CRT Green -> Neon Cyan */
+  body[data-theme="cyber"] [class*="text-[#00FF41]"] {
+    color: #00FFFF !important;
+    text-shadow: 0 0 15px rgba(0, 255, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.4) !important;
+    animation: cyber-pulse 2s ease-in-out infinite !important;
+  }
+
+  /* Tickets - Neon cards */
+  body[data-theme="cyber"] [class*="bg-[#FFFDE7]"] {
+    background: linear-gradient(135deg, #1a0033 0%, #2d0052 100%) !important;
+    border: 2px solid #FF00FF !important;
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.5), inset 0 0 20px rgba(0, 255, 255, 0.1) !important;
+  }
+
+  body[data-theme="cyber"] [class*="text-[#1A0B08]"] {
+    color: #00FFFF !important;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.6) !important;
+  }
+
+  body[data-theme="cyber"] [class*="text-[#2C1810]"] {
+    color: #0a0015 !important;
+    text-shadow: none !important;
+  }
+
+  /* Borders */
+  body[data-theme="cyber"] [class*="border-[#5D4037]"] {
+    border-color: #8B5CF6 !important;
+  }
+
+  /* Buttons - Glowing effect */
+  body[data-theme="cyber"] button:hover {
+    transform: scale(1.05) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  /* Animations */
+  @keyframes cyber-pulse {
+
+    0%,
+    100% {
+      text-shadow: 0 0 15px rgba(0, 255, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.4);
+    }
+
+    50% {
+      text-shadow: 0 0 25px rgba(0, 255, 255, 1), 0 0 50px rgba(0, 255, 255, 0.6);
+    }
+  }
+
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scale-in {
+    0% {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes slide-in-right {
+    0% {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes pulse-glow {
+
+    0%,
+    100% {
+      box-shadow: 0 0 0 rgba(255, 215, 0, 0);
+    }
+
+    50% {
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    }
+  }
+
+  @keyframes celebrate {
+    0% {
+      transform: scale(1);
+    }
+
+    50% {
+      transform: scale(1.2) rotate(10deg);
+    }
+
+    100% {
+      transform: scale(1) rotate(0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-slide-in-right {
+    animation: slide-in-right 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s infinite;
+  }
+
+  .animate-celebrate {
+    animation: celebrate 0.5s ease-in-out;
+  }
+
+  /* Stagger Delays */
+  .delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .delay-400 {
+    animation-delay: 400ms;
+  }
+
+  .delay-500 {
+    animation-delay: 500ms;
+  }
+
+  .delay-75 {
+    animation-delay: 75ms;
+  }
+
+
+  /* ========================================
+     MINIMAL THEME - Black & White Brutalist
+     ======================================== */
+  body[data-theme="minimal"] {
+    background: #FFFFFF;
+    font-family: 'Space Grotesk', 'JetBrains Mono', monospace;
+  }
+
+  /* Main backgrounds */
+  body[data-theme="minimal"] [class*="bg-[#0F0502]"] {
+    background: #FFFFFF !important;
+  }
+
+  body[data-theme="minimal"] [class*="bg-[#1A0B08]"] {
+    background: #FFFFFF !important;
+    border: 3px solid #000000 !important;
+    box-shadow: 8px 8px 0 #000000 !important;
+  }
+
+  body[data-theme="minimal"] [class*="bg-[#2C1810]"] {
+    background: #000000 !important;
+  }
+
+  body[data-theme="minimal"] [class*="bg-[#3E2723]"] {
+    background: #1A1A1A !important;
+  }
+
+  /* Accent colors - Black */
+  body[data-theme="minimal"] [class*="text-[#FFD700]"],
+  body[data-theme="minimal"] [class*="from-[#FFD700]"],
+  body[data-theme="minimal"] [class*="to-[#FFD700]"],
+  body[data-theme="minimal"] [class*="via-[#FFD700]"] {
+    color: #000000 !important;
+    text-shadow: none !important;
+  }
+
+  body[data-theme="minimal"] [class*="border-[#FFD700]"] {
+    border-color: #000000 !important;
+  }
+
+  body[data-theme="minimal"] [class*="bg-[#FFD700]"],
+  body[data-theme="minimal"] [class*="from-yellow-"],
+  body[data-theme="minimal"] [class*="to-yellow-"],
+  body[data-theme="minimal"] [class*="from-orange-"],
+  body[data-theme="minimal"] [class*="to-orange-"] {
+    background: #000000 !important;
+    box-shadow: none !important;
+  }
+
+  /* Primary text - Black on white */
+  body[data-theme="minimal"] [class*="text-[#FFF8E7]"] {
+    color: #000000 !important;
+    text-shadow: none !important;
+  }
+
+  body[data-theme="minimal"] [class*="text-[#A1887F]"] {
+    color: #666666 !important;
+  }
+
+  /* CRT Green -> Black */
+  body[data-theme="minimal"] [class*="text-[#00FF41]"] {
+    color: #000000 !important;
+    text-shadow: none !important;
+  }
+
+  /* Tickets - White with black border */
+  body[data-theme="minimal"] [class*="bg-[#FFFDE7]"] {
+    background: #FFFFFF !important;
+    border: 3px solid #000000 !important;
+    box-shadow: 4px 4px 0 #000000 !important;
+  }
+
+  body[data-theme="minimal"] [class*="text-[#1A0B08]"] {
+    color: #000000 !important;
+    text-shadow: none !important;
+  }
+
+  body[data-theme="minimal"] [class*="text-[#2C1810]"] {
+    color: #FFFFFF !important;
+    text-shadow: none !important;
+  }
+
+  /* Borders */
+  body[data-theme="minimal"] [class*="border-[#5D4037]"] {
+    border-color: #000000 !important;
+  }
+
+  body[data-theme="minimal"] [class*="border-[#D7CCC8]"] {
+    border-color: #000000 !important;
+  }
+
+  /* Gradient backgrounds -> Solid colors */
+  body[data-theme="minimal"] [class*="bg-gradient"] {
+    background: #FFFFFF !important;
+  }
+
+  body[data-theme="minimal"] [class*="from-blue-"],
+  body[data-theme="minimal"] [class*="to-blue-"],
+  body[data-theme="minimal"] [class*="from-green-"],
+  body[data-theme="minimal"] [class*="to-green-"],
+  body[data-theme="minimal"] [class*="from-purple-"],
+  body[data-theme="minimal"] [class*="to-purple-"],
+  body[data-theme="minimal"] [class*="from-pink-"],
+  body[data-theme="minimal"] [class*="to-pink-"],
+  body[data-theme="minimal"] [class*="from-gray-"],
+  body[data-theme="minimal"] [class*="to-gray-"] {
+    background: #FFFFFF !important;
+  }
+
+  /* Remove all shadows and glows */
+  body[data-theme="minimal"] * {
+    box-shadow: none !important;
+  }
+
+  body[data-theme="minimal"] [class*="shadow"] {
+    box-shadow: none !important;
+  }
+
+  /* Sharp edges - no rounded corners on main elements */
+  body[data-theme="minimal"] [class*="rounded-3xl"],
+  body[data-theme="minimal"] [class*="rounded-2xl"] {
+    border-radius: 0 !important;
+  }
+
+  /* Keep small rounded corners for buttons */
+  body[data-theme="minimal"] [class*="rounded-xl"],
+  body[data-theme="minimal"] [class*="rounded-lg"] {
+    border-radius: 4px !important;
+  }
+
+  /* Transitions - Sharp/instant */
+  body[data-theme="minimal"] * {
+    transition: all 0.1s steps(3) !important;
+  }
+
+  /* Hover effects - Invert colors */
+  body[data-theme="minimal"] button:hover,
+  body[data-theme="minimal"] a:hover {
+    background: #000000 !important;
+    color: #FFFFFF !important;
+    transform: translate(4px, 4px) !important;
+  }
+
+  /* Remove blur effects */
+  body[data-theme="minimal"] [class*="blur"] {
+    filter: none !important;
+  }
+
+  /* Disable animations */
+  body[data-theme="minimal"] [class*="animate-"] {
+    animation: none !important;
+  }
+
+  /* Goal Name / Headings */
+  body[data-theme="minimal"] h1,
+  body[data-theme="minimal"] h2,
+  body[data-theme="minimal"] h3,
+  body[data-theme="minimal"] h4,
+  body[data-theme="minimal"] [class*="font-['Righteous'"] {
+    color: #000000 !important;
+    text-shadow: none !important;
+  }
+
+  /* Theme Selection & My Goals Buttons */
+  body[data-theme="minimal"] [class*="bg-[#1A0B08]"] button,
+  body[data-theme="minimal"] [class*="bg-[#2C1810]"],
+  body[data-theme="minimal"] button.group {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+    border: 2px solid #000000 !important;
+  }
+
+  body[data-theme="minimal"] [class*="bg-[#1A0B08]"] button:hover,
+  body[data-theme="minimal"] [class*="bg-[#2C1810]"]:hover,
+  body[data-theme="minimal"] button.group:hover {
+    background-color: #000000 !important;
+    color: #FFFFFF !important;
+    transform: translate(-2px, -2px) !important;
+    box-shadow: 4px 4px 0px #000000 !important;
+  }
+
+  /* Navbar / Top Bar Elements Override */
+  body[data-theme="minimal"] nav,
+  body[data-theme="minimal"] header {
+    background-color: #FFFFFF !important;
+    border-bottom: 2px solid #000000 !important;
+  }
+
+  /* Standardize ALL Button Hovers */
+  body[data-theme="minimal"] button:hover {
+    background-color: #000000 !important;
+    color: #FFFFFF !important;
+    border-color: #000000 !important;
+    box-shadow: 6px 6px 0px #000000 !important;
+    transform: translate(-2px, -2px) !important;
+  }
+
+  /* Select Text Color */
+  body[data-theme="minimal"] select {
+    color: #000000 !important;
+    background-color: #FFFFFF !important;
+    border: 2px solid #000000 !important;
+  }
+
+  /* Ensure text inside dark containers is visible */
+  body[data-theme="minimal"] [class*="text-[#FFF8E7]"] {
+    color: #000000 !important;
+  }
+
+  /* Grid Tile Fixes */
+  body[data-theme='minimal'] button[class*='aspect-square'] span,
+  body[data-theme='minimal'] button[class*='aspect-square'] div {
+    color: #000000 !important;
+  }
+
+  body[data-theme='minimal'] button[class*='aspect-square']:hover span,
+  body[data-theme='minimal'] button[class*='aspect-square']:hover div {
+    color: #FFFFFF !important;
+  }
+
+  body[data-theme='minimal'] button[disabled] span,
+  body[data-theme='minimal'] button[disabled] div {
+    color: #888888 !important;
+  }
+
+  /* Pay Button Fixes */
+  body[data-theme='minimal'] button[class*='bg-white'] {
+    background-color: #000000 !important;
+    color: #FFFFFF !important;
+    border: 2px solid #000000 !important;
+  }
+
+  body[data-theme='minimal'] button[class*='bg-white'] span.text-slate-700 {
+    color: #FFFFFF !important;
+  }
+
+  body[data-theme='minimal'] button[class*='bg-white']:hover {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+  }
+
+  body[data-theme='minimal'] button[class*='bg-white']:hover span.text-slate-700 {
+    color: #000000 !important;
+  }
+
+  /* Fix SVG icons inside buttons */
+  body[data-theme='minimal'] button svg {
+    color: currentColor !important;
+  }
+
+  /* Force external link icon color */
+  body[data-theme='minimal'] .text-slate-400 {
+    color: currentColor !important;
+  }
+
+  /* Additional fixes for About/Contact pages */
+  body[data-theme="minimal"] [class*="bg-clip-text"] {
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: #000000 !important;
+  }
+
+  body[data-theme="minimal"] [class*="text-transparent"] {
+    color: #000000 !important;
+  }
+
+  /* Override all gradient text */
+  body[data-theme="minimal"] .bg-gradient-to-r,
+  body[data-theme="minimal"] .bg-gradient-to-br {
+    background: #FFFFFF !important;
+  }
+
+  /* Icon colors */
+  body[data-theme="minimal"] svg {
+    color: #000000 !important;
+  }
+
+  body[data-theme="minimal"] [class*="text-white"] {
+    color: #000000 !important;
+  }
+
+  /* Custom Scrollbar for Minimal */
+  body[data-theme="minimal"] ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  body[data-theme="minimal"] ::-webkit-scrollbar-track {
+    background: #FFFFFF;
+    border-left: 1px solid #000000;
+  }
+
+  body[data-theme="minimal"] ::-webkit-scrollbar-thumb {
+    background: #000000;
+  }
+}
