@@ -26,13 +26,16 @@ export default function PlanList() {
         setPaymentStep('initial');
     };
 
-    const handleLaunchApp = () => {
+    const handleLaunchApp = (appType) => {
         const receiverVpa = accounts.find(a => a.id === parseInt(selectedAccount))?.upiId;
         if (!receiverVpa) {
             addToast('Please select a valid savings account', 'error');
             return;
         }
-        const upiLink = `upi://pay?pa=${receiverVpa}&pn=PiggyBankSave&tn=GoalSave&am=${selectedBit.amount}&cu=INR`;
+
+        const baseUrl = appType === 'gpay' ? 'tez://upi/pay' : 'upi://pay';
+        const upiLink = `${baseUrl}?pa=${receiverVpa}&pn=PiggyBankSave&tn=GoalSave&am=${selectedBit.amount}&cu=INR`;
+
         window.location.href = upiLink;
         setPaymentStep('confirming');
     };
@@ -101,17 +104,35 @@ export default function PlanList() {
                                         )}
                                     </div>
 
-                                    <button
-                                        onClick={handleLaunchApp}
-                                        disabled={accounts.length === 0}
-                                        className="w-full py-4 bg-white hover:bg-slate-50 text-[#1F1F1F] font-bold rounded-full flex items-center justify-center gap-2 transition-all shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed group relative overflow-hidden border border-slate-200"
-                                    >
-                                        <div className="flex items-center gap-2 pointer-events-none">
-                                            <svg className="w-6 h-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.427 10.963V8.769h6.12c.075.405.105.774.105 1.258 0 4-2.73 7.027-6.225 7.027-3.66 0-6.6-2.94-6.6-6.6s2.94-6.6 6.6-6.6c1.86 0 3.51.69 4.8 1.86l-1.8 1.8c-.54-.57-1.47-1.11-3-1.11-2.52 0-4.59 2.07-4.59 4.65s2.07 4.65 4.59 4.65c2.37 0 3.39-1.68 3.51-2.82h-3.61v-2.19z" fill="#4285F4" /><path d="M17.82 17.82l-1.65-1.65c.66-.57 1.23-1.23 1.68-1.95l1.65 1.65c-.75 1.05-1.68 1.95-2.79 2.67z" fill="#34A853" /><path d="M21.9 12.03c0-.36-.03-.72-.09-1.08h-2.16v2.16h1.44c-.15 1.05-.72 2.01-1.53 2.67l1.65 1.65c2.13-1.98 3.36-4.86 2.69-7.4z" fill="#FBBC04" /><path d="M12.427 21.06c2.58 0 4.86-.96 6.39-2.61l-1.65-1.65c-.75.54-1.74.87-2.91.87-2.22 0-4.14-1.53-4.8-3.6l-1.89 1.5c1.41 2.7 4.29 4.49 7.41 4.49z" fill="#EA4335" /><path d="M7.627 14.07c-.18-.54-.27-1.11-.27-1.71s.09-1.17.27-1.71l-1.89-1.5c-.75 1.5-1.17 3.21-1.17 5.01s.42 3.51 1.17 5.01l1.89-1.5z" fill="#FBBC04" /><path d="M12.427 6.42c1.47 0 2.79.54 3.81 1.53l2.85-2.85C17.347 3.42 15.067 2.52 12.427 2.52c-3.12 0-6 1.77-7.41 4.47l1.89 1.5c.66-2.04 2.58-3.57 4.8-3.57z" fill="#EB4335" /></svg>
-                                            <span className="font-sans font-medium text-lg text-slate-700">Open Payment App</span>
-                                            <ExternalLink className="w-4 h-4 text-slate-400 ml-auto" />
-                                        </div>
-                                    </button>
+                                    <div className="space-y-3">
+                                        <button
+                                            onClick={() => handleLaunchApp('gpay')}
+                                            disabled={accounts.length === 0}
+                                            className="w-full py-4 bg-white hover:bg-slate-50 text-[#1F1F1F] font-bold rounded-full flex items-center justify-center gap-2 transition-all shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed group relative overflow-hidden border border-slate-200"
+                                        >
+                                            <div className="flex items-center gap-2 pointer-events-none">
+                                                {/* Simple GPay Icon representation */}
+                                                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M4.5 9.5H2.5V14.5H4.5V9.5Z" fill="#7f8c8d" />
+                                                    <path d="M19.5 9.5H16.5C15.9 9.5 15.5 9.9 15.5 10.5V11.5H18.5V12.5H15.5V14.5H14.5V9.5H19.5V8.5H14.5C13.9 8.5 13.5 8.9 13.5 9.5V14.5H11.5V6.5H21.5V9.5H19.5Z" fill="#4285F4" />
+                                                    <path fillRule="evenodd" clipRule="evenodd" d="M11.76 10.4578C11.76 9.87532 11.7067 9.31782 11.6111 8.78662H6V11.1378H9.22889C9.09111 11.8978 8.66444 12.5444 8.02667 12.9711V14.4933H9.96667C11.1022 13.4444 11.76 11.8978 11.76 10.4578Z" fill="#4285F4" />
+                                                    <path fillRule="evenodd" clipRule="evenodd" d="M6 16.3644C7.62 16.3644 8.97778 15.8267 10.0067 14.8689L8.06667 13.3467C7.52889 13.7067 6.84 13.9222 6 13.9222C4.43778 13.9222 3.11111 12.8644 2.63778 11.4444H0.635559V12.9978C1.61556 14.9467 3.63556 16.3644 6 16.3644Z" fill="#34A853" />
+                                                    <path fillRule="evenodd" clipRule="evenodd" d="M2.63778 11.4445C2.51556 11.0801 2.44889 10.6934 2.44889 10.2934C2.44889 9.89341 2.51556 9.50674 2.63778 9.14229V7.58896H0.635559C0.231115 8.39785 0 9.32007 0 10.2934C0 11.2667 0.231115 12.189 0.635559 12.9978L2.63778 11.4445Z" fill="#FBBC05" />
+                                                    <path fillRule="evenodd" clipRule="evenodd" d="M6 6.66444C6.88222 6.66444 7.67111 6.96889 8.29333 7.56444L10.0511 5.80667C8.97333 4.80222 7.61556 4.22222 6 4.22222C3.63556 4.22222 1.61556 5.64 0.635559 7.58889L2.63778 9.14222C3.11111 7.72222 4.43778 6.66444 6 6.66444Z" fill="#EA4335" />
+                                                </svg>
+                                                <span className="font-sans font-bold text-lg text-slate-700">Google Pay</span>
+                                            </div>
+                                        </button>
+
+                                        <button
+                                            onClick={() => handleLaunchApp('generic')}
+                                            disabled={accounts.length === 0}
+                                            className="w-full py-3 bg-[#2C1810] hover:bg-[#3E2723] text-[#A1887F] font-bold rounded-full flex items-center justify-center gap-2 transition-all border border-[#5D4037]"
+                                        >
+                                            <span className="text-sm uppercase tracking-wider">Other UPI Apps</span>
+                                            <ExternalLink className="w-4 h-4 text-[#A1887F]" />
+                                        </button>
+                                    </div>
                                 </div>
                             )}
 

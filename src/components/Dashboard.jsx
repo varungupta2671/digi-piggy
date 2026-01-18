@@ -1,5 +1,6 @@
 import { usePiggy } from '../context/PiggyContext';
 import { useTheme } from '../context/ThemeContext';
+import { useNavigate } from 'react-router-dom';
 import { Wallet, Settings, Pencil, X, Plus, ChevronRight, Trophy, Palette } from 'lucide-react';
 import PlanList from './PlanList';
 import AccountSetup from './AccountSetup';
@@ -40,14 +41,16 @@ export default function Dashboard() {
         return `${diffDays}D LEFT`;
     };
 
+    const navigate = useNavigate();
+
     const handleCreateNew = () => {
         setShowGoalMenu(false);
-        setTimeout(() => switchGoal(null), 100);
+        navigate('/create');
     }
 
     const handleSwitch = (id) => {
         setShowGoalMenu(false);
-        setTimeout(() => switchGoal(id), 100);
+        navigate(`/goal/${id}`);
     }
 
     return (

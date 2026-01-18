@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { usePiggy } from '../context/PiggyContext';
-import { Plus, CreditCard, Trash2 } from 'lucide-react';
+import { Plus, CreditCard, Trash2, Save, ArrowRight } from 'lucide-react';
 
 export default function AccountSetup() {
     const { accounts, addAccount, deleteAccount } = usePiggy();
@@ -10,8 +10,8 @@ export default function AccountSetup() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (upiId && name) {
-            addAccount(upiId, name);
+        if (upiId.trim() && name.trim()) {
+            addAccount(upiId.trim(), name.trim());
             setUpiId('');
             setName('');
             setShowForm(false);
@@ -19,59 +19,72 @@ export default function AccountSetup() {
     };
 
     return (
-        <div className="space-y-6">
-            <div className="flex items-center justify-between">
+        <div className="space-y-6 font-['Courier_Prime'] animate-fade-in pb-20">
+            <div className="flex items-center justify-between bg-[#1A0B08] p-4 rounded-2xl border-2 border-[#5D4037] shadow-lg">
                 <div>
-                    <h3 className="text-lg font-bold text-slate-200">Link Savings UPI</h3>
-                    <p className="text-xs text-slate-400">Where should your savings go?</p>
+                    <h3 className="text-xl font-bold text-[#FFD700] font-['Righteous'] tracking-wide">LINK SAVINGS UPI</h3>
+                    <p className="text-xs text-[#A1887F] uppercase tracking-widest">Where should your savings go?</p>
                 </div>
                 <button
                     onClick={() => setShowForm(!showForm)}
-                    className="p-2 bg-blue-600/20 text-blue-400 rounded-full hover:bg-blue-600/30 transition-colors"
+                    className="p-3 bg-[#FFD700] text-[#2C1810] rounded-xl hover:bg-[#FFF8E7] transition-all shadow-[0_0_15px_rgba(255,215,0,0.3)] active:scale-95"
                 >
-                    <Plus className="w-5 h-5" />
+                    <Plus className={`w-6 h-6 transition-transform ${showForm ? 'rotate-45' : ''}`} />
                 </button>
             </div>
 
             {showForm && (
-                <form onSubmit={handleSubmit} className="p-4 bg-slate-800 rounded-xl border border-slate-700 animate-slide-in-down space-y-4">
-                    <div>
-                        <label className="text-xs text-slate-400 block mb-1">Account Name (e.g. My Savings, Wife&apos;s GPay)</label>
-                        <input
-                            className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white text-sm focus:outline-none focus:border-blue-500"
-                            value={name}
-                            onChange={e => setName(e.target.value)}
-                            placeholder="My Bank"
-                        />
+                <form onSubmit={handleSubmit} className="p-6 bg-[#1A0B08] rounded-2xl border-4 border-[#FFD700] shadow-2xl relative overflow-hidden animate-slide-in-down space-y-4">
+                    <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] mix-blend-overlay pointer-events-none"></div>
+
+                    <div className="relative z-10 space-y-4">
+                        <div>
+                            <label className="text-xs font-bold text-[#A1887F] uppercase tracking-widest block mb-2">Account Name</label>
+                            <input
+                                className="w-full bg-[#0F0502] border-2 border-[#5D4037] rounded-xl p-3 text-[#FFF8E7] focus:outline-none focus:border-[#FFD700] transition-colors font-bold placeholder:text-[#A1887F]/50"
+                                value={name}
+                                onChange={e => setName(e.target.value)}
+                                placeholder="e.g. My Savings"
+                                autoFocus
+                            />
+                        </div>
+                        <div>
+                            <label className="text-xs font-bold text-[#A1887F] uppercase tracking-widest block mb-2">UPI ID</label>
+                            <input
+                                className="w-full bg-[#0F0502] border-2 border-[#5D4037] rounded-xl p-3 text-[#00FF41] font-['VT323'] text-xl focus:outline-none focus:border-[#FFD700] transition-colors placeholder:text-[#A1887F]/50"
+                                value={upiId}
+                                onChange={e => setUpiId(e.target.value)}
+                                placeholder="user@upi"
+                            />
+                        </div>
+                        <button className="w-full py-4 bg-[#FFD700] text-[#2C1810] font-black uppercase tracking-widest rounded-xl hover:bg-[#FFF8E7] transition-all flex items-center justify-center gap-2 shadow-lg border-b-4 border-[#D7CCC8] active:border-b-0 active:translate-y-1">
+                            <Save className="w-5 h-5" />
+                            Save Account
+                        </button>
                     </div>
-                    <div>
-                        <label className="text-xs text-slate-400 block mb-1">UPI ID</label>
-                        <input
-                            className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white text-sm focus:outline-none focus:border-blue-500"
-                            value={upiId}
-                            onChange={e => setUpiId(e.target.value)}
-                            placeholder="user@upi"
-                        />
-                    </div>
-                    <button className="w-full py-2 bg-blue-600 rounded-lg text-white text-sm font-semibold">
-                        Save Account
-                    </button>
                 </form>
             )}
 
             <div className="space-y-3">
-                {accounts.map(account => (
-                    <div key={account.id} className="p-4 bg-slate-800 rounded-xl border border-slate-700 flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center text-white">
-                            <CreditCard className="w-5 h-5" />
+                {accounts.map((account, index) => (
+                    <div
+                        key={account.id}
+                        className="p-4 bg-[#1A0B08] rounded-2xl border-2 border-[#5D4037] flex items-center gap-4 hover:border-[#FFD700] transition-colors group relative overflow-hidden animate-fade-in-up"
+                        style={{ animationDelay: `${index * 100}ms` }}
+                    >
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#FFD700]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+
+                        <div className="w-12 h-12 rounded-xl bg-[#2C1810] border border-[#5D4037] flex items-center justify-center text-[#FFD700] shadow-inner flex-shrink-0">
+                            <CreditCard className="w-6 h-6" />
                         </div>
-                        <div>
-                            <p className="font-bold text-white">{account.name}</p>
-                            <p className="text-xs text-slate-400 font-mono">{account.upiId}</p>
+                        <div className="min-w-0 flex-1">
+                            <p className="font-bold text-[#FFF8E7] truncate">{account.name}</p>
+                            <p className="text-sm text-[#A1887F] font-['VT323'] tracking-widest truncate">{account.upiId}</p>
                         </div>
                         <button
                             onClick={() => deleteAccount(account.id)}
-                            className="ml-auto p-2 text-slate-500 hover:text-red-400 hover:bg-slate-700/50 rounded-lg transition-colors"
+                            className="p-2 text-[#5D4037] hover:text-[#FF5252] hover:bg-[#2C1810] rounded-lg transition-colors"
+                            title="Delete Account"
                         >
                             <Trash2 className="w-5 h-5" />
                         </button>
@@ -79,8 +92,10 @@ export default function AccountSetup() {
                 ))}
 
                 {accounts.length === 0 && !showForm && (
-                    <div className="text-center p-8 border border-dashed border-slate-700 rounded-2xl text-slate-500 text-sm">
-                        No accounts added yet. Tap + to add one.
+                    <div className="text-center p-12 border-2 border-dashed border-[#5D4037] rounded-3xl opacity-50">
+                        <ArrowRight className="w-8 h-8 mx-auto mb-2 text-[#5D4037] -rotate-45" />
+                        <p className="text-[#A1887F] font-bold uppercase tracking-widest">No accounts linked</p>
+                        <p className="text-xs text-[#5D4037] mt-1">Tap the + button to add a destination for your savings</p>
                     </div>
                 )}
             </div>

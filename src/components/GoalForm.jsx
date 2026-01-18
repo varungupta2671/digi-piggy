@@ -67,9 +67,13 @@ export default function GoalForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!amount || estimatedSlots <= 0) return;
-        const newId = await createGoal(name, amount, estimatedSlots, frequency, durationValue, durationUnit);
+
+        const safeName = name.trim();
+        const newId = await createGoal(safeName, amount, estimatedSlots, frequency, durationValue, durationUnit);
+
         if (newId) {
-            navigate(`/goal/${newId}`);
+            // Force redirect to list after creation
+            navigate('/', { replace: true });
         }
     };
 

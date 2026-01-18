@@ -12,14 +12,17 @@ export default function GoalDetail() {
         if (!isLoading && id) {
             const targetId = parseInt(id, 10);
 
-            // Check if goal exists
-            const exists = goals.some(g => g.id === targetId);
-            if (!exists && goals.length > 0) {
-                navigate('/'); // Go home if goal doesn't exist
+            // Validate existence
+            const targetGoal = goals.find(g => g.id === targetId);
+
+            if (!targetGoal && goals.length > 0) {
+                // Goal ID invalid: Redirect to home
+                navigate('/', { replace: true });
                 return;
             }
 
-            if (goal?.id !== targetId && exists) {
+            // If we have a valid target ID, but state is different, SWITCH
+            if (targetGoal && goal?.id !== targetId) {
                 switchGoal(targetId);
             }
         }
