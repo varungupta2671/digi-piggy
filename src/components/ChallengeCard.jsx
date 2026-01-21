@@ -46,7 +46,9 @@ export default function ChallengeCard({ challenge }) {
         <div className={`bg-white border-2 ${statusColors[challenge.status]} rounded-2xl p-4 transition-all`}>
             {/* Header */}
             <div className="flex items-start gap-3 mb-3">
-                <div className="text-3xl">{challenge.icon}</div>
+                <div className="p-3 bg-slate-100 rounded-xl">
+                    <challenge.icon className="w-8 h-8 text-slate-700" />
+                </div>
                 <div className="flex-1">
                     <div className="flex items-start justify-between gap-2">
                         <h3 className="font-bold text-slate-900">{challenge.title}</h3>

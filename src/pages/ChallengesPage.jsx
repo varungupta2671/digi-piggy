@@ -84,7 +84,9 @@ export default function ChallengesPage() {
                                 className="w-full bg-white p-4 rounded-2xl border border-slate-200 text-left hover:border-orange-300 hover:bg-orange-50 transition-colors"
                             >
                                 <div className="flex items-start gap-3">
-                                    <div className="text-3xl">{template.icon}</div>
+                                    <div className="p-3 bg-orange-100 rounded-xl">
+                                        <template.icon className="w-6 h-6 text-orange-600" />
+                                    </div>
                                     <div className="flex-1">
                                         <h4 className="font-bold text-slate-900">{template.title}</h4>
                                         <p className="text-sm text-slate-500 mt-1">{template.description}</p>

@@ -1,4 +1,4 @@
-import { Trophy, Zap, Award } from 'lucide-react';
+import { Trophy, Zap, Award, Flame, Target } from 'lucide-react';
 
 // Challenge Templates and Definitions
 export const CHALLENGE_TYPES = {
@@ -22,7 +22,7 @@ export const CHALLENGE_TEMPLATES = [
         targetCount: 2,
         durationDays: 7,
         reward: 'challenge_starter',
-        icon: '⚡'
+        icon: Zap
     },
     {
         id: 'daily_saver',
@@ -32,7 +32,7 @@ export const CHALLENGE_TEMPLATES = [
         targetCount: 7,
         durationDays: 7,
         reward: 'speedster',
-        icon: '🔥'
+        icon: Flame
     },
     {
         id: 'monthly_goal',
@@ -42,7 +42,7 @@ export const CHALLENGE_TEMPLATES = [
         targetAmount: 10000,
         durationDays: 30,
         reward: 'marathon_runner',
-        icon: '🏃'
+        icon: Trophy
     },
     {
         id: 'streak_builder',
@@ -52,7 +52,7 @@ export const CHALLENGE_TEMPLATES = [
         targetCount: 14,
         durationDays: 14,
         reward: 'challenge_master',
-        icon: '🎯'
+        icon: Target
     }
 ];
 
