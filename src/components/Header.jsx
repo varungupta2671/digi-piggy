@@ -1,12 +1,15 @@
-import { Home, Info, Mail, Trophy, PiggyBank, Moon, Sun, Menu, X, Clock, Target } from 'lucide-react';
+import { Home, Info, Mail, Trophy, Moon, Sun, Menu, X, Clock, Target, Volume2, VolumeX } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '../utils/cn';
 import { useTheme } from '../context/ThemeContext';
+import { usePiggy } from '../context/PiggyContext';
 import { useState } from 'react';
+import PiggyAvatar from './PiggyAvatar';
 
 export default function Header() {
     const location = useLocation();
     const { theme, toggleTheme } = useTheme();
+    const { isMuted, toggleMute } = usePiggy();
     const [menuOpen, setMenuOpen] = useState(false);
 
     const isActive = (path) => location.pathname === path;
@@ -30,8 +33,8 @@ export default function Header() {
                 <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
                     {/* Logo and Title */}
                     <Link to="/" className="flex items-center gap-3 group">
-                        <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/50 rounded-xl flex items-center justify-center border border-emerald-200 dark:border-emerald-700 group-hover:bg-emerald-200 dark:group-hover:bg-emerald-800 transition-colors shadow-sm">
-                            <PiggyBank className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+                        <div className="w-12 h-12 flex items-center justify-center transition-transform group-hover:scale-110">
+                            <PiggyAvatar className="w-full h-full" />
                         </div>
                         <div>
                             <h1 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight leading-none group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
@@ -89,6 +92,19 @@ export default function Header() {
                             <Mail className="w-4 h-4" />
                             <span>Contact</span>
                         </Link>
+
+                        {/* Mute Toggle */}
+                        <button
+                            onClick={toggleMute}
+                            className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full transition-colors ml-2"
+                            aria-label="Toggle sound"
+                        >
+                            {isMuted ? (
+                                <VolumeX className="w-5 h-5 text-slate-400" />
+                            ) : (
+                                <Volume2 className="w-5 h-5 text-indigo-500" />
+                            )}
+                        </button>
 
                         {/* Theme Toggle */}
                         <button

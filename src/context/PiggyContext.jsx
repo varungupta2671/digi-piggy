@@ -3,6 +3,7 @@ import { db, STORES_CONSTANTS } from '../utils/db';
 import { useToast } from './ToastContext';
 import { Trophy, Target, TrendingUp, Star, Zap, Award } from 'lucide-react';
 import { CHALLENGE_ACHIEVEMENTS } from '../utils/challenges';
+import { soundManager } from '../utils/SoundManager';
 
 const PiggyContext = createContext();
 
@@ -106,6 +107,8 @@ export function PiggyProvider({ children }) {
     const [celebratingMilestone, setCelebratingMilestone] = useState(null); // Active milestone celebration
     const [triggeredMilestones, setTriggeredMilestones] = useState({}); // Track which milestones have been shown per goal
     const [challenges, setChallenges] = useState([]); // Active and completed challenges
+    const [piggyMood, setPiggyMood] = useState('neutral'); // neutral, happy, excited, sad
+    const [isMuted, setIsMuted] = useState(soundManager.isMuted);
 
     const { addToast } = useToast();
 
@@ -232,8 +235,10 @@ export function PiggyProvider({ children }) {
                     const record = { id, unlockedAt: new Date().toISOString() };
                     await db.set(STORES_CONSTANTS.ACHIEVEMENTS, record);
                     setUnlockedAchievements(prev => [...prev, id]);
+                    setUnlockedAchievements(prev => [...prev, id]);
                     unlockedSet.add(id);
                     addToast(`🏆 Unlocked: ${achievement.title}!`, 'success');
+                    soundManager.playSuccess();
                 }
             }
         };
@@ -443,6 +448,11 @@ export function PiggyProvider({ children }) {
         const updatedGoal = { ...activeGoal, savingsPlan: updatedPlan };
         saveGoal(updatedGoal);
 
+        // Trigger Happy Mood
+        setPiggyMood('happy');
+        soundManager.playCoin();
+        setTimeout(() => setPiggyMood('neutral'), 3000);
+
         const bit = savingsPlan.find(b => b.id === bitId);
         if (bit) {
             const newTx = {
@@ -485,6 +495,8 @@ export function PiggyProvider({ children }) {
                     currentAmount: totalSaved,
                     targetAmount: activeGoal.targetAmount
                 });
+                soundManager.playMilestone();
+                setPiggyMood('excited');
             }
 
             // Check Achievements
@@ -668,6 +680,11 @@ export function PiggyProvider({ children }) {
         return () => clearInterval(interval);
     }, [challenges]);
 
+    const toggleMute = () => {
+        const newState = soundManager.toggleMute();
+        setIsMuted(newState);
+    };
+
     const value = {
         goals,
         goal: activeGoal, // Expose as 'goal' for backward compatibility with components
@@ -691,7 +708,10 @@ export function PiggyProvider({ children }) {
         closeMilestone,
         exportAllData,
         challenges,
-        createChallenge
+        createChallenge,
+        piggyMood,
+        isMuted,
+        toggleMute
     };
 
     return (

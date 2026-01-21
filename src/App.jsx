@@ -15,6 +15,7 @@ import Contact from './pages/Contact';
 import BottomNav from './components/BottomNav';
 import MilestoneCelebration from './components/MilestoneCelebration';
 import ChallengesPage from './pages/ChallengesPage';
+import AnalyticsPage from './pages/AnalyticsPage';
 
 function AppContent() {
     const { goal, isEditing, isLoading, celebratingMilestone, closeMilestone } = usePiggy();
@@ -44,6 +45,7 @@ function AppContent() {
                 <Route path="/create" element={<CreateGoal />} />
                 <Route path="/goal/:id" element={<GoalDetail />} />
                 <Route path="/achievements" element={<Achievements />} />
+                <Route path="/analytics" element={<AnalyticsPage />} />
                 <Route path="/challenges" element={<ChallengesPage />} />
                 <Route path="/history" element={<History />} />
                 <Route path="/about" element={<About />} />

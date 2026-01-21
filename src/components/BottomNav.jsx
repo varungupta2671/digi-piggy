@@ -1,4 +1,4 @@
-import { Home, Info, Clock, Trophy, Plus, Target } from 'lucide-react';
+import { Home, Info, Clock, Trophy, Plus, Target, BarChart3 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '../utils/cn';
 
@@ -12,7 +12,7 @@ export default function BottomNav() {
         { icon: Trophy, label: 'Trophies', path: '/achievements' },
         { icon: Plus, label: 'Add', path: '/create', primary: true },
         { icon: Target, label: 'Challenges', path: '/challenges' },
-        { icon: Info, label: 'About', path: '/about' },
+        { icon: BarChart3, label: 'Analytics', path: '/analytics' },
     ];
 
     return (
