@@ -51,10 +51,10 @@ export default function Dashboard() {
             </div>
 
             <div className="max-w-5xl mx-auto p-4 md:p-8">
-                <div className="md:grid md:grid-cols-[1fr_2fr] gap-6 md:h-[calc(100vh-100px)]">
+                <div className="md:grid md:grid-cols-[1fr_2fr] gap-6 md:h-[calc(100dvh-100px)]">
 
                     {/* Sidebar / Overview Card */}
-                    <div className="space-y-6">
+                    <div className="space-y-6 md:overflow-y-auto md:pr-2 custom-scrollbar md:h-full">
                         {/* Main Goal Card */}
                         <div className="card overflow-hidden relative">
                             <div className="relative z-10 text-center py-6">
@@ -117,7 +117,7 @@ export default function Dashboard() {
                     </div>
 
                     {/* Content Area */}
-                    <div className="mt-6 md:mt-0 md:overflow-y-auto pr-1 custom-scrollbar md:h-full">
+                    <div className="mt-6 md:mt-0 md:overflow-y-auto pr-2 custom-scrollbar md:h-full scroll-smooth">
                         {activeTab === 'plan' ? (
                             <div className="animate-fade-in">
                                 <PlanList />

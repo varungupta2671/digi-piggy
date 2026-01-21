@@ -49,9 +49,20 @@
     /* Slate 700 */
   }
 
+  html {
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+  }
+
+  html.dark {
+    scrollbar-color: #475569 transparent;
+  }
+
   body {
     @apply bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 antialiased min-h-screen pb-24 md:pb-0;
     font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    overflow-x: hidden;
   }
 
   h1,
@@ -65,48 +76,47 @@
 }
 
 @layer components {
+
+  /* ... existing component classes ... */
   .btn-primary {
     @apply bg-emerald-500 dark:bg-emerald-600 text-white px-4 py-2 rounded-xl font-semibold shadow-lg shadow-emerald-200 dark:shadow-emerald-900/50 hover:bg-emerald-600 dark:hover:bg-emerald-700 hover:scale-[1.02] active:scale-95 transition-all duration-200;
   }
 
-  .btn-secondary {
-    @apply bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 px-4 py-2 rounded-xl font-medium shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-600 active:scale-95 transition-all duration-200;
+  /* Define a specific utility for containers that need forced elegant scrolling */
+  .custom-scrollbar {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
   }
 
-  .card {
-    @apply bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-5 transition-all duration-300 hover:shadow-md dark:hover:shadow-slate-900/50;
+  .dark .custom-scrollbar {
+    scrollbar-color: #475569 transparent;
   }
 
-  .input {
-    @apply w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 dark:focus:border-emerald-600 transition-all;
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-slate-200 dark:bg-slate-700 rounded-full;
+    border: 2px solid transparent;
+    /* Creates padding effect if background-clip is used, but simplistic here */
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-slate-300 dark:bg-slate-600;
   }
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.4s ease-out forwards;
-}
-
-/* Hard override for any lingering retro themes if classes are stuck */
-body[data-theme="modern"] {
-  /* Enforce variables */
-}
-
-/* Custom Scrollbar */
+/* Global Webkit Scrollbar overrides */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -114,9 +124,25 @@ body[data-theme="modern"] {
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-200 dark:bg-slate-700 rounded-full;
+  background-color: #cbd5e1;
+  /* slate-300 */
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+  /* Makes the scrollbar look thinner and floating */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-300 dark:bg-slate-600;
+  background-color: #94a3b8;
+  /* slate-400 */
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background-color: #334155;
+  /* slate-700 */
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: #475569;
+  /* slate-600 */
 }
