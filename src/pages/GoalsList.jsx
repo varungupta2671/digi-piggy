@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Plus, Trophy, TrendingUp, Calendar, ArrowRight, Wallet, Target } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { getCategoryById } from '../utils/categories';
+import SmartSuggestions from '../components/SmartSuggestions';
 
 export default function GoalsList() {
     const { goals, switchGoal, savingsStreak } = usePiggy();
@@ -99,8 +100,12 @@ export default function GoalsList() {
 
             {/* Goals List Content */}
             <div className="px-4 max-w-4xl mx-auto">
-                <div className="flex items-center justify-between mb-4 px-2">
-                    <h2 className="text-lg font-bold text-slate-800">Your Goals</h2>
+                {/* Smart Suggestions */}
+                <div className="mb-6">
+                    <SmartSuggestions />
+                </div>
+
+                <div className="flex items-center justify-between mb-4 px-2">\n                    <h2 className="text-lg font-bold text-slate-800">Your Goals</h2>
                     <span className="text-xs font-bold text-slate-400 bg-white px-2 py-1 rounded-lg border border-slate-100 shadow-sm">
                         {goals.length} Active
                     </span>

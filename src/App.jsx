@@ -9,6 +9,7 @@ import CreateGoal from './pages/CreateGoal';
 import GoalsList from './pages/GoalsList';
 import GoalDetail from './pages/GoalDetail';
 import Achievements from './pages/Achievements';
+import History from './pages/History';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import BottomNav from './components/BottomNav';
@@ -41,6 +42,7 @@ function AppContent() {
                 <Route path="/create" element={<CreateGoal />} />
                 <Route path="/goal/:id" element={<GoalDetail />} />
                 <Route path="/achievements" element={<Achievements />} />
+                <Route path="/history" element={<History />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
