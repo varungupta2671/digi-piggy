@@ -13,17 +13,17 @@ export default function Achievements() {
                     <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce-slow">
                         <Trophy className="w-10 h-10 text-emerald-600" />
                     </div>
-                    <h1 className="text-3xl md:text-5xl font-bold text-slate-900 mb-4">
+                    <h1 className="text-3xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4">
                         Trophy Case
                     </h1>
-                    <p className="text-slate-500 text-lg max-w-xl mx-auto">
+                    <p className="text-slate-500 dark:text-slate-400 text-lg max-w-xl mx-auto">
                         Unlock badges by hitting savings milestones! Keep saving to earn them all.
                     </p>
 
-                    <div className="mt-8 inline-flex items-center bg-white px-6 py-3 rounded-full shadow-sm border border-slate-200">
-                        <span className="text-emerald-600 font-bold text-xl">{unlockedAchievements.length}</span>
-                        <span className="text-slate-300 mx-2">/</span>
-                        <span className="text-slate-500 text-sm font-medium">{ALL_ACHIEVEMENTS.length} Unlocked</span>
+                    <div className="mt-8 inline-flex items-center bg-white dark:bg-slate-800 px-6 py-3 rounded-full shadow-sm border border-slate-200 dark:border-slate-700">
+                        <span className="text-emerald-600 dark:text-emerald-400 font-bold text-xl">{unlockedAchievements.length}</span>
+                        <span className="text-slate-300 dark:text-slate-600 mx-2">/</span>
+                        <span className="text-slate-500 dark:text-slate-400 text-sm font-medium">{ALL_ACHIEVEMENTS.length} Unlocked</span>
                     </div>
                 </div>
 

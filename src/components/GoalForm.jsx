@@ -111,18 +111,18 @@ export default function GoalForm() {
     };
 
     return (
-        <div className="w-full max-w-md mx-auto p-6 bg-white rounded-3xl shadow-xl animate-fade-in relative z-50">
+        <div className="w-full max-w-md mx-auto p-6 bg-white dark:bg-slate-800 rounded-3xl shadow-xl animate-fade-in relative z-50">
             {(isEditing || isCreating) && (
                 <button
                     onClick={handleClose}
-                    className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors"
+                    className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full transition-colors"
                 >
                     <X className="w-5 h-5" />
                 </button>
             )}
 
             <div className="text-center mb-6">
-                <h2 className="text-2xl font-bold text-slate-900 mb-1">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">
                     {isEditing ? 'Edit Goal' : 'New Goal'}
                 </h2>
                 <div className="h-1 w-12 mx-auto bg-emerald-500 rounded-full"></div>
@@ -134,29 +134,29 @@ export default function GoalForm() {
                     <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-2">
                             <Sparkles className="w-4 h-4 text-indigo-500" />
-                            <h3 className="text-sm font-bold text-slate-700">Quick Start Templates</h3>
+                            <h3 className="text-sm font-bold text-slate-700 dark:text-slate-300">Quick Start Templates</h3>
                         </div>
                         <button
                             type="button"
                             onClick={() => setShowTemplates(false)}
-                            className="text-xs text-slate-400 hover:text-slate-600"
+                            className="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
                         >
                             Skip
                         </button>
                     </div>
-                    <div className="grid grid-cols-2 gap-2 max-h-64 overflow-y-auto">
+                    <div className="grid grid-cols-2 gap-2 max-h-64 overflow-y-auto custom-scrollbar">
                         {GOAL_TEMPLATES.map(template => (
                             <button
                                 key={template.id}
                                 type="button"
                                 onClick={() => handleTemplateSelect(template)}
-                                className="p-3 bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 rounded-xl text-left transition-all group"
+                                className="p-3 bg-slate-50 dark:bg-slate-900/50 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-500/50 rounded-xl text-left transition-all group"
                             >
                                 <div className="text-xl mb-1">{template.icon}</div>
-                                <div className="text-xs font-bold text-slate-900 group-hover:text-indigo-700 mb-0.5">
+                                <div className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-indigo-700 dark:group-hover:text-indigo-400 mb-0.5">
                                     {template.name}
                                 </div>
-                                <div className="text-[10px] text-slate-500">
+                                <div className="text-[10px] text-slate-500 dark:text-slate-400">
                                     ₹{(template.targetAmount / 1000).toFixed(0)}k in {template.durationValue}{template.durationUnit[0]}
                                 </div>
                             </button>
@@ -166,7 +166,7 @@ export default function GoalForm() {
                         <button
                             type="button"
                             onClick={() => setShowTemplates(false)}
-                            className="text-xs text-indigo-600 font-medium hover:text-indigo-700"
+                            className="text-xs text-indigo-600 dark:text-indigo-400 font-medium hover:text-indigo-700"
                         >
                             Or create custom goal →
                         </button>
@@ -177,7 +177,7 @@ export default function GoalForm() {
             <form onSubmit={handleSubmit} className="space-y-5">
 
                 <div className="space-y-1.5">
-                    <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                    <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
                         <Type className="w-4 h-4 text-emerald-500" />
                         Goal Name
                     </label>
@@ -192,7 +192,7 @@ export default function GoalForm() {
                 </div>
 
                 <div className="space-y-1.5">
-                    <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                    <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
                         <Target className="w-4 h-4 text-emerald-500" />
                         Target Amount
                     </label>
@@ -211,7 +211,7 @@ export default function GoalForm() {
 
                 <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                        <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                        <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
                             <Clock className="w-4 h-4 text-emerald-500" />
                             Duration
                         </label>
@@ -236,7 +236,7 @@ export default function GoalForm() {
                         </div>
                     </div>
                     <div className="space-y-1.5">
-                        <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                        <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
                             <Calendar className="w-4 h-4 text-emerald-500" />
                             Frequency
                         </label>
@@ -254,7 +254,7 @@ export default function GoalForm() {
                 </div>
 
                 <div className="space-y-1.5">
-                    <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                    <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
                         <Tag className="w-4 h-4 text-emerald-500" />
                         Category
                     </label>
@@ -266,7 +266,7 @@ export default function GoalForm() {
                                 onClick={() => setCategory(cat.id)}
                                 className={`p-3 rounded-xl border-2 transition-all text-center hover:scale-105 ${category === cat.id
                                     ? `${cat.color} border-current shadow-sm`
-                                    : 'bg-white border-slate-200 text-slate-500 hover:border-slate-300'
+                                    : 'bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-600 text-slate-500 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-500'
                                     }`}
                             >
                                 <div className="text-2xl mb-1">{cat.icon}</div>
@@ -276,8 +276,8 @@ export default function GoalForm() {
                     </div>
                 </div>
 
-                <div className="text-center text-sm text-slate-500 bg-slate-50 rounded-xl p-3 border border-slate-100">
-                    Estimated: <span className="text-emerald-600 font-bold text-base">{estimatedSlots}</span> deposits
+                <div className="text-center text-sm text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900/50 rounded-xl p-3 border border-slate-100 dark:border-slate-700">
+                    Estimated: <span className="text-emerald-600 dark:text-emerald-400 font-bold text-base">{estimatedSlots}</span> deposits
                 </div>
 
                 <button

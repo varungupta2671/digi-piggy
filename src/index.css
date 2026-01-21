@@ -82,6 +82,10 @@
     @apply bg-emerald-500 dark:bg-emerald-600 text-white px-4 py-2 rounded-xl font-semibold shadow-lg shadow-emerald-200 dark:shadow-emerald-900/50 hover:bg-emerald-600 dark:hover:bg-emerald-700 hover:scale-[1.02] active:scale-95 transition-all duration-200;
   }
 
+  .input {
+    @apply w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all;
+  }
+
   /* Define a specific utility for containers that need forced elegant scrolling */
   .custom-scrollbar {
     overflow-y: auto;

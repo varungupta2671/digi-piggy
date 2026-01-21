@@ -40,13 +40,13 @@ export default function Dashboard() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 pb-24 md:pb-8">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-900 pb-24 md:pb-8">
             {/* Top Navigation / Header */}
-            <div className="bg-white sticky top-0 z-30 shadow-sm px-4 py-3 md:hidden flex items-center gap-3">
-                <button onClick={() => navigate('/')} className="p-2 hover:bg-slate-100 rounded-full">
-                    <ArrowLeft className="w-5 h-5 text-slate-600" />
+            <div className="bg-white dark:bg-slate-900 sticky top-0 z-30 shadow-sm px-4 py-3 md:hidden flex items-center gap-3">
+                <button onClick={() => navigate('/')} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full">
+                    <ArrowLeft className="w-5 h-5 text-slate-600 dark:text-slate-300" />
                 </button>
-                <h1 className="text-lg font-bold text-slate-900 truncate flex-1">{goal.name}</h1>
+                <h1 className="text-lg font-bold text-slate-900 dark:text-white truncate flex-1">{goal.name}</h1>
                 <div className="w-9 h-9"></div> {/* Spacer */}
             </div>
 
@@ -58,12 +58,12 @@ export default function Dashboard() {
                         {/* Main Goal Card */}
                         <div className="card overflow-hidden relative">
                             <div className="relative z-10 text-center py-6">
-                                <div className="w-20 h-20 mx-auto bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center mb-4 shadow-lg shadow-emerald-200">
+                                <div className="w-20 h-20 mx-auto bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center mb-4 shadow-lg shadow-emerald-200 dark:shadow-none">
                                     <Trophy className="w-10 h-10 text-white" />
                                 </div>
-                                <h1 className="text-2xl font-bold text-slate-900 mb-1">{goal.name}</h1>
+                                <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">{goal.name}</h1>
 
-                                <div className="flex justify-center items-center gap-2 text-sm text-slate-500 mb-6">
+                                <div className="flex justify-center items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-6">
                                     <span className="flex items-center gap-1">
                                         <Calendar className="w-3 h-3" />
                                         {getTimeLeft()}
@@ -77,13 +77,13 @@ export default function Dashboard() {
 
                                 <div className="px-8">
                                     <div className="flex justify-between text-sm mb-2">
-                                        <span className="text-slate-500 font-medium">Progress</span>
-                                        <span className="text-slate-900 font-bold">{progress.toFixed(0)}%</span>
+                                        <span className="text-slate-500 dark:text-slate-400 font-medium">Progress</span>
+                                        <span className="text-slate-900 dark:text-white font-bold">{progress.toFixed(0)}%</span>
                                     </div>
-                                    <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden mb-2">
+                                    <div className="w-full h-3 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden mb-2">
                                         <div className="h-full bg-emerald-500 rounded-full transition-all duration-1000" style={{ width: `${progress}%` }}></div>
                                     </div>
-                                    <div className="flex justify-between text-xs text-slate-400">
+                                    <div className="flex justify-between text-xs text-slate-400 dark:text-slate-500">
                                         <span>₹{totalSaved.toLocaleString()}</span>
                                         <span>₹{goal.targetAmount.toLocaleString()}</span>
                                     </div>
@@ -92,12 +92,12 @@ export default function Dashboard() {
                         </div>
 
                         {/* Navigation Tabs (Desktop Side, Mobile sticky header handled above or generic tabs) */}
-                        <div className="bg-white p-1 rounded-xl border border-slate-200 shadow-sm flex gap-1">
+                        <div className="bg-white dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex gap-1">
                             <button
                                 onClick={() => setActiveTab('plan')}
                                 className={cn(
                                     "flex-1 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2",
-                                    activeTab === 'plan' ? "bg-emerald-50 text-emerald-700 shadow-sm" : "text-slate-500 hover:bg-slate-50"
+                                    activeTab === 'plan' ? "bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 shadow-sm" : "text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700"
                                 )}
                             >
                                 <Wallet className="w-4 h-4" />
@@ -107,7 +107,7 @@ export default function Dashboard() {
                                 onClick={() => setActiveTab('accounts')}
                                 className={cn(
                                     "flex-1 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2",
-                                    activeTab === 'accounts' ? "bg-emerald-50 text-emerald-700 shadow-sm" : "text-slate-500 hover:bg-slate-50"
+                                    activeTab === 'accounts' ? "bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 shadow-sm" : "text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700"
                                 )}
                             >
                                 <Settings className="w-4 h-4" />
@@ -126,16 +126,16 @@ export default function Dashboard() {
                             <div className="animate-fade-in space-y-8">
                                 <AccountSetup />
 
-                                <div className="border-t border-slate-200 pt-8">
-                                    <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-                                        <div className="p-2 bg-red-100 rounded-lg text-red-600">
+                                <div className="border-t border-slate-200 dark:border-slate-700 pt-8">
+                                    <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+                                        <div className="p-2 bg-red-100 dark:bg-red-900/30 rounded-lg text-red-600 dark:text-red-400">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /><line x1="10" x2="10" y1="11" y2="17" /><line x1="14" x2="14" y1="11" y2="17" /></svg>
                                         </div>
                                         Danger Zone
                                     </h3>
-                                    <div className="bg-red-50 border border-red-100 rounded-2xl p-6">
-                                        <h4 className="font-bold text-red-900 mb-2">Delete this Goal</h4>
-                                        <p className="text-red-700/80 text-sm mb-6">
+                                    <div className="bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/20 rounded-2xl p-6">
+                                        <h4 className="font-bold text-red-900 dark:text-red-400 mb-2">Delete this Goal</h4>
+                                        <p className="text-red-700/80 dark:text-red-400/80 text-sm mb-6">
                                             This will permanently delete "{goal.name}" and all its history. Savings data will be preserved in your wallet but the goal structure will be gone.
                                         </p>
                                         <button
@@ -145,7 +145,7 @@ export default function Dashboard() {
                                                     navigate('/');
                                                 }
                                             }}
-                                            className="w-full py-3 bg-white border border-red-200 text-red-600 font-bold rounded-xl hover:bg-red-600 hover:text-white transition-all shadow-sm active:scale-95"
+                                            className="w-full py-3 bg-white dark:bg-slate-800 border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 font-bold rounded-xl hover:bg-red-600 hover:text-white dark:hover:bg-red-600 dark:hover:text-white transition-all shadow-sm active:scale-95"
                                         >
                                             Delete Goal
                                         </button>

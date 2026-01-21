@@ -87,33 +87,33 @@ export default function History() {
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-900 pb-24 md:pb-8 animate-fade-in">
             {/* Header */}
-            <div className="bg-white px-6 pt-6 pb-6 rounded-b-[2rem] shadow-sm mb-6">
+            <div className="bg-white dark:bg-slate-800 px-6 pt-6 pb-6 rounded-b-[2rem] shadow-sm mb-6">
                 <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 bg-indigo-100 rounded-2xl flex items-center justify-center">
-                        <Clock className="w-6 h-6 text-indigo-600" />
+                    <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-2xl flex items-center justify-center">
+                        <Clock className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-bold text-slate-900">Transaction History</h1>
-                        <p className="text-sm text-slate-500">{transactions.length} total deposits</p>
+                        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Transaction History</h1>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">{transactions.length} total deposits</p>
                     </div>
                 </div>
 
                 {/* Stats */}
                 <div className="grid grid-cols-2 gap-3 mt-4">
-                    <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-4 rounded-2xl">
-                        <p className="text-xs text-emerald-700 font-bold uppercase tracking-wide mb-1">Total Saved</p>
-                        <p className="text-2xl font-bold text-emerald-900">₹{totalSaved.toLocaleString()}</p>
+                    <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-900/40 p-4 rounded-2xl border border-emerald-100 dark:border-emerald-900/20">
+                        <p className="text-xs text-emerald-700 dark:text-emerald-400 font-bold uppercase tracking-wide mb-1">Total Saved</p>
+                        <p className="text-2xl font-bold text-emerald-900 dark:text-emerald-200">₹{totalSaved.toLocaleString()}</p>
                     </div>
-                    <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-2xl">
-                        <p className="text-xs text-blue-700 font-bold uppercase tracking-wide mb-1">Avg/Deposit</p>
-                        <p className="text-2xl font-bold text-blue-900">₹{Math.round(avgTransaction).toLocaleString()}</p>
+                    <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-900/40 p-4 rounded-2xl border border-blue-100 dark:border-blue-900/20">
+                        <p className="text-xs text-blue-700 dark:text-blue-400 font-bold uppercase tracking-wide mb-1">Avg/Deposit</p>
+                        <p className="text-2xl font-bold text-blue-900 dark:text-blue-200">₹{Math.round(avgTransaction).toLocaleString()}</p>
                     </div>
                 </div>
             </div>
 
             <div className="px-4 max-w-4xl mx-auto space-y-4">
                 {/* Filters */}
-                <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-3">
+                <div className="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 space-y-3">
                     {/* Search */}
                     <div className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -122,16 +122,16 @@ export default function History() {
                             placeholder="Search transactions..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400"
+                            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 dark:text-white dark:placeholder-slate-500"
                         />
                     </div>
 
                     {/* Filters Row */}
-                    <div className="flex gap-2 overflow-x-auto pb-1">
+                    <div className="flex gap-2 overflow-x-auto pb-1 custom-scrollbar">
                         <select
                             value={filterGoal}
                             onChange={(e) => setFilterGoal(e.target.value)}
-                            className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                            className="px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:text-slate-300"
                         >
                             <option value="all">All Goals</option>
                             {goals.map(goal => (
@@ -142,7 +142,7 @@ export default function History() {
                         <select
                             value={sortBy}
                             onChange={(e) => setSortBy(e.target.value)}
-                            className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                            className="px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:text-slate-300"
                         >
                             <option value="recent">Most Recent</option>
                             <option value="oldest">Oldest First</option>
@@ -155,12 +155,12 @@ export default function History() {
                 {/* Transactions List */}
                 <div className="space-y-3">
                     {filteredTransactions.length === 0 ? (
-                        <div className="bg-white p-12 rounded-2xl text-center border border-slate-100">
-                            <Wallet className="w-12 h-12 mx-auto mb-3 text-slate-300" />
-                            <p className="text-slate-500 font-medium">
+                        <div className="bg-white dark:bg-slate-800 p-12 rounded-2xl text-center border border-slate-100 dark:border-slate-700">
+                            <Wallet className="w-12 h-12 mx-auto mb-3 text-slate-300 dark:text-slate-600" />
+                            <p className="text-slate-500 dark:text-slate-400 font-medium">
                                 {searchQuery || filterGoal !== 'all' ? 'No matching transactions' : 'No transactions yet'}
                             </p>
-                            <p className="text-xs text-slate-400 mt-1">
+                            <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
                                 {searchQuery || filterGoal !== 'all' ? 'Try adjusting your filters' : 'Start saving to see your history'}
                             </p>
                         </div>
@@ -168,7 +168,7 @@ export default function History() {
                         filteredTransactions.map((tx, index) => (
                             <div
                                 key={tx.id}
-                                className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:border-indigo-200 transition-all animate-fade-in"
+                                className="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 hover:border-indigo-200 dark:hover:border-indigo-900 transition-all animate-fade-in"
                                 style={{ animationDelay: `${index * 30}ms` }}
                             >
                                 <div className="flex justify-between items-start mb-2">
@@ -177,16 +177,16 @@ export default function History() {
                                             {getCategoryById(tx.goalCategory).icon}
                                         </span>
                                         <div className="min-w-0 flex-1">
-                                            <h3 className="font-bold text-slate-900 truncate">{tx.goalName}</h3>
-                                            <p className="text-xs text-slate-500 flex items-center gap-1.5 mt-0.5">
+                                            <h3 className="font-bold text-slate-900 dark:text-white truncate">{tx.goalName}</h3>
+                                            <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5 mt-0.5">
                                                 <Calendar className="w-3 h-3" />
                                                 {formatDate(tx.date)}
                                             </p>
                                         </div>
                                     </div>
                                     <div className="text-right ml-3 flex-shrink-0">
-                                        <p className="text-lg font-bold text-emerald-600">₹{tx.amount.toLocaleString()}</p>
-                                        <p className="text-[10px] text-slate-400 font-medium">{tx.accountName}</p>
+                                        <p className="text-lg font-bold text-emerald-600 dark:text-emerald-400">₹{tx.amount.toLocaleString()}</p>
+                                        <p className="text-[10px] text-slate-400 dark:text-slate-500 font-medium">{tx.accountName}</p>
                                     </div>
                                 </div>
                             </div>

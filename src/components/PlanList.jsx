@@ -197,8 +197,8 @@ export default function PlanList() {
             )}
 
             <div className="flex justify-between items-center px-1">
-                <h2 className="text-lg font-bold text-slate-800">Savings Plan</h2>
-                <div className="text-xs font-semibold text-slate-500 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
+                <h2 className="text-lg font-bold text-slate-800 dark:text-white">Savings Plan</h2>
+                <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm">
                     {savingsPlan.filter(b => b.status === 'paid').length} / {savingsPlan.length} Complete
                 </div>
             </div>
@@ -216,17 +216,17 @@ export default function PlanList() {
                             className={cn(
                                 "aspect-square rounded-2xl flex flex-col items-center justify-center transition-all duration-300 relative group p-1",
                                 isPaid
-                                    ? "bg-slate-100 text-slate-400 cursor-default"
-                                    : "bg-white text-slate-800 shadow-sm hover:shadow-md hover:scale-105 hover:-translate-y-1 border border-slate-100"
+                                    ? "bg-slate-100 dark:bg-slate-800/50 text-slate-400 dark:text-slate-600 cursor-default"
+                                    : "bg-white dark:bg-slate-800 text-slate-800 dark:text-white shadow-sm hover:shadow-md hover:scale-105 hover:-translate-y-1 border border-slate-100 dark:border-slate-700"
                             )}
                             style={{ animationDelay: `${index * 30}ms` }}
                         >
                             {isPaid ? (
-                                <Check className="w-8 h-8 text-emerald-400" />
+                                <Check className="w-8 h-8 text-emerald-400 dark:text-emerald-500/50" />
                             ) : (
                                 <>
                                     <span className="text-lg font-bold">₹{bit.amount}</span>
-                                    <span className="text-[10px] font-medium text-slate-400 mt-1">
+                                    <span className="text-[10px] font-medium text-slate-400 dark:text-slate-500 mt-1">
                                         {date.getDate()}/{date.getMonth() + 1}
                                     </span>
                                 </>
@@ -237,7 +237,7 @@ export default function PlanList() {
             </div>
 
             {savingsPlan.length === 0 && (
-                <div className="text-center py-12 bg-white rounded-3xl border border-slate-100 border-dashed">
+                <div className="text-center py-12 bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 border-dashed">
                     <p className="text-slate-400 text-sm">No savings plan generated yet.</p>
                 </div>
             )}
