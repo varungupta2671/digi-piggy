@@ -58,8 +58,9 @@ export default function PlanList() {
 
             {/* Payment Modal */}
             {selectedBit && (
-                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-fade-in">
-                    <div className="bg-white w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden relative">
+
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md animate-fade-in h-[100dvh] w-screen">
+                    <div className="bg-white w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden relative animate-scale-in">
                         <div className="p-6 text-center">
                             <div className="flex justify-between items-start mb-4">
                                 <h3 className="text-xl font-bold text-slate-900">

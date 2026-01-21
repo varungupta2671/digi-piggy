@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { cn } from '../utils/cn';
 
 export default function Dashboard() {
-    const { goal, savingsPlan } = usePiggy();
+    const { goal, savingsPlan, deleteGoal } = usePiggy();
     const [activeTab, setActiveTab] = useState('plan');
     const navigate = useNavigate();
 
@@ -123,8 +123,34 @@ export default function Dashboard() {
                                 <PlanList />
                             </div>
                         ) : (
-                            <div className="animate-fade-in">
+                            <div className="animate-fade-in space-y-8">
                                 <AccountSetup />
+
+                                <div className="border-t border-slate-200 pt-8">
+                                    <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                        <div className="p-2 bg-red-100 rounded-lg text-red-600">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /><line x1="10" x2="10" y1="11" y2="17" /><line x1="14" x2="14" y1="11" y2="17" /></svg>
+                                        </div>
+                                        Danger Zone
+                                    </h3>
+                                    <div className="bg-red-50 border border-red-100 rounded-2xl p-6">
+                                        <h4 className="font-bold text-red-900 mb-2">Delete this Goal</h4>
+                                        <p className="text-red-700/80 text-sm mb-6">
+                                            This will permanently delete "{goal.name}" and all its history. Savings data will be preserved in your wallet but the goal structure will be gone.
+                                        </p>
+                                        <button
+                                            onClick={() => {
+                                                if (confirm('Are you sure you want to delete this goal? This action cannot be undone.')) {
+                                                    deleteGoal(goal.id);
+                                                    navigate('/');
+                                                }
+                                            }}
+                                            className="w-full py-3 bg-white border border-red-200 text-red-600 font-bold rounded-xl hover:bg-red-600 hover:text-white transition-all shadow-sm active:scale-95"
+                                        >
+                                            Delete Goal
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         )}
                     </div>
