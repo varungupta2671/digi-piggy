@@ -2,9 +2,10 @@ import { usePiggy } from '../context/PiggyContext';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Trophy, TrendingUp, Calendar, ArrowRight, Wallet, Target } from 'lucide-react';
 import { cn } from '../utils/cn';
+import { getCategoryById } from '../utils/categories';
 
 export default function GoalsList() {
-    const { goals, switchGoal } = usePiggy();
+    const { goals, switchGoal, savingsStreak } = usePiggy();
     const navigate = useNavigate();
 
     const handleGoalClick = (goalId) => {
@@ -32,8 +33,16 @@ export default function GoalsList() {
             <div className="bg-white px-6 pt-6 pb-6 rounded-b-[2rem] shadow-sm mb-6 relative overflow-hidden">
                 <div className="flex justify-between items-center mb-6">
                     <div>
-                        <h1 className="text-xl font-bold text-slate-800">Hello, Saver! 👋</h1>
-                        <p className="text-sm text-slate-400">Let's reach your goals</p>
+                        <div className="flex items-center gap-2">
+                            <h1 className="text-xl font-bold text-slate-800">Hello, Saver! 👋</h1>
+                            {savingsStreak > 0 && (
+                                <div className="flex items-center gap-1 bg-orange-100 px-2 py-1 rounded-full border border-orange-200">
+                                    <span className="text-base">🔥</span>
+                                    <span className="text-xs font-bold text-orange-700">{savingsStreak}d</span>
+                                </div>
+                            )}
+                        </div>
+                        <p className="text-sm text-slate-400 mt-1">Let's reach your goals</p>
                     </div>
                     <button
                         onClick={() => navigate('/achievements')}
@@ -132,8 +141,11 @@ export default function GoalsList() {
                                                 <Target className="w-6 h-6" />
                                             </div>
                                             <div>
-                                                <h3 className="font-bold text-slate-900 leading-tight">{goal.name}</h3>
-                                                <p className="text-xs text-slate-400 mt-0.5">Target: ₹{goal.targetAmount.toLocaleString()}</p>
+                                                <div className="flex items-center gap-2 mb-1">
+                                                    <h3 className="font-bold text-slate-900 leading-tight">{goal.name}</h3>
+                                                    <span className="text-base">{getCategoryById(goal.category).icon}</span>
+                                                </div>
+                                                <p className="text-xs text-slate-400">Target: ₹{goal.targetAmount.toLocaleString()}</p>
                                             </div>
                                         </div>
                                         <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-300 -mr-2 -mt-2 group-hover:bg-emerald-500 group-hover:text-white transition-colors">

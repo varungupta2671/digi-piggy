@@ -61,6 +61,27 @@ export const ACHIEVEMENT_DEFINITIONS = [
         description: "Complete 3 savings goals.",
         icon: Trophy,
         color: "text-red-500"
+    },
+    {
+        id: 'week_long',
+        title: "Week Long",
+        description: "Maintain a 7-day savings streak.",
+        icon: Zap,
+        color: "text-orange-500"
+    },
+    {
+        id: 'month_strong',
+        title: "Month Strong",
+        description: "Maintain a 30-day savings streak.",
+        icon: Zap,
+        color: "text-red-600"
+    },
+    {
+        id: 'century_club',
+        title: "Century Club",
+        description: "Maintain a 100-day savings streak!",
+        icon: Trophy,
+        color: "text-purple-600"
     }
 ];
 
@@ -75,6 +96,7 @@ export function PiggyProvider({ children }) {
     const [accounts, setAccounts] = useState([]);
     const [transactions, setTransactions] = useState([]);
     const [unlockedAchievements, setUnlockedAchievements] = useState([]);
+    const [savingsStreak, setSavingsStreak] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
 
@@ -136,10 +158,55 @@ export function PiggyProvider({ children }) {
         init();
     }, []);
 
+    // Update streak when transactions change
+    useEffect(() => {
+        setSavingsStreak(calculateStreak());
+    }, [transactions]);
+
     // Helper to persist Goal updates efficiently
     const saveGoal = async (updatedGoal) => {
         setGoals(prev => prev.map(g => g.id === updatedGoal.id ? updatedGoal : g));
         await db.set(STORES_CONSTANTS.GOALS, updatedGoal);
+    };
+
+    // Calculate savings streak from all transactions
+    const calculateStreak = () => {
+        if (transactions.length === 0) return 0;
+
+        // Sort transactions by date (most recent first)
+        const sorted = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const lastTx = new Date(sorted[0].date);
+        lastTx.setHours(0, 0, 0, 0);
+
+        // Check if streak is broken (no transaction today or yesterday)
+        const daysSinceLastTx = Math.floor((today - lastTx) / (1000 * 60 * 60 * 24));
+        if (daysSinceLastTx > 1) return 0;
+
+        // Count consecutive days
+        let streak = 0;
+        let currentDate = new Date(lastTx);
+
+        for (const tx of sorted) {
+            const txDate = new Date(tx.date);
+            txDate.setHours(0, 0, 0, 0);
+
+            const diff = Math.floor((currentDate - txDate) / (1000 * 60 * 60 * 24));
+
+            if (diff === 0) {
+                streak++;
+                currentDate.setDate(currentDate.getDate() - 1);
+            } else if (diff === 1) {
+                continue; // Skip to next transaction
+            } else {
+                break; // Streak broken
+            }
+        }
+
+        return streak;
     };
 
     // Achievement Check Logic
@@ -177,6 +244,12 @@ export function PiggyProvider({ children }) {
             if (totalTx >= 10) await unlock('on_a_roll');
             if (amount > 1000) await unlock('big_spender');
 
+            // Streak Checks 
+            const newStreak = calculateStreak() + 1; // +1 for optimistic current transaction
+            if (newStreak >= 7) await unlock('week_long');
+            if (newStreak >= 30) await unlock('month_strong');
+            if (newStreak >= 100) await unlock('century_club');
+
             // Goal Progress Checks
             const totalSaved = goal.savingsPlan
                 .filter(bit => bit.status === 'paid' || bit.id === data.bitId) // Include current bit
@@ -206,7 +279,7 @@ export function PiggyProvider({ children }) {
     const startEditing = () => setIsEditing(true);
     const cancelEditing = () => setIsEditing(false);
 
-    const createGoal = async (name, amount, slots, frequency, durationValue, durationUnit) => {
+    const createGoal = async (name, amount, slots, frequency, durationValue, durationUnit, category = 'other') => {
         // Ensure strictly unique ID for Goal
         const newId = Date.now() + Math.floor(Math.random() * 1000);
         const plan = generatePlanLogic(amount, slots, frequency);
@@ -219,6 +292,7 @@ export function PiggyProvider({ children }) {
             frequency: frequency,
             durationValue: durationValue,
             durationUnit: durationUnit,
+            category: category,
             createdAt: new Date().toISOString(),
             status: 'active',
             savingsPlan: plan
@@ -398,6 +472,7 @@ export function PiggyProvider({ children }) {
         accounts,
         transactions,
         unlockedAchievements,
+        savingsStreak,
         isLoading,
         createGoal,
         updateGoal,

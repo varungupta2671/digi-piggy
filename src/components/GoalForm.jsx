@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { usePiggy } from '../context/PiggyContext';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Target, Calendar, ArrowRight, Clock, X, Type } from 'lucide-react';
+import { Target, Calendar, ArrowRight, Clock, X, Type, Tag } from 'lucide-react';
+import { GOAL_CATEGORIES } from '../utils/categories';
 
 export default function GoalForm() {
     const { createGoal, goal, isEditing, cancelEditing } = usePiggy();
@@ -13,6 +14,7 @@ export default function GoalForm() {
     const [durationValue, setDurationValue] = useState('1');
     const [durationUnit, setDurationUnit] = useState('months');
     const [frequency, setFrequency] = useState('daily');
+    const [category, setCategory] = useState('other');
     const [estimatedSlots, setEstimatedSlots] = useState(0);
 
     const isCreating = location.pathname === '/create';
@@ -22,6 +24,7 @@ export default function GoalForm() {
             setName(goal.name || '');
             setAmount(goal.targetAmount);
             setFrequency(goal.frequency);
+            setCategory(goal.category || 'other');
             if (goal.durationValue) setDurationValue(goal.durationValue);
             if (goal.durationUnit) setDurationUnit(goal.durationUnit);
         } else if (!isEditing) {
@@ -30,6 +33,7 @@ export default function GoalForm() {
             setDurationValue('1');
             setDurationUnit('months');
             setFrequency('daily');
+            setCategory('other');
         }
     }, [isEditing, goal]);
 
@@ -74,7 +78,7 @@ export default function GoalForm() {
         const safeName = name.trim();
 
         try {
-            await createGoal(safeName, amount, estimatedSlots, frequency, durationValue, durationUnit);
+            await createGoal(safeName, amount, estimatedSlots, frequency, durationValue, durationUnit, category);
         } catch (error) {
             console.error("Goal creation error:", error);
         }
@@ -188,6 +192,29 @@ export default function GoalForm() {
                             <option value="monthly">Monthly</option>
                             <option value="yearly">Yearly</option>
                         </select>
+                    </div>
+                </div>
+
+                <div className="space-y-1.5">
+                    <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                        <Tag className="w-4 h-4 text-emerald-500" />
+                        Category
+                    </label>
+                    <div className="grid grid-cols-3 gap-2">
+                        {GOAL_CATEGORIES.map(cat => (
+                            <button
+                                key={cat.id}
+                                type="button"
+                                onClick={() => setCategory(cat.id)}
+                                className={`p-3 rounded-xl border-2 transition-all text-center hover:scale-105 ${category === cat.id
+                                        ? `${cat.color} border-current shadow-sm`
+                                        : 'bg-white border-slate-200 text-slate-500 hover:border-slate-300'
+                                    }`}
+                            >
+                                <div className="text-2xl mb-1">{cat.icon}</div>
+                                <div className="text-xs font-bold">{cat.name}</div>
+                            </button>
+                        ))}
                     </div>
                 </div>
 
