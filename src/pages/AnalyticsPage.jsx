@@ -15,7 +15,10 @@ import {
     Bar,
     Legend
 } from 'recharts';
-import { TrendingUp, PieChart as PieIcon, BarChart3, ArrowUpRight, DollarSign, Calendar } from 'lucide-react';
+import { TrendingUp, PieChart as PieIcon, BarChart3, ArrowUpRight, DollarSign, Calendar, Activity, Radar, Zap } from 'lucide-react';
+import SavingsHeatmap from '../components/analytics/SavingsHeatmap';
+import CategoryRadar from '../components/analytics/CategoryRadar';
+import SavingsForecast from '../components/analytics/SavingsForecast';
 
 const COLORS = ['#6366f1', '#8b5cf6', '#ec4899', '#f43f5e', '#ef4444', '#f59e0b', '#10b981', '#3b82f6'];
 
@@ -158,15 +161,58 @@ const AnalyticsPage = () => {
                     </div>
                 </div>
 
-                {/* Charts Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Advanced Charts Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
 
+                    {/* D3 Heatmap (Full Width) */}
+                    <div className="card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 col-span-1 md:col-span-2 lg:col-span-3 overflow-hidden">
+                        <div className="flex items-center justify-between mb-6">
+                            <h3 className="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                                <Activity className="w-5 h-5 text-emerald-500" />
+                                Savings Consistency (Last 365 Days)
+                            </h3>
+                        </div>
+                        <SavingsHeatmap transactions={transactions} />
+                    </div>
+
+                    {/* Savings Forecast */}
+                    <div className="card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 col-span-1 md:col-span-2">
+                        <div className="flex items-center justify-between mb-6">
+                            <h3 className="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                                <Zap className="w-5 h-5 text-indigo-500" />
+                                Savings Forecast
+                            </h3>
+                            <span className="text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded-full">
+                                Based on last 30 days
+                            </span>
+                        </div>
+                        <div className="h-[300px] w-full">
+                            <SavingsForecast />
+                        </div>
+                    </div>
+
+                    {/* Category Radar */}
+                    <div className="card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 col-span-1">
+                        <div className="flex items-center justify-between mb-6">
+                            <h3 className="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                                <Radar className="w-5 h-5 text-purple-500" />
+                                Diversification
+                            </h3>
+                        </div>
+                        <div className="h-[300px] w-full relative">
+                            <CategoryRadar />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Legacy Charts Grid */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Savings Trend */}
                     <div className="card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 col-span-1 lg:col-span-2">
                         <div className="flex items-center justify-between mb-6">
                             <h3 className="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
                                 <TrendingUp className="w-5 h-5 text-indigo-500" />
-                                Savings Growth
+                                Total Growth
                             </h3>
                         </div>
                         <div className="h-[300px] w-full">
@@ -213,7 +259,7 @@ const AnalyticsPage = () => {
                         <div className="flex items-center justify-between mb-6">
                             <h3 className="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
                                 <PieIcon className="w-5 h-5 text-pink-500" />
-                                Portfolio Allocation
+                                Goal Allocation
                             </h3>
                         </div>
                         <div className="h-[300px] w-full relative">
