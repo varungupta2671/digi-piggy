@@ -105,7 +105,7 @@ export default function GoalsList() {
                     <SmartSuggestions />
                 </div>
 
-                <div className="flex items-center justify-between mb-4 px-2">\n                    <h2 className="text-lg font-bold text-slate-800">Your Goals</h2>
+                <div className="flex items-center justify-between mb-4 px-2">                    <h2 className="text-lg font-bold text-slate-800">Your Goals</h2>
                     <span className="text-xs font-bold text-slate-400 bg-white px-2 py-1 rounded-lg border border-slate-100 shadow-sm">
                         {goals.length} Active
                     </span>
