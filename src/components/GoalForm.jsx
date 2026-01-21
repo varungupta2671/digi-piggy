@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { usePiggy } from '../context/PiggyContext';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Target, Calendar, ArrowRight, Clock, X, Type, Tag } from 'lucide-react';
+import { Target, Calendar, ArrowRight, Clock, X, Type, Tag, Sparkles } from 'lucide-react';
 import { GOAL_CATEGORIES } from '../utils/categories';
+import { GOAL_TEMPLATES } from '../utils/templates';
 
 export default function GoalForm() {
     const { createGoal, goal, isEditing, cancelEditing } = usePiggy();
@@ -15,6 +16,7 @@ export default function GoalForm() {
     const [durationUnit, setDurationUnit] = useState('months');
     const [frequency, setFrequency] = useState('daily');
     const [category, setCategory] = useState('other');
+    const [showTemplates, setShowTemplates] = useState(true);
     const [estimatedSlots, setEstimatedSlots] = useState(0);
 
     const isCreating = location.pathname === '/create';
@@ -90,6 +92,16 @@ export default function GoalForm() {
         }
     };
 
+    const handleTemplateSelect = (template) => {
+        setName(template.name);
+        setAmount(template.targetAmount.toString());
+        setDurationValue(template.durationValue.toString());
+        setDurationUnit(template.durationUnit);
+        setFrequency(template.frequency);
+        setCategory(template.category);
+        setShowTemplates(false);
+    };
+
     const handleClose = () => {
         if (isEditing) {
             cancelEditing();
@@ -115,6 +127,52 @@ export default function GoalForm() {
                 </h2>
                 <div className="h-1 w-12 mx-auto bg-emerald-500 rounded-full"></div>
             </div>
+
+            {/* Quick Templates - Only show when creating new goal */}
+            {!isEditing && showTemplates && (
+                <div className="mb-6">
+                    <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                            <Sparkles className="w-4 h-4 text-indigo-500" />
+                            <h3 className="text-sm font-bold text-slate-700">Quick Start Templates</h3>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={() => setShowTemplates(false)}
+                            className="text-xs text-slate-400 hover:text-slate-600"
+                        >
+                            Skip
+                        </button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 max-h-64 overflow-y-auto">
+                        {GOAL_TEMPLATES.map(template => (
+                            <button
+                                key={template.id}
+                                type="button"
+                                onClick={() => handleTemplateSelect(template)}
+                                className="p-3 bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 rounded-xl text-left transition-all group"
+                            >
+                                <div className="text-xl mb-1">{template.icon}</div>
+                                <div className="text-xs font-bold text-slate-900 group-hover:text-indigo-700 mb-0.5">
+                                    {template.name}
+                                </div>
+                                <div className="text-[10px] text-slate-500">
+                                    ₹{(template.targetAmount / 1000).toFixed(0)}k in {template.durationValue}{template.durationUnit[0]}
+                                </div>
+                            </button>
+                        ))}
+                    </div>
+                    <div className="text-center mt-3">
+                        <button
+                            type="button"
+                            onClick={() => setShowTemplates(false)}
+                            className="text-xs text-indigo-600 font-medium hover:text-indigo-700"
+                        >
+                            Or create custom goal →
+                        </button>
+                    </div>
+                </div>
+            )}
 
             <form onSubmit={handleSubmit} className="space-y-5">
 
@@ -207,8 +265,8 @@ export default function GoalForm() {
                                 type="button"
                                 onClick={() => setCategory(cat.id)}
                                 className={`p-3 rounded-xl border-2 transition-all text-center hover:scale-105 ${category === cat.id
-                                        ? `${cat.color} border-current shadow-sm`
-                                        : 'bg-white border-slate-200 text-slate-500 hover:border-slate-300'
+                                    ? `${cat.color} border-current shadow-sm`
+                                    : 'bg-white border-slate-200 text-slate-500 hover:border-slate-300'
                                     }`}
                             >
                                 <div className="text-2xl mb-1">{cat.icon}</div>

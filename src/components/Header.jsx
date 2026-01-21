@@ -1,9 +1,11 @@
-import { Home, Info, Mail, Trophy, PiggyBank } from 'lucide-react';
+import { Home, Info, Mail, Trophy, PiggyBank, Moon, Sun } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '../utils/cn';
+import { useTheme } from '../context/ThemeContext';
 
 export default function Header() {
     const location = useLocation();
+    const { theme, toggleTheme } = useTheme();
 
     const isActive = (path) => location.pathname === path;
 
@@ -66,6 +68,7 @@ export default function Header() {
                         <span>About</span>
                     </Link>
 
+
                     <Link
                         to="/contact"
                         className={cn(
@@ -78,6 +81,19 @@ export default function Header() {
                         <Mail className="w-4 h-4" />
                         <span>Contact</span>
                     </Link>
+
+                    {/* Theme Toggle */}
+                    <button
+                        onClick={toggleTheme}
+                        className="p-2 text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700 rounded-full transition-colors ml-2"
+                        aria-label="Toggle theme"
+                    >
+                        {theme === 'dark' ? (
+                            <Sun className="w-5 h-5" />
+                        ) : (
+                            <Moon className="w-5 h-5" />
+                        )}
+                    </button>
                 </nav>
             </div>
         </header>
