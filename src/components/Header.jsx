@@ -1,4 +1,4 @@
-import { Home, Info, Mail, Trophy, Moon, Sun, Menu, X, Clock, Target, Volume2, VolumeX } from 'lucide-react';
+import { Home, Info, Mail, Trophy, Moon, Sun, Menu, X, Clock, Target, Volume2, VolumeX, Wallet, Settings } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '../utils/cn';
 import { useTheme } from '../context/ThemeContext';
@@ -16,6 +16,8 @@ export default function Header() {
 
     const navigationItems = [
         { path: '/', label: 'Home', icon: Home },
+        { path: '/settings', label: 'Settings', icon: Settings }, // User might still associate settings with wallet icon, but let's stick to Wallet icon for now as it's money settings? No, user found wallet confusing. Let's use Settings icon.
+        // Actually, let's use Settings icon.
         { path: '/achievements', label: 'Trophies', icon: Trophy },
         { path: '/challenges', label: 'Challenges', icon: Target },
         { path: '/history', label: 'History', icon: Clock },

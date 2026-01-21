@@ -99,6 +99,7 @@ export function PiggyProvider({ children }) {
     const [goals, setGoals] = useState([]);
     const [activeGoalId, setActiveGoalId] = useState(null);
     const [accounts, setAccounts] = useState([]);
+    const [defaultAccountId, setDefaultAccountId] = useState(null);
     const [transactions, setTransactions] = useState([]);
     const [unlockedAchievements, setUnlockedAchievements] = useState([]);
     const [savingsStreak, setSavingsStreak] = useState(0);
@@ -162,6 +163,10 @@ export function PiggyProvider({ children }) {
                 setActiveGoalId(activeId || (dbGoals.length > 0 ? dbGoals[0].id : null));
                 setTriggeredMilestones(dbTriggeredMilestones);
                 setChallenges(dbChallenges);
+
+                // Load default account
+                const dbDefaultAccount = await db.get(STORES_CONSTANTS.META, 'defaultAccountId');
+                setDefaultAccountId(dbDefaultAccount);
             } catch (error) {
                 console.error("Failed to initialize DB:", error);
             } finally {
@@ -427,15 +432,29 @@ export function PiggyProvider({ children }) {
         await db.set(STORES_CONSTANTS.META, goalId, 'activeGoalId');
     };
 
-    const addAccount = async (upiId, name) => {
+    const addAccount = async (upiId, name, isDefault = false) => {
         const newAccount = { id: Date.now(), upiId, name };
         setAccounts(prev => [...prev, newAccount]);
         await db.set(STORES_CONSTANTS.ACCOUNTS, newAccount);
+
+        if (isDefault || accounts.length === 0) {
+            setDefaultAccountId(newAccount.id);
+            await db.set(STORES_CONSTANTS.META, newAccount.id, 'defaultAccountId');
+        }
     };
 
     const deleteAccount = async (accountId) => {
         setAccounts(prev => prev.filter(a => a.id !== accountId));
         await db.delete(STORES_CONSTANTS.ACCOUNTS, accountId);
+        if (defaultAccountId === accountId) {
+            setDefaultAccountId(null);
+            await db.delete(STORES_CONSTANTS.META, 'defaultAccountId');
+        }
+    };
+
+    const setGlobalDefaultAccount = async (accountId) => {
+        setDefaultAccountId(accountId);
+        await db.set(STORES_CONSTANTS.META, accountId, 'defaultAccountId');
     };
 
     const makePayment = async (bitId, accountId) => {
@@ -699,6 +718,8 @@ export function PiggyProvider({ children }) {
         switchGoal,
         addAccount,
         deleteAccount,
+        defaultAccountId,
+        setGlobalDefaultAccount,
         makePayment,
         deleteGoal, // Renamed from resetGoal
         isEditing,
