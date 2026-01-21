@@ -1,4 +1,4 @@
-import { Trophy, Target, Zap, Shield, Sparkles, Heart, Rocket, Code, ArrowRight } from 'lucide-react';
+import { Trophy, Target, Zap, Shield, Sparkles, Heart, Rocket, Code, ArrowRight, PiggyBank } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function About() {
@@ -8,14 +8,15 @@ export default function About() {
         <div className="min-h-screen bg-slate-50 pb-24 md:pb-8 font-sans animate-fade-in">
             {/* Mobile-First Header Image/Hero */}
             <div className="bg-white pb-6 pt-8 px-6 rounded-b-[2.5rem] shadow-sm mb-6 text-center relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-full blur-3xl -mr-10 -mt-10"></div>
-                <div className="absolute bottom-0 left-0 w-32 h-32 bg-emerald-50 rounded-full blur-3xl -ml-10 -mb-10"></div>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full blur-3xl -mr-10 -mt-10"></div>
+                <div className="absolute bottom-0 left-0 w-32 h-32 bg-yellow-50 rounded-full blur-3xl -ml-10 -mb-10"></div>
 
                 <div className="relative z-10">
-                    <div className="w-16 h-16 mx-auto bg-gradient-to-tr from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-200 mb-4 transform rotate-3">
-                        <Trophy className="w-8 h-8 text-white" />
+                    <div className="w-20 h-20 mx-auto bg-emerald-100 rounded-3xl flex items-center justify-center shadow-sm border border-emerald-200 mb-4 transform rotate-3">
+                        <PiggyBank className="w-10 h-10 text-emerald-600" />
                     </div>
-                    <h1 className="text-3xl font-extrabold text-slate-900 mb-2 tracking-tight">DigiPiggy</h1>
+                    <h1 className="text-3xl font-extrabold text-slate-900 mb-1 tracking-tight">DIGIPIGGY</h1>
+                    <p className="text-[10px] text-slate-500 font-bold tracking-widest uppercase mb-2">Smart Savings</p>
                     <p className="text-slate-500 text-sm font-medium max-w-xs mx-auto leading-relaxed">
                         Your smart companion for financial freedom. Saving money shouldn't feel like a chore.
                     </p>
