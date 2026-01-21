@@ -13,9 +13,11 @@ import History from './pages/History';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import BottomNav from './components/BottomNav';
+import MilestoneCelebration from './components/MilestoneCelebration';
+import ChallengesPage from './pages/ChallengesPage';
 
 function AppContent() {
-    const { goal, isEditing, isLoading } = usePiggy();
+    const { goal, isEditing, isLoading, celebratingMilestone, closeMilestone } = usePiggy();
 
     if (isLoading) {
         return (
@@ -42,12 +44,24 @@ function AppContent() {
                 <Route path="/create" element={<CreateGoal />} />
                 <Route path="/goal/:id" element={<GoalDetail />} />
                 <Route path="/achievements" element={<Achievements />} />
+                <Route path="/challenges" element={<ChallengesPage />} />
                 <Route path="/history" element={<History />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
             <BottomNav />
+
+            {/* Milestone Celebration Modal */}
+            {celebratingMilestone && (
+                <MilestoneCelebration
+                    milestone={celebratingMilestone.milestone}
+                    goalName={celebratingMilestone.goalName}
+                    currentAmount={celebratingMilestone.currentAmount}
+                    targetAmount={celebratingMilestone.targetAmount}
+                    onClose={closeMilestone}
+                />
+            )}
         </div>
     );
 }

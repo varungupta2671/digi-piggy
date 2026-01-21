@@ -1,4 +1,4 @@
-import { usePiggy, ACHIEVEMENT_DEFINITIONS } from '../context/PiggyContext';
+import { usePiggy, ALL_ACHIEVEMENTS } from '../context/PiggyContext';
 import { Lock, Trophy } from 'lucide-react';
 import { cn } from '../utils/cn';
 
@@ -23,15 +23,15 @@ export default function Achievements() {
                     <div className="mt-8 inline-flex items-center bg-white px-6 py-3 rounded-full shadow-sm border border-slate-200">
                         <span className="text-emerald-600 font-bold text-xl">{unlockedAchievements.length}</span>
                         <span className="text-slate-300 mx-2">/</span>
-                        <span className="text-slate-500 text-sm font-medium">{ACHIEVEMENT_DEFINITIONS.length} Unlocked</span>
+                        <span className="text-slate-500 text-sm font-medium">{ALL_ACHIEVEMENTS.length} Unlocked</span>
                     </div>
                 </div>
 
                 {/* Achievements Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {ACHIEVEMENT_DEFINITIONS.map((achievement) => {
+                    {ALL_ACHIEVEMENTS.map((achievement) => {
                         const isUnlocked = unlockedAchievements.includes(achievement.id);
-                        const Icon = achievement.icon;
+                        const Icon = achievement.icon || Trophy;
 
                         return (
                             <div

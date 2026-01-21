@@ -1,8 +1,33 @@
-import { Trophy, Target, Zap, Shield, Sparkles, Heart, Rocket, Code, ArrowRight, PiggyBank } from 'lucide-react';
+import { Trophy, Target, Zap, Shield, Sparkles, Heart, Rocket, Code, ArrowRight, PiggyBank, Download } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { usePiggy } from '../context/PiggyContext';
+import { useToast } from '../context/ToastContext';
 
 export default function About() {
     const navigate = useNavigate();
+    const { exportAllData } = usePiggy();
+    const { addToast } = useToast();
+
+    const handleExport = async () => {
+        try {
+            const data = await exportAllData();
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            const date = new Date().toISOString().split('T')[0];
+            link.href = url;
+            link.download = `digipiggy_backup_${date}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            addToast('💾 Data exported successfully!', 'success');
+        } catch (error) {
+            console.error('Export error:', error);
+            addToast('❌ Export failed. Please try again.', 'error');
+        }
+    };
 
     return (
         <div className="min-h-screen bg-slate-50 pb-24 md:pb-8 font-sans animate-fade-in">
@@ -84,6 +109,28 @@ export default function About() {
                             <div className="font-bold text-slate-900 text-lg">MIT</div>
                             <div className="text-[10px] text-slate-400 uppercase tracking-wide">License</div>
                         </div>
+                    </div>
+                </div>
+
+                {/* Data Export Section */}
+                <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+                    <div className="p-4 border-b border-slate-50 bg-slate-50/50">
+                        <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
+                            <Download className="w-4 h-4 text-slate-400" />
+                            Backup Your Data
+                        </h3>
+                    </div>
+                    <div className="p-4">
+                        <p className="text-slate-500 text-sm leading-relaxed mb-4">
+                            Export all your savings data as a JSON file. Keep a backup of your goals, transactions, and achievements.
+                        </p>
+                        <button
+                            onClick={handleExport}
+                            className="w-full py-3 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-xl font-bold hover:bg-emerald-100 transition-colors flex items-center justify-center gap-2"
+                        >
+                            <Download className="w-4 h-4" />
+                            Export All Data
+                        </button>
                     </div>
                 </div>
 

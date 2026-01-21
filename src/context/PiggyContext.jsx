@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { db, STORES_CONSTANTS } from '../utils/db';
 import { useToast } from './ToastContext';
 import { Trophy, Target, TrendingUp, Star, Zap, Award } from 'lucide-react';
+import { CHALLENGE_ACHIEVEMENTS } from '../utils/challenges';
 
 const PiggyContext = createContext();
 
@@ -85,6 +86,9 @@ export const ACHIEVEMENT_DEFINITIONS = [
     }
 ];
 
+// Merge with challenge achievements
+export const ALL_ACHIEVEMENTS = [...ACHIEVEMENT_DEFINITIONS, ...CHALLENGE_ACHIEVEMENTS];
+
 export function usePiggy() {
     return useContext(PiggyContext);
 }
@@ -99,6 +103,9 @@ export function PiggyProvider({ children }) {
     const [savingsStreak, setSavingsStreak] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
+    const [celebratingMilestone, setCelebratingMilestone] = useState(null); // Active milestone celebration
+    const [triggeredMilestones, setTriggeredMilestones] = useState({}); // Track which milestones have been shown per goal
+    const [challenges, setChallenges] = useState([]); // Active and completed challenges
 
     const { addToast } = useToast();
 
@@ -116,6 +123,8 @@ export function PiggyProvider({ children }) {
                 const dbTransactions = await db.getAll(STORES_CONSTANTS.TRANSACTIONS);
                 const dbAchievements = await db.getAll(STORES_CONSTANTS.ACHIEVEMENTS);
                 const activeId = await db.get(STORES_CONSTANTS.META, 'activeGoalId');
+                const dbTriggeredMilestones = await db.get(STORES_CONSTANTS.META, 'triggeredMilestones') || {};
+                const dbChallenges = await db.getAll(STORES_CONSTANTS.CHALLENGES);
 
                 // HEALER: Check for duplicate Bit IDs in loaded goals
                 const healedGoals = dbGoals.map(g => {
@@ -148,6 +157,8 @@ export function PiggyProvider({ children }) {
                 setTransactions(dbTransactions);
                 setUnlockedAchievements(dbAchievements.map(a => a.id));
                 setActiveGoalId(activeId || (dbGoals.length > 0 ? dbGoals[0].id : null));
+                setTriggeredMilestones(dbTriggeredMilestones);
+                setChallenges(dbChallenges);
             } catch (error) {
                 console.error("Failed to initialize DB:", error);
             } finally {
@@ -445,6 +456,37 @@ export function PiggyProvider({ children }) {
             setTransactions(prev => [...prev, newTx]);
             await db.set(STORES_CONSTANTS.TRANSACTIONS, newTx);
 
+            // Check for Milestone Celebrations
+            const totalSaved = updatedPlan
+                .filter(b => b.status === 'paid')
+                .reduce((sum, b) => sum + b.amount, 0);
+            const progress = (totalSaved / activeGoal.targetAmount) * 100;
+
+            // Check if we've hit a milestone (25%, 50%, 75%, 100%)
+            const milestones = [25, 50, 75, 100];
+            const hitMilestone = milestones.find(m => {
+                const goalMilestones = triggeredMilestones[activeGoal.id] || [];
+                return progress >= m && !goalMilestones.includes(m);
+            });
+
+            if (hitMilestone) {
+                // Mark this milestone as triggered for this goal
+                const updatedTriggered = {
+                    ...triggeredMilestones,
+                    [activeGoal.id]: [...(triggeredMilestones[activeGoal.id] || []), hitMilestone]
+                };
+                setTriggeredMilestones(updatedTriggered);
+                await db.set(STORES_CONSTANTS.META, updatedTriggered, 'triggeredMilestones');
+
+                // Show celebration modal
+                setCelebratingMilestone({
+                    milestone: hitMilestone,
+                    goalName: activeGoal.name,
+                    currentAmount: totalSaved,
+                    targetAmount: activeGoal.targetAmount
+                });
+            }
+
             // Check Achievements
             checkAchievements('PAYMENT_MADE', { amount: bit.amount, goal: updatedGoal, bitId });
         }
@@ -456,6 +498,12 @@ export function PiggyProvider({ children }) {
         const remainingGoals = goals.filter(g => g.id !== activeGoalId);
         await db.delete(STORES_CONSTANTS.GOALS, activeGoalId);
 
+        // Clean up triggered milestones for this goal
+        const updatedTriggered = { ...triggeredMilestones };
+        delete updatedTriggered[activeGoalId];
+        setTriggeredMilestones(updatedTriggered);
+        await db.set(STORES_CONSTANTS.META, updatedTriggered, 'triggeredMilestones');
+
         setGoals(remainingGoals);
         if (remainingGoals.length > 0) {
             switchGoal(remainingGoals[0].id);
@@ -464,6 +512,161 @@ export function PiggyProvider({ children }) {
             await db.delete(STORES_CONSTANTS.META, 'activeGoalId');
         }
     };
+
+    const closeMilestone = () => {
+        setCelebratingMilestone(null);
+    };
+
+    const exportAllData = async () => {
+        try {
+            // Collect all data from IndexedDB
+            const exportData = {
+                version: '1.0',
+                exportDate: new Date().toISOString(),
+                goals: goals,
+                accounts: accounts,
+                transactions: transactions,
+                achievements: unlockedAchievements.map(id => {
+                    const def = ALL_ACHIEVEMENTS.find(a => a.id === id);
+                    return {
+                        id,
+                        title: def?.title || 'Unknown',
+                        unlockedAt: new Date().toISOString()
+                    };
+                }),
+                triggeredMilestones: triggeredMilestones,
+                savingsStreak: savingsStreak,
+                challenges: challenges
+            };
+
+            return exportData;
+        } catch (error) {
+            console.error('Export failed:', error);
+            throw error;
+        }
+    };
+
+    // Challenge Functions
+    const createChallenge = async (template) => {
+        const startDate = new Date();
+        const endDate = new Date(startDate);
+        endDate.setDate(endDate.getDate() + template.durationDays);
+
+        const newChallenge = {
+            id: Date.now(),
+            type: template.type,
+            title: template.title,
+            description: template.description,
+            targetAmount: template.targetAmount || null,
+            targetCount: template.targetCount || null,
+            currentAmount: 0,
+            currentCount: 0,
+            startDate: startDate.toISOString(),
+            endDate: endDate.toISOString(),
+            status: 'active',
+            reward: template.reward,
+            icon: template.icon
+        };
+
+        setChallenges(prev => [...prev, newChallenge]);
+        await db.set(STORES_CONSTANTS.CHALLENGES, newChallenge);
+        addToast(`🎯 Challenge Started: ${newChallenge.title}!`, 'success');
+        return newChallenge.id;
+    };
+
+    const updateChallengeProgress = async (challengeId, amount = 0, incrementCount = false) => {
+        const challenge = challenges.find(c => c.id === challengeId);
+        if (!challenge || challenge.status !== 'active') return;
+
+        const updatedChallenge = {
+            ...challenge,
+            currentAmount: challenge.currentAmount + amount,
+            currentCount: incrementCount ? challenge.currentCount + 1 : challenge.currentCount
+        };
+
+        // Check if challenge is completed
+        const isCompleted =
+            (challenge.targetAmount && updatedChallenge.currentAmount >= challenge.targetAmount) ||
+            (challenge.targetCount && updatedChallenge.currentCount >= challenge.targetCount);
+
+        if (isCompleted) {
+            updatedChallenge.status = 'completed';
+            updatedChallenge.completedAt = new Date().toISOString();
+
+            // Unlock reward achievement
+            if (challenge.reward) {
+                const achievement = ALL_ACHIEVEMENTS.find(a => a.id === challenge.reward);
+                if (achievement && !unlockedAchievements.includes(challenge.reward)) {
+                    const record = { id: challenge.reward, unlockedAt: new Date().toISOString() };
+                    await db.set(STORES_CONSTANTS.ACHIEVEMENTS, record);
+                    setUnlockedAchievements(prev => [...prev, challenge.reward]);
+                    addToast(`🏆 Unlocked: ${achievement.title}!`, 'success');
+                }
+            }
+
+            addToast(`🎉 Challenge Completed: ${challenge.title}!`, 'success');
+
+            // Check for challenge master achievement
+            const completedChallenges = challenges.filter(c => c.status === 'completed').length + 1;
+            if (completedChallenges === 1) {
+                await checkAchievements('CHALLENGE_COMPLETED', { isFirst: true });
+            }
+            if (completedChallenges >= 5) {
+                await checkAchievements('CHALLENGE_COMPLETED', { isMaster: true });
+            }
+        }
+
+        setChallenges(prev => prev.map(c => c.id === challengeId ? updatedChallenge : c));
+        await db.set(STORES_CONSTANTS.CHALLENGES, updatedChallenge);
+    };
+
+    // Update challenges when transactions are made
+    useEffect(() => {
+        const updateActiveChallenges = async () => {
+            if (transactions.length === 0) return;
+
+            const lastTx = transactions[transactions.length - 1];
+            if (!lastTx) return;
+
+            const activeChallenges = challenges.filter(c => c.status === 'active');
+
+            for (const challenge of activeChallenges) {
+                // Check if transaction is within challenge timeframe
+                const txDate = new Date(lastTx.date);
+                const startDate = new Date(challenge.startDate);
+                const endDate = new Date(challenge.endDate);
+
+                if (txDate >= startDate && txDate <= endDate) {
+                    await updateChallengeProgress(challenge.id, lastTx.amount, true);
+                }
+            }
+        };
+
+        updateActiveChallenges();
+    }, [transactions.length]);
+
+    // Check for expired challenges
+    useEffect(() => {
+        const checkExpiredChallenges = async () => {
+            const now = new Date();
+            const expiredChallenges = challenges.filter(c => {
+                if (c.status !== 'active') return false;
+                const endDate = new Date(c.endDate);
+                return now > endDate;
+            });
+
+            for (const challenge of expiredChallenges) {
+                const updatedChallenge = { ...challenge, status: 'failed' };
+                setChallenges(prev => prev.map(c => c.id === challenge.id ? updatedChallenge : c));
+                await db.set(STORES_CONSTANTS.CHALLENGES, updatedChallenge);
+            }
+        };
+
+        const interval = setInterval(checkExpiredChallenges, 60000); // Check every minute
+        checkExpiredChallenges(); // Initial check
+
+        return () => clearInterval(interval);
+    }, [challenges]);
 
     const value = {
         goals,
@@ -483,7 +686,12 @@ export function PiggyProvider({ children }) {
         deleteGoal, // Renamed from resetGoal
         isEditing,
         startEditing,
-        cancelEditing
+        cancelEditing,
+        celebratingMilestone,
+        closeMilestone,
+        exportAllData,
+        challenges,
+        createChallenge
     };
 
     return (
