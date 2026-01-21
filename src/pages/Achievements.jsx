@@ -6,7 +6,7 @@ export default function Achievements() {
     const { unlockedAchievements } = usePiggy();
 
     return (
-        <div className="min-h-screen bg-slate-50 p-4 md:p-8 animate-fade-in pb-24">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-900 p-4 md:p-8 animate-fade-in pb-24">
             <div className="max-w-6xl mx-auto">
                 {/* Page Header */}
                 <div className="text-center mb-12">

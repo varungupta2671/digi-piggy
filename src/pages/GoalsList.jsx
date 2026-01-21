@@ -29,7 +29,7 @@ export default function GoalsList() {
     const overallProgress = totalTargetValue > 0 ? (totalPortfolioValue / totalTargetValue) * 100 : 0;
 
     return (
-        <div className="min-h-screen bg-slate-50 pb-28 md:pb-8 animate-fade-in">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-900 pb-28 md:pb-8 animate-fade-in">
             {/* Header Section */}
             <div className="bg-white px-6 pt-6 pb-6 rounded-b-[2rem] shadow-sm mb-6 relative overflow-hidden">
                 <div className="flex justify-between items-center mb-6">

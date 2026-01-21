@@ -30,7 +30,7 @@ export default function About() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 pb-24 md:pb-8 font-sans animate-fade-in">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-900 pb-24 md:pb-8 font-sans animate-fade-in">
             {/* Mobile-First Header Image/Hero */}
             <div className="bg-white pb-6 pt-8 px-6 rounded-b-[2.5rem] shadow-sm mb-6 text-center relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full blur-3xl -mr-10 -mt-10"></div>

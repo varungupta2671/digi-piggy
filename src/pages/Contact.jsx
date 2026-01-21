@@ -5,7 +5,7 @@ export default function Contact() {
     const [formData, setFormData] = useState({ name: '', email: '', message: '' });
 
     return (
-        <div className="min-h-screen bg-slate-50 pb-24 md:pb-8 font-sans animate-fade-in">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-900 pb-24 md:pb-8 font-sans animate-fade-in">
             {/* Header */}
             <div className="bg-white px-6 pt-8 pb-6 rounded-b-[2.5rem] shadow-sm mb-6 text-center">
                 <div className="inline-block p-3 bg-indigo-50 rounded-2xl mb-4">

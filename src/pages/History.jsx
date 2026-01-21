@@ -85,7 +85,7 @@ export default function History() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 pb-24 md:pb-8 animate-fade-in">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-900 pb-24 md:pb-8 animate-fade-in">
             {/* Header */}
             <div className="bg-white px-6 pt-6 pb-6 rounded-b-[2rem] shadow-sm mb-6">
                 <div className="flex items-center gap-3 mb-4">

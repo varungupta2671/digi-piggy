@@ -23,8 +23,34 @@
     --border: #e2e8f0;
   }
 
+  /* Dark mode variables */
+  .dark {
+    --primary: #10b981;
+    /* Emerald 500 */
+    --primary-foreground: #ffffff;
+    --secondary: #fbbf24;
+    /* Amber 400 */
+    --secondary-foreground: #f1f5f9;
+    --background: #0f172a;
+    /* Slate 900 */
+    --foreground: #e2e8f0;
+    /* Slate 200 */
+    --card: #1e293b;
+    /* Slate 800 */
+    --card-foreground: #f1f5f9;
+    /* Slate 100 */
+    --muted: #334155;
+    /* Slate 700 */
+    --muted-foreground: #94a3b8;
+    /* Slate 400 */
+    --accent: #1e293b;
+    --accent-foreground: #10b981;
+    --border: #334155;
+    /* Slate 700 */
+  }
+
   body {
-    @apply bg-slate-50 text-slate-800 antialiased min-h-screen pb-24 md:pb-0;
+    @apply bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 antialiased min-h-screen pb-24 md:pb-0;
     font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
   }
 
@@ -34,25 +60,25 @@
   h4,
   h5,
   h6 {
-    @apply font-bold tracking-tight text-slate-900;
+    @apply font-bold tracking-tight text-slate-900 dark:text-white;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-emerald-500 text-white px-4 py-2 rounded-xl font-semibold shadow-lg shadow-emerald-200 hover:bg-emerald-600 hover:scale-[1.02] active:scale-95 transition-all duration-200;
+    @apply bg-emerald-500 dark:bg-emerald-600 text-white px-4 py-2 rounded-xl font-semibold shadow-lg shadow-emerald-200 dark:shadow-emerald-900/50 hover:bg-emerald-600 dark:hover:bg-emerald-700 hover:scale-[1.02] active:scale-95 transition-all duration-200;
   }
 
   .btn-secondary {
-    @apply bg-white text-slate-700 border border-slate-200 px-4 py-2 rounded-xl font-medium shadow-sm hover:bg-slate-50 hover:border-slate-300 active:scale-95 transition-all duration-200;
+    @apply bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 px-4 py-2 rounded-xl font-medium shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-600 active:scale-95 transition-all duration-200;
   }
 
   .card {
-    @apply bg-white rounded-2xl shadow-sm border border-slate-100 p-5 transition-all duration-300 hover:shadow-md;
+    @apply bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-5 transition-all duration-300 hover:shadow-md dark:hover:shadow-slate-900/50;
   }
 
   .input {
-    @apply w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all;
+    @apply w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 dark:focus:border-emerald-600 transition-all;
   }
 }
 
@@ -88,9 +114,9 @@ body[data-theme="modern"] {
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-200 rounded-full;
+  @apply bg-slate-200 dark:bg-slate-700 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-300;
+  @apply bg-slate-300 dark:bg-slate-600;
 }
