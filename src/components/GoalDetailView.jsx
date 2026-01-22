@@ -100,15 +100,88 @@ export default function GoalDetailView() {
                 <div className="grid md:grid-cols-[1.5fr_1fr] gap-6 p-4 md:p-0">
 
                     <div className="space-y-6">
-                        {/* Mobile Companion - Centered & Prominent on Mobile */}
-                        <div className="md:hidden flex flex-col items-center justify-center -mt-2 mb-2">
-                            <div className="scale-75 origin-center"> {/* Scale down slightly for mobile header feel */}
-                                <MyPiggy minimal={true} className="!bg-transparent !shadow-none !border-none !p-0" />
+                        {/* Mobile: Dynamic Layout Shuffle */}
+                        <div className="md:hidden flex flex-col gap-6">
+
+                            {/* 1. My Piggy World (Dominant) */}
+                            <div className="relative w-full aspect-square max-h-[350px] mx-auto bg-gradient-to-b from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-900 rounded-[3rem] shadow-inner border border-white/50 dark:border-slate-700/50 flex items-center justify-center overflow-hidden">
+                                {/* Atmospheric Glow */}
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.8)_0%,transparent_60%)] dark:bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.15)_0%,transparent_60%)] pointer-events-none"></div>
+                                <div className="absolute bottom-0 w-full h-1/3 bg-gradient-to-t from-white dark:from-slate-900 to-transparent opacity-50"></div>
+
+                                {/* The Piggy Itself - Larger */}
+                                <div className="relative z-10 scale-125 transform transition-transform duration-500 hover:scale-[1.35]">
+                                    <MyPiggy minimal={true} className="!bg-transparent !shadow-none !border-none !p-0" />
+                                </div>
+
+                                {/* Floating Badge */}
+                                <div className="absolute top-6 right-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md px-4 py-1.5 rounded-full shadow-sm border border-white/20 dark:border-slate-700">
+                                    <span className="text-xs font-bold text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
+                                        <Sparkles className="w-3 h-3 text-amber-500" />
+                                        Level {Math.floor(progress / 20) + 1}
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* 2. Key Stats & Progress (Compact) */}
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="col-span-2 bg-slate-900 dark:bg-slate-800 rounded-3xl p-6 text-white relative overflow-hidden">
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+
+                                    <div className="relative z-10 flex justify-between items-end">
+                                        <div>
+                                            <p className="text-indigo-200 text-xs font-bold uppercase tracking-wider mb-1">Goal Progress</p>
+                                            <div className="text-4xl font-black tracking-tight font-display">
+                                                {progress.toFixed(0)}%
+                                            </div>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-indigo-200 text-xs font-bold uppercase tracking-wider mb-1">Saved</p>
+                                            <p className="text-2xl font-bold">₹{totalSaved.toLocaleString()}</p>
+                                        </div>
+                                    </div>
+                                    {/* Mini Bar */}
+                                    <div className="mt-4 w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                                        <div className="h-full bg-indigo-400 rounded-full" style={{ width: `${progress}%` }}></div>
+                                    </div>
+                                </div>
+
+                                {/* Quick Stats Tiles */}
+                                <div className="bg-orange-50 dark:bg-orange-900/10 p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-1 border border-orange-100 dark:border-orange-900/20">
+                                    <span className="text-orange-500 font-bold text-lg">{daysLeft}</span>
+                                    <span className="text-[10px] text-orange-400 uppercase font-bold tracking-wider">Days Left</span>
+                                </div>
+                                <div className="bg-emerald-50 dark:bg-emerald-900/10 p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-1 border border-emerald-100 dark:border-emerald-900/20">
+                                    <span className="text-emerald-600 dark:text-emerald-400 font-bold text-lg">₹{remaining.toLocaleString()}</span>
+                                    <span className="text-[10px] text-emerald-500/80 uppercase font-bold tracking-wider">To Go</span>
+                                </div>
+                            </div>
+
+                            {/* 3. Action Buttons (Grid) */}
+                            <div className="grid grid-cols-2 gap-3">
+                                <button
+                                    onClick={() => navigate('/time-travel')}
+                                    className="p-4 bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-2xl flex flex-col items-center gap-2 active:scale-95 transition-all shadow-sm"
+                                >
+                                    <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400">
+                                        <Rocket className="w-5 h-5" />
+                                    </div>
+                                    <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Time Machine</span>
+                                </button>
+                                <button
+                                    onClick={() => setShowRandomSaver(true)}
+                                    className="p-4 bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-2xl flex flex-col items-center gap-2 active:scale-95 transition-all shadow-sm"
+                                >
+                                    <div className="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                                        <Dices className="w-5 h-5" />
+                                    </div>
+                                    <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Fate's Choice</span>
+                                </button>
                             </div>
                         </div>
 
-                        {/* Progress Card - Enhanced */}
-                        <div className="bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-800 dark:from-indigo-900 dark:via-purple-900 dark:to-slate-900 rounded-[2.5rem] p-8 text-white shadow-2xl shadow-indigo-500/30 relative overflow-hidden group">
+                        {/* Desktop: Standard Layout (Hidden on Mobile) */}
+                        <div className="hidden md:block bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-800 dark:from-indigo-900 dark:via-purple-900 dark:to-slate-900 rounded-[2.5rem] p-8 text-white shadow-2xl shadow-indigo-500/30 relative overflow-hidden group">
 
                             {/* Decorative Elements */}
                             <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/10 rounded-full blur-3xl pointer-events-none group-hover:scale-110 transition-transform duration-1000"></div>
@@ -157,37 +230,8 @@ export default function GoalDetailView() {
                             </div>
                         </div>
 
-                        {/* Mobile Action Tiles - More Attractive */}
-                        <div className="grid grid-cols-2 gap-3 md:hidden">
-                            <button
-                                onClick={() => navigate('/time-travel')}
-                                className="relative overflow-hidden flex flex-col items-center justify-center gap-2 py-6 bg-gradient-to-br from-violet-50 to-fuchsia-50 dark:from-slate-800 dark:to-slate-800 border border-violet-100 dark:border-slate-700 text-violet-700 dark:text-violet-300 rounded-2xl active:scale-95 transition-all shadow-sm group"
-                            >
-                                <div className="absolute -right-4 -bottom-4 opacity-10 rotate-12 group-hover:scale-125 transition-transform duration-500">
-                                    <Rocket className="w-20 h-20" />
-                                </div>
-                                <div className="w-12 h-12 bg-white dark:bg-slate-700 rounded-full flex items-center justify-center shadow-md mb-1 group-hover:rotate-12 transition-transform">
-                                    <Rocket className="w-6 h-6 text-fuchsia-500" />
-                                </div>
-                                <span className="text-xs font-bold uppercase tracking-wider">Time Machine</span>
-                            </button>
-
-                            <button
-                                onClick={() => setShowRandomSaver(true)}
-                                className="relative overflow-hidden flex flex-col items-center justify-center gap-2 py-6 bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-slate-800 dark:to-slate-800 border border-indigo-100 dark:border-slate-700 text-indigo-700 dark:text-indigo-300 rounded-2xl active:scale-95 transition-all shadow-sm group"
-                            >
-                                <div className="absolute -right-4 -bottom-4 opacity-10 rotate-12 group-hover:scale-125 transition-transform duration-500">
-                                    <Dices className="w-20 h-20" />
-                                </div>
-                                <div className="w-12 h-12 bg-white dark:bg-slate-700 rounded-full flex items-center justify-center shadow-md mb-1 group-hover:rotate-12 transition-transform">
-                                    <Dices className="w-6 h-6 text-indigo-500" />
-                                </div>
-                                <span className="text-xs font-bold uppercase tracking-wider">Fate's Choice</span>
-                            </button>
-                        </div>
-
-                        {/* Quick Stats Grid with Icons */}
-                        <div className="grid grid-cols-2 gap-3">
+                        {/* Desktop Quick Stats Grid */}
+                        <div className="hidden md:grid grid-cols-2 gap-3">
                             <div className="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex flex-col items-center text-center gap-2 hover:border-orange-200 transition-colors group">
                                 <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center text-orange-500 dark:text-orange-400 group-hover:scale-110 transition-transform">
                                     <Calendar className="w-6 h-6" />
