@@ -7,6 +7,7 @@ import SavingsForecast from '../components/analytics/d3/ForecastAreaChart'; // U
 import SavingsTrendChart from '../components/analytics/d3/SavingsTrendChart';
 import PortfolioDonutChart from '../components/analytics/d3/PortfolioDonutChart';
 import MonthlyBarChart from '../components/analytics/d3/MonthlyBarChart';
+import SavingsSimulator from '../components/SavingsSimulator';
 
 const COLORS = ['#6366f1', '#8b5cf6', '#ec4899', '#f43f5e', '#ef4444', '#f59e0b', '#10b981', '#3b82f6'];
 
@@ -173,6 +174,11 @@ const AnalyticsPage = () => {
                         <div className="h-[300px] w-full">
                             <MonthlyBarChart transactions={transactions} />
                         </div>
+                    </div>
+
+                    {/* Savings Simulator */}
+                    <div className="col-span-1 lg:col-span-2">
+                        <SavingsSimulator goal={goals[0]} />
                     </div>
 
                 </div>

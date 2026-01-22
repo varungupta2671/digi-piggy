@@ -1,4 +1,4 @@
-import { Home, Info, Mail, Trophy, Moon, Sun, Menu, X, Clock, Target, Volume2, VolumeX, Wallet, Settings } from 'lucide-react';
+import { Home, Info, Mail, Trophy, Moon, Sun, Menu, X, Clock, Target, Volume2, VolumeX, Wallet, Settings, BookOpen } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '../utils/cn';
 import { useTheme } from '../context/ThemeContext';
@@ -6,6 +6,7 @@ import { usePiggy } from '../context/PiggyContext';
 import { useState } from 'react';
 import PiggyAvatar from './PiggyAvatar';
 import NotificationCenter from './NotificationCenter';
+import VoiceControl from './VoiceControl';
 
 export default function Header() {
     const location = useLocation();
@@ -124,6 +125,9 @@ export default function Header() {
 
                         {/* Notification Center */}
                         <NotificationCenter />
+
+                        {/* Voice Commands */}
+                        <VoiceControl />
                     </nav>
 
                     {/* Mobile Menu Button & Theme Toggle */}
@@ -197,6 +201,21 @@ export default function Header() {
                                 );
                             })}
                         </nav>
+
+                        {/* Quick Actions Section */}
+                        <div className="px-4 py-4 border-t border-slate-200 dark:border-slate-700">
+                            <p className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">Quick Actions</p>
+                            <div className="space-y-3">
+                                <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                                    <NotificationCenter />
+                                    <span className="text-sm text-slate-600 dark:text-slate-300">Notifications</span>
+                                </div>
+                                <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                                    <VoiceControl />
+                                    <span className="text-sm text-slate-600 dark:text-slate-300">Voice Commands</span>
+                                </div>
+                            </div>
+                        </div>
 
                         {/* Footer */}
                         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-200 dark:border-slate-700">

@@ -7,6 +7,7 @@ import {
     Download, RefreshCw, Plus, Check, Star, AlertTriangle
 } from 'lucide-react';
 import { cn } from '../utils/cn';
+import ReportGenerator from '../components/ReportGenerator';
 
 export default function SettingsPage() {
     const {
@@ -258,6 +259,9 @@ export default function SettingsPage() {
                             </div>
                         </div>
                     </section>
+
+                    {/* SECTION: EXPORT & REPORTS */}
+                    <ReportGenerator />
 
                     <div className="text-center pt-8 text-slate-400">
                         <p className="text-xs font-medium">DigiPiggy v2.1.0 (Build 2024.12)</p>

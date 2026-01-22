@@ -7,6 +7,7 @@ import Header from './components/Header';
 import GoalForm from './components/GoalForm';
 import CreateGoal from './pages/CreateGoal';
 import GoalsList from './pages/GoalsList';
+import LearningHub from './pages/LearningHub';
 import GoalDetail from './pages/GoalDetail';
 import Achievements from './pages/Achievements';
 import History from './pages/History';
@@ -49,6 +50,7 @@ function AppContent() {
                 <Route path="/achievements" element={<Achievements />} />
                 <Route path="/analytics" element={<AnalyticsPage />} />
                 <Route path="/challenges" element={<ChallengesPage />} />
+                <Route path="/learn" element={<LearningHub />} />
                 <Route path="/history" element={<History />} />
                 <Route path="/settings" element={<SettingsPage />} />
                 <Route path="/about" element={<About />} />

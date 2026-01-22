@@ -9,6 +9,8 @@ import MyPiggy from './MyPiggy';
 import RandomSaver from './RandomSaver';
 import StreakBadge from './StreakBadge';
 import MoodSaver from './MoodSaver';
+import SavingsCoach from './SavingsCoach';
+import RoundUpTracker from './RoundUpTracker';
 import { Dices } from 'lucide-react';
 
 export default function Dashboard() {
@@ -110,6 +112,12 @@ export default function Dashboard() {
 
                         {/* Mood-Based Quick Save */}
                         <MoodSaver />
+
+                        {/* AI Savings Coach */}
+                        <SavingsCoach />
+
+                        {/* Round-Up Tracker */}
+                        <RoundUpTracker />
 
                         {/* Main Goal Card */}
                         <div className="card overflow-hidden relative">
