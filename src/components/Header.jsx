@@ -5,6 +5,7 @@ import { useTheme } from '../context/ThemeContext';
 import { usePiggy } from '../context/PiggyContext';
 import { useState } from 'react';
 import PiggyAvatar from './PiggyAvatar';
+import NotificationCenter from './NotificationCenter';
 
 export default function Header() {
     const location = useLocation();
@@ -120,6 +121,9 @@ export default function Header() {
                                 <Moon className="w-5 h-5" />
                             )}
                         </button>
+
+                        {/* Notification Center */}
+                        <NotificationCenter />
                     </nav>
 
                     {/* Mobile Menu Button & Theme Toggle */}

@@ -103,6 +103,7 @@ export function PiggyProvider({ children }) {
     const [transactions, setTransactions] = useState([]);
     const [unlockedAchievements, setUnlockedAchievements] = useState([]);
     const [savingsStreak, setSavingsStreak] = useState(0);
+    const [longestStreak, setLongestStreak] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
     const [celebratingMilestone, setCelebratingMilestone] = useState(null); // Active milestone celebration
@@ -110,6 +111,7 @@ export function PiggyProvider({ children }) {
     const [challenges, setChallenges] = useState([]); // Active and completed challenges
     const [piggyMood, setPiggyMood] = useState('neutral'); // neutral, happy, excited, sad
     const [isMuted, setIsMuted] = useState(soundManager.isMuted);
+    const [notifications, setNotifications] = useState([]); // Notification queue
 
     const { addToast } = useToast();
 
@@ -129,6 +131,8 @@ export function PiggyProvider({ children }) {
                 const activeId = await db.get(STORES_CONSTANTS.META, 'activeGoalId');
                 const dbTriggeredMilestones = await db.get(STORES_CONSTANTS.META, 'triggeredMilestones') || {};
                 const dbChallenges = await db.getAll(STORES_CONSTANTS.CHALLENGES);
+                const dbLongestStreak = await db.get(STORES_CONSTANTS.META, ' longestStreak') || 0;
+                const dbNotifications = await db.get(STORES_CONSTANTS.META, 'notifications') || [];
 
                 // HEALER: Check for duplicate Bit IDs in loaded goals
                 const healedGoals = dbGoals.map(g => {
@@ -163,6 +167,8 @@ export function PiggyProvider({ children }) {
                 setActiveGoalId(activeId || (dbGoals.length > 0 ? dbGoals[0].id : null));
                 setTriggeredMilestones(dbTriggeredMilestones);
                 setChallenges(dbChallenges);
+                setLongestStreak(dbLongestStreak);
+                setNotifications(dbNotifications);
 
                 // Load default account
                 const dbDefaultAccount = await db.get(STORES_CONSTANTS.META, 'defaultAccountId');
@@ -179,8 +185,15 @@ export function PiggyProvider({ children }) {
 
     // Update streak when transactions change
     useEffect(() => {
-        setSavingsStreak(calculateStreak());
-    }, [transactions]);
+        const currentStreak = calculateStreak();
+        setSavingsStreak(currentStreak);
+
+        // Update longest streak if current exceeds it
+        if (currentStreak > longestStreak) {
+            setLongestStreak(currentStreak);
+            db.set(STORES_CONSTANTS.META, { key: 'longestStreak', value: currentStreak });
+        }
+    }, [transactions, longestStreak]);
 
     // Helper to persist Goal updates efficiently
     const saveGoal = async (updatedGoal) => {
@@ -516,6 +529,14 @@ export function PiggyProvider({ children }) {
                 });
                 soundManager.playMilestone();
                 setPiggyMood('excited');
+
+                // Add milestone notification
+                await addNotification({
+                    type: 'milestone',
+                    title: `${hitMilestone}% Milestone Reached! 🎉`,
+                    message: `You've reached ${hitMilestone}% of your "${activeGoal.name}" goal!`,
+                    goalId: activeGoal.id
+                });
             }
 
             // Check Achievements
@@ -704,6 +725,33 @@ export function PiggyProvider({ children }) {
         setIsMuted(newState);
     };
 
+    // Notification Management
+    const addNotification = async (notification) => {
+        const newNotification = {
+            id: crypto.randomUUID(),
+            timestamp: new Date().toISOString(),
+            read: false,
+            ...notification
+        };
+
+        const updated = [newNotification, ...notifications].slice(0, 50); // Keep last 50
+        setNotifications(updated);
+        await db.set(STORES_CONSTANTS.META, { key: 'notifications', value: updated });
+    };
+
+    const markNotificationRead = async (notificationId) => {
+        const updated = notifications.map(n =>
+            n.id === notificationId ? { ...n, read: true } : n
+        );
+        setNotifications(updated);
+        await db.set(STORES_CONSTANTS.META, { key: 'notifications', value: updated });
+    };
+
+    const clearAllNotifications = async () => {
+        setNotifications([]);
+        await db.set(STORES_CONSTANTS.META, { key: 'notifications', value: [] });
+    };
+
     const value = {
         goals,
         goal: activeGoal, // Expose as 'goal' for backward compatibility with components
@@ -712,6 +760,7 @@ export function PiggyProvider({ children }) {
         transactions,
         unlockedAchievements,
         savingsStreak,
+        longestStreak,
         isLoading,
         createGoal,
         updateGoal,
@@ -732,7 +781,11 @@ export function PiggyProvider({ children }) {
         createChallenge,
         piggyMood,
         isMuted,
-        toggleMute
+        toggleMute,
+        notifications,
+        addNotification,
+        markNotificationRead,
+        clearAllNotifications
     };
 
     return (

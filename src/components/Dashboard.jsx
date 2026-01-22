@@ -7,10 +7,12 @@ import { useState } from 'react';
 import { cn } from '../utils/cn';
 import MyPiggy from './MyPiggy';
 import RandomSaver from './RandomSaver';
+import StreakBadge from './StreakBadge';
+import MoodSaver from './MoodSaver';
 import { Dices } from 'lucide-react';
 
 export default function Dashboard() {
-    const { goal, savingsPlan, deleteGoal } = usePiggy();
+    const { goal, savingsPlan, deleteGoal, savingsStreak, longestStreak } = usePiggy();
     const [activeTab, setActiveTab] = useState('plan');
     const [showRandomSaver, setShowRandomSaver] = useState(false);
     const navigate = useNavigate();
@@ -95,6 +97,19 @@ export default function Dashboard() {
                                 <ArrowLeft className="w-4 h-4 rotate-180" />
                             </div>
                         </button>
+
+                        {/* Streak Badge Display */}
+                        {savingsStreak > 0 && (
+                            <div className="w-full flex justify-center">
+                                <StreakBadge
+                                    currentStreak={savingsStreak}
+                                    longestStreak={longestStreak}
+                                />
+                            </div>
+                        )}
+
+                        {/* Mood-Based Quick Save */}
+                        <MoodSaver />
 
                         {/* Main Goal Card */}
                         <div className="card overflow-hidden relative">
