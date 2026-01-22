@@ -5,11 +5,16 @@ import { getCategoryById } from '../utils/categories';
 import { cn } from '../utils/cn';
 
 const CARD_VARIANTS = [
-    "bg-gradient-to-br from-violet-100 to-indigo-50 dark:from-violet-900/90 dark:to-indigo-900/90 border-violet-200 dark:border-violet-700",
-    "bg-gradient-to-br from-emerald-100 to-teal-50 dark:from-emerald-900/90 dark:to-teal-900/90 border-emerald-200 dark:border-emerald-700",
-    "bg-gradient-to-br from-amber-100 to-orange-50 dark:from-amber-900/90 dark:to-orange-900/90 border-amber-200 dark:border-amber-700",
-    "bg-gradient-to-br from-rose-100 to-pink-50 dark:from-rose-900/90 dark:to-pink-900/90 border-rose-200 dark:border-rose-700",
-    "bg-gradient-to-br from-blue-100 to-cyan-50 dark:from-blue-900/90 dark:to-cyan-900/90 border-blue-200 dark:border-blue-700",
+    // 1. Premium Blue/Indigo
+    "bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900 dark:to-indigo-900 border-blue-200 dark:border-blue-700",
+    // 2. Rich Emerald/Teal
+    "bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900 dark:to-teal-900 border-emerald-200 dark:border-emerald-700",
+    // 3. Sophisticated Violet/Fuchsia
+    "bg-gradient-to-br from-violet-50 to-fuchsia-50 dark:from-violet-900 dark:to-fuchsia-900 border-violet-200 dark:border-violet-700",
+    // 4. Modern Slate/Zinc (Clean look)
+    "bg-gradient-to-br from-slate-50 to-zinc-50 dark:from-slate-800 dark:to-zinc-800 border-slate-200 dark:border-slate-700",
+    // 5. Warm Amber/Orange (Refined)
+    "bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900 dark:to-orange-900 border-amber-200 dark:border-amber-700",
 ];
 
 export default function GoalDeck({ goals }) {
