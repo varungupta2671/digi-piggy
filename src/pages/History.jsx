@@ -2,6 +2,7 @@ import { usePiggy } from '../context/PiggyContext';
 import { useState, useMemo } from 'react';
 import { Calendar, Search, Filter, TrendingDown, Clock, Wallet } from 'lucide-react';
 import { getCategoryById } from '../utils/categories';
+import ActivityCalendar from '../components/ActivityCalendar';
 
 export default function History() {
     const { transactions, goals, accounts } = usePiggy();
@@ -108,6 +109,11 @@ export default function History() {
                         <p className="text-xs text-blue-700 dark:text-blue-400 font-bold uppercase tracking-wide mb-1">Avg/Deposit</p>
                         <p className="text-2xl font-bold text-blue-900 dark:text-blue-200">₹{Math.round(avgTransaction).toLocaleString()}</p>
                     </div>
+                </div>
+
+                {/* Calendar View */}
+                <div className="mt-6">
+                    <ActivityCalendar transactions={transactions} />
                 </div>
             </div>
 

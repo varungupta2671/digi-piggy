@@ -4,6 +4,7 @@ import { Plus, Trophy, TrendingUp, Calendar, ArrowRight, Wallet, Target } from '
 import { cn } from '../utils/cn';
 import { getCategoryById } from '../utils/categories';
 import SmartSuggestions from '../components/SmartSuggestions';
+import GoalDeck from '../components/GoalDeck';
 
 export default function GoalsList() {
     const { goals, switchGoal, savingsStreak } = usePiggy();
@@ -128,57 +129,7 @@ export default function GoalsList() {
                     </div>
                 ) : (
                     <div className="space-y-4">
-                        {goals.map((goal, index) => {
-                            const totalSaved = goal.savingsPlan
-                                ?.filter(bit => bit.status === 'paid')
-                                .reduce((sum, bit) => sum + bit.amount, 0) || 0;
-                            const progress = Math.min((totalSaved / goal.targetAmount) * 100, 100);
-
-                            return (
-                                <button
-                                    key={goal.id}
-                                    onClick={() => handleGoalClick(goal.id)}
-                                    className="w-full bg-white dark:bg-slate-800 p-5 rounded-[2rem] shadow-sm border border-slate-100 dark:border-slate-700 text-left relative overflow-hidden group hover:border-emerald-200 dark:hover:border-emerald-900 transition-all active:scale-[0.98] duration-200"
-                                    style={{ animationDelay: `${index * 100}ms` }}
-                                >
-                                    <div className="flex justify-between items-start mb-4">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-12 h-12 bg-indigo-50 dark:bg-indigo-900/30 rounded-2xl flex items-center justify-center text-indigo-500 dark:text-indigo-400">
-                                                <Target className="w-6 h-6" />
-                                            </div>
-                                            <div>
-                                                <div className="flex items-center gap-2 mb-1">
-                                                    <h3 className="font-bold text-slate-900 dark:text-white leading-tight">{goal.name}</h3>
-                                                    <span className="text-base">{getCategoryById(goal.category).icon}</span>
-                                                </div>
-                                                <p className="text-xs text-slate-400 dark:text-slate-500">Target: ₹{goal.targetAmount.toLocaleString()}</p>
-                                            </div>
-                                        </div>
-                                        <div className="w-8 h-8 rounded-full bg-slate-50 dark:bg-slate-700 flex items-center justify-center text-slate-300 dark:text-slate-500 -mr-2 -mt-2 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
-                                            <ArrowRight className="w-4 h-4" />
-                                        </div>
-                                    </div>
-
-                                    {/* Progress */}
-                                    <div className="space-y-2">
-                                        <div className="flex justify-between text-xs font-semibold">
-                                            <span className="text-slate-500 dark:text-slate-400">Progress</span>
-                                            <span className="text-slate-900 dark:text-white">{progress.toFixed(0)}%</span>
-                                        </div>
-                                        <div className="h-2.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                                            <div
-                                                className="h-full bg-emerald-500 rounded-full transition-all duration-1000 ease-out"
-                                                style={{ width: `${progress}%` }}
-                                            ></div>
-                                        </div>
-                                        <div className="flex justify-between text-[10px] text-slate-400 font-medium pt-1">
-                                            <span>₹{totalSaved.toLocaleString()} Saved</span>
-                                            <span>₹{(goal.targetAmount - totalSaved).toLocaleString()} Left</span>
-                                        </div>
-                                    </div>
-                                </button>
-                            );
-                        })}
+                        <GoalDeck goals={goals} />
                     </div>
                 )}
             </div>
