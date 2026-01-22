@@ -1,7 +1,7 @@
 import { usePiggy } from '../context/PiggyContext';
 import { useToast } from '../context/ToastContext';
 import { useState } from 'react';
-import { Check, Lock, ExternalLink, ThumbsUp, X, Smartphone, ShieldCheck } from 'lucide-react';
+import { Check, Lock, ExternalLink, ThumbsUp, X, Smartphone, ShieldCheck, AlertCircle, ArrowRight } from 'lucide-react';
 import { cn } from '../utils/cn';
 import Confetti from './Confetti';
 
@@ -11,7 +11,7 @@ export default function PlanList() {
 
     const [selectedBit, setSelectedBit] = useState(null);
     const [selectedAccount, setSelectedAccount] = useState('');
-    const [paymentStep, setPaymentStep] = useState('initial');
+    const [paymentStep, setPaymentStep] = useState('initial'); // 'initial', 'confirming'
     const [showConfetti, setShowConfetti] = useState(false);
 
     const handleTileClick = (bit) => {
@@ -33,34 +33,47 @@ export default function PlanList() {
         setPaymentStep('initial');
     };
 
-    const handleLaunchApp = (appType) => {
-        const receiverVpa = accounts.find(a => a.id === parseInt(selectedAccount))?.upiId;
-        if (!receiverVpa) {
-            addToast('Please select a valid savings account', 'error');
+    const handlePay = () => {
+        const receiverAccount = accounts.find(a => a.id === parseInt(selectedAccount));
+
+        if (!receiverAccount) {
+            addToast('Please select a valid savings destination', 'error');
             return;
         }
 
-        const baseUrl = appType === 'gpay' ? 'tez://upi/pay' : 'upi://pay';
-        const upiLink = `${baseUrl}?pa=${receiverVpa}&pn=PiggyBankSave&tn=GoalSave&am=${selectedBit.amount}&cu=INR`;
+        // --- THE REAL MONEY FLOW ---
+        // Construct the UPI Intent Link
+        // pa = Payee Address (The user's own savings account)
+        // pn = Payee Name (User's Name)
+        // am = Amount
+        // tr = Transaction Ref (Unique)
+        // tn = Transaction Note
+        const tr = `piggy${Date.now()}`;
+        const upiLink = `upi://pay?pa=${receiverAccount.upiId}&pn=${encodeURIComponent(receiverAccount.name)}&am=${selectedBit.amount}&tn=PiggyBankSave&tr=${tr}&cu=INR`;
 
+        // 1. Open the App
         window.location.href = upiLink;
+
+        // 2. Move UI to "Did it work?" state
         setPaymentStep('confirming');
     };
 
-    const handleVerification = (didPay) => {
-        if (didPay) {
+    const handleManualConfirmation = (success) => {
+        if (success) {
             makePayment(selectedBit.id, selectedAccount || 'manual');
             addToast(`Success! ₹${selectedBit.amount} Saved.`, 'success');
             setShowConfetti(true);
             setTimeout(() => setShowConfetti(false), 2000);
             handleCloseModal();
         } else {
+            // User cancelled or failed
             setPaymentStep('initial');
+            addToast('Payment cancelled. Try again!', 'info');
         }
     };
 
     return (
-        <div className="space-y-6 pb-20">
+        <div className="space-y-6 pb-20 font-sans">
             {showConfetti && <Confetti />}
 
             {/* Payment Modal */}
@@ -74,7 +87,7 @@ export default function PlanList() {
                                 <div className="p-1.5 bg-green-100 dark:bg-green-900/30 rounded-lg">
                                     <ShieldCheck className="w-4 h-4 text-green-600 dark:text-green-400" />
                                 </div>
-                                <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Secure Gateway</span>
+                                <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Secure Transfer</span>
                             </div>
                             <button onClick={handleCloseModal} className="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full text-slate-400 transition-colors">
                                 <X className="w-5 h-5" />
@@ -84,17 +97,17 @@ export default function PlanList() {
                         <div className="p-6">
                             {/* Amount Display */}
                             <div className="text-center mb-8">
-                                <p className="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1">Paying Amount</p>
-                                <div className="text-4xl font-bold text-slate-900 dark:text-white font-display">
+                                <p className="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Transferring to Self</p>
+                                <div className="text-4xl font-black text-slate-900 dark:text-white font-display">
                                     ₹{selectedBit.amount.toLocaleString()}
                                 </div>
                             </div>
 
-                            {/* Phase 1: Account Selection */}
+                            {/* Phase 1: Destination Selection */}
                             {paymentStep === 'initial' && (
                                 <div className="space-y-6 animate-fade-in">
                                     <div className="space-y-3">
-                                        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block">Pay Using</label>
+                                        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block">Destination Account</label>
 
                                         {accounts.length > 0 ? (
                                             <div className="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-1">
@@ -128,69 +141,58 @@ export default function PlanList() {
                                                 <div className="p-2 bg-amber-100 dark:bg-amber-900/50 rounded-lg shrink-0">
                                                     <Lock className="w-4 h-4" />
                                                 </div>
-                                                Link a savings account in Wallet to proceed!
+                                                Link a savings destination in Wallet to start saving!
                                             </div>
                                         )}
                                     </div>
 
                                     <button
-                                        onClick={() => {
-                                            if (accounts.length === 0) return;
-
-                                            // Realistic simulated flow
-                                            setPaymentStep('connecting');
-
-                                            // 1. Simulate "Connecting to Bank"
-                                            setTimeout(() => {
-                                                setPaymentStep('processing');
-
-                                                // 2. Simulate "Processing"
-                                                setTimeout(() => {
-                                                    handleVerification(true);
-                                                }, 2000);
-
-                                            }, 1500);
-                                        }}
+                                        onClick={handlePay}
                                         disabled={accounts.length === 0}
-                                        className="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/30 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                                        className="w-full py-4 bg-slate-900 dark:bg-indigo-600 hover:bg-slate-800 dark:hover:bg-indigo-700 text-white font-bold rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                                     >
-                                        <span>Proceed to Pay</span>
+                                        <span>Open Payment App</span>
                                         <ExternalLink className="w-4 h-4" />
                                     </button>
+                                    <p className="text-[10px] text-center text-slate-400">
+                                        We'll open your default UPI app (GPay, PhonePe, etc.)
+                                    </p>
                                 </div>
                             )}
 
-                            {/* Phase 2: Connecting */}
-                            {paymentStep === 'connecting' && (
-                                <div className="py-8 flex flex-col items-center justify-center text-center animate-fade-in">
-                                    <div className="w-16 h-16 border-4 border-slate-100 border-t-indigo-500 rounded-full animate-spin mb-6"></div>
-                                    <h4 className="text-lg font-bold text-slate-800 dark:text-white">Connecting Securely...</h4>
-                                    <p className="text-slate-500 text-sm mt-2">Establishing 256-bit encrypted channel</p>
-                                </div>
-                            )}
-
-                            {/* Phase 3: Processing */}
-                            {paymentStep === 'processing' && (
-                                <div className="py-8 flex flex-col items-center justify-center text-center animate-fade-in">
-                                    <div className="w-20 h-20 bg-indigo-50 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mb-6 relative">
-                                        <Smartphone className="w-10 h-10 text-indigo-500 animate-pulse" />
-                                        <div className="absolute -right-1 -bottom-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center border-2 border-white dark:border-slate-800">
-                                            <div className="w-1.5 h-1.5 bg-white rounded-full animate-ping"></div>
+                            {/* Phase 2: Manual Confirmation */}
+                            {paymentStep === 'confirming' && (
+                                <div className="py-2 text-center animate-fade-in">
+                                    <div className="w-20 h-20 bg-indigo-50 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mx-auto mb-6 relative">
+                                        <Smartphone className="w-10 h-10 text-indigo-500" />
+                                        <div className="absolute -right-2 -bottom-2 w-8 h-8 bg-white dark:bg-slate-800 rounded-full flex items-center justify-center shadow-sm">
+                                            <AlertCircle className="w-6 h-6 text-orange-400" />
                                         </div>
                                     </div>
-                                    <h4 className="text-lg font-bold text-slate-800 dark:text-white">Processing Payment</h4>
-                                    <p className="text-slate-500 text-sm mt-2">Please do not close this window...</p>
+
+                                    <h4 className="text-xl font-bold text-slate-800 dark:text-white mb-2">Check your UPI App</h4>
+                                    <p className="text-slate-500 dark:text-slate-400 text-sm mb-8">
+                                        Did you successfully verify and complete the transfer of <strong>₹{selectedBit.amount}</strong>?
+                                    </p>
+
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <button
+                                            onClick={() => handleManualConfirmation(false)}
+                                            className="py-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 font-bold text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                                        >
+                                            No, Failed
+                                        </button>
+                                        <button
+                                            onClick={() => handleManualConfirmation(true)}
+                                            className="py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold shadow-lg shadow-emerald-500/30 active:scale-95 transition-all flex items-center justify-center gap-2"
+                                        >
+                                            Yes, Paid!
+                                            <ThumbsUp className="w-4 h-4" />
+                                        </button>
+                                    </div>
                                 </div>
                             )}
 
-                        </div>
-
-                        {/* Footer Trust Badge */}
-                        <div className="bg-slate-50 dark:bg-slate-800/80 p-3 text-center border-t border-slate-100 dark:border-slate-700">
-                            <p className="text-[10px] text-slate-400 font-medium flex items-center justify-center gap-1">
-                                <Lock className="w-3 h-3" />
-                                POWERED BY DIGIPIGGY SECURE
-                            </p>
                         </div>
                     </div>
                 </div>

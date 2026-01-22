@@ -11,12 +11,12 @@ export default function AccountSetup() {
             <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
                     <CreditCard className="w-5 h-5 text-indigo-500" />
-                    Payment Method
+                    Savings Destination
                 </h3>
             </div>
 
             <p className="text-slate-500 dark:text-slate-400 text-sm mb-6">
-                Manage your UPI accounts in the global settings to use them for this goal.
+                Link your personal bank account (UPI) to enable self-transfers for this goal.
             </p>
 
             <Link
@@ -38,6 +38,6 @@ export default function AccountSetup() {
                     <ArrowRight className="w-4 h-4" />
                 </div>
             </Link>
-        </div>
+        </div >
     );
 }
