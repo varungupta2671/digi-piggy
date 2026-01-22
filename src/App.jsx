@@ -16,6 +16,7 @@ import BottomNav from './components/BottomNav';
 import MilestoneCelebration from './components/MilestoneCelebration';
 import ChallengesPage from './pages/ChallengesPage';
 import AnalyticsPage from './pages/AnalyticsPage';
+import TimeTraveler from './pages/TimeTraveler';
 import SettingsPage from './pages/SettingsPage';
 
 function AppContent() {
@@ -51,6 +52,7 @@ function AppContent() {
                 <Route path="/history" element={<History />} />
                 <Route path="/settings" element={<SettingsPage />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/time-travel" element={<TimeTraveler />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>

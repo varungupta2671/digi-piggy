@@ -1,14 +1,18 @@
 import { usePiggy } from '../context/PiggyContext';
 import { useNavigate } from 'react-router-dom';
-import { Wallet, Settings, ArrowLeft, Trophy, Calendar, TrendingUp } from 'lucide-react';
+import { Wallet, Settings, ArrowLeft, Trophy, Calendar, TrendingUp, Rocket } from 'lucide-react';
 import PlanList from './PlanList';
 import AccountSetup from './AccountSetup';
 import { useState } from 'react';
 import { cn } from '../utils/cn';
+import MyPiggy from './MyPiggy';
+import RandomSaver from './RandomSaver';
+import { Dices } from 'lucide-react';
 
 export default function Dashboard() {
     const { goal, savingsPlan, deleteGoal } = usePiggy();
     const [activeTab, setActiveTab] = useState('plan');
+    const [showRandomSaver, setShowRandomSaver] = useState(false);
     const navigate = useNavigate();
 
     if (!goal) return null;
@@ -55,6 +59,43 @@ export default function Dashboard() {
 
                     {/* Sidebar / Overview Card */}
                     <div className="space-y-6 md:overflow-y-auto md:pr-2 custom-scrollbar md:h-full">
+                        {/* My Piggy Evolution Companion */}
+                        <MyPiggy />
+
+                        {/* Quick Action: Time Traveler */}
+                        <button
+                            onClick={() => navigate('/time-travel')}
+                            className="w-full bg-gradient-to-r from-violet-500 to-fuchsia-600 text-white rounded-xl p-4 shadow-lg shadow-purple-200 dark:shadow-purple-900/20 flex items-center justify-between hover:scale-[1.02] active:scale-95 transition-all text-left group"
+                        >
+                            <div>
+                                <h3 className="font-bold flex items-center gap-2">
+                                    <Rocket className="w-5 h-5 fill-white/20" />
+                                    Time Machine
+                                </h3>
+                                <p className="text-xs text-purple-100 opacity-90 mt-1">Peek into your financial future</p>
+                            </div>
+                            <div className="bg-white/20 p-2 rounded-lg group-hover:bg-white/30 transition-colors">
+                                <ArrowLeft className="w-4 h-4 rotate-180" />
+                            </div>
+                        </button>
+
+                        {/* Quick Action: Random Saver */}
+                        <button
+                            onClick={() => setShowRandomSaver(true)}
+                            className="w-full bg-gradient-to-r from-indigo-500 to-blue-600 text-white rounded-xl p-4 shadow-lg shadow-indigo-200 dark:shadow-indigo-900/20 flex items-center justify-between hover:scale-[1.02] active:scale-95 transition-all text-left group"
+                        >
+                            <div>
+                                <h3 className="font-bold flex items-center gap-2">
+                                    <Dices className="w-5 h-5 fill-white/20" />
+                                    Fate's Choice
+                                </h3>
+                                <p className="text-xs text-indigo-100 opacity-90 mt-1">Let destiny decide your savings</p>
+                            </div>
+                            <div className="bg-white/20 p-2 rounded-lg group-hover:bg-white/30 transition-colors">
+                                <ArrowLeft className="w-4 h-4 rotate-180" />
+                            </div>
+                        </button>
+
                         {/* Main Goal Card */}
                         <div className="card overflow-hidden relative">
                             <div className="relative z-10 text-center py-6">
@@ -156,6 +197,7 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
+            {showRandomSaver && <RandomSaver onClose={() => setShowRandomSaver(false)} />}
         </div>
     );
 }

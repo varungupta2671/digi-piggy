@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Target, Calendar, ArrowRight, Clock, X, Type, Tag, Sparkles } from 'lucide-react';
 import { GOAL_CATEGORIES } from '../utils/categories';
 import { GOAL_TEMPLATES } from '../utils/templates';
+import LinkImport from './LinkImport';
 
 export default function GoalForm() {
     const { createGoal, goal, isEditing, cancelEditing } = usePiggy();
@@ -127,6 +128,15 @@ export default function GoalForm() {
                 </h2>
                 <div className="h-1 w-12 mx-auto bg-emerald-500 rounded-full"></div>
             </div>
+
+            {/* Link Import Section */}
+            {!isEditing && (
+                <LinkImport onImport={(data) => {
+                    setName(data.name);
+                    if (data.amount) setAmount(data.amount.toString());
+                    setShowTemplates(false);
+                }} />
+            )}
 
             {/* Quick Templates - Only show when creating new goal */}
             {!isEditing && showTemplates && (
