@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { usePiggy } from '../context/PiggyContext';
-import Dashboard from '../components/Dashboard';
+import GoalDetailView from '../components/GoalDetailView';
 
 export default function GoalDetail() {
     const { id } = useParams();
@@ -32,7 +32,7 @@ export default function GoalDetail() {
 
     return (
         <div className="animate-fade-in">
-            <Dashboard />
+            <GoalDetailView />
         </div>
     );
 }
