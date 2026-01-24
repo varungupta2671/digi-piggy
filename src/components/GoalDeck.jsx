@@ -21,14 +21,23 @@ export default function GoalDeck({ goals }) {
     const navigate = useNavigate();
     const [focusedId, setFocusedId] = useState(null); // For click/tap interaction
 
+    // Sort goals by createdAt descending (latest on top)
+    const sortedGoals = useMemo(() => {
+        return [...goals].sort((a, b) => {
+            const dateA = a.createdAt ? new Date(a.createdAt) : new Date(0);
+            const dateB = b.createdAt ? new Date(b.createdAt) : new Date(0);
+            return dateB - dateA;
+        });
+    }, [goals]);
+
     // Generate stable random styles for each goal
     const cardStyles = useMemo(() => {
-        return goals.map((goal, index) => {
+        return sortedGoals.map((goal, index) => {
             return {
                 variant: CARD_VARIANTS[index % CARD_VARIANTS.length]
             };
         });
-    }, [goals]);
+    }, [sortedGoals]);
 
     if (!goals || goals.length === 0) return null;
 
@@ -60,7 +69,7 @@ export default function GoalDeck({ goals }) {
 
             {/* Instructions for mobile if needed, or just let UI guide */}
 
-            {goals.map((goal, index) => {
+            {sortedGoals.map((goal, index) => {
                 const isFocused = focusedId === goal.id;
                 const style = cardStyles[index];
 
@@ -137,7 +146,7 @@ export default function GoalDeck({ goals }) {
             })}
 
             {/* Spacer */}
-            <div style={{ height: `${250 + (goals.length > 0 ? (goals.length - 1) * 60 : 0)}px` }} className="pointer-events-none" />
+            <div style={{ height: `${250 + (sortedGoals.length > 0 ? (sortedGoals.length - 1) * 60 : 0)}px` }} className="pointer-events-none" />
         </div>
     );
 }

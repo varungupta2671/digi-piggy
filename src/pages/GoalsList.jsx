@@ -5,6 +5,7 @@ import { cn } from '../utils/cn';
 import { getCategoryById } from '../utils/categories';
 import SmartSuggestions from '../components/SmartSuggestions';
 import GoalDeck from '../components/GoalDeck';
+import Avatar from '../components/Avatar';
 
 export default function GoalsList() {
     const { goals, switchGoal, savingsStreak } = usePiggy();
@@ -46,12 +47,20 @@ export default function GoalsList() {
                         </div>
                         <p className="text-sm text-slate-400 mt-1">Let's reach your goals</p>
                     </div>
-                    <button
-                        onClick={() => navigate('/achievements')}
-                        className="w-10 h-10 bg-slate-50 dark:bg-slate-700 rounded-full flex items-center justify-center border border-slate-100 dark:border-slate-600 text-slate-400 dark:text-slate-300 hover:text-emerald-500 hover:border-emerald-200 transition-colors"
-                    >
-                        <Trophy className="w-5 h-5" />
-                    </button>
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => navigate('/wardrobe')}
+                            className="bg-slate-50 dark:bg-slate-700/50 rounded-full p-1 border border-slate-100 dark:border-slate-600 shadow-sm transition-transform active:scale-95"
+                        >
+                            <Avatar size="sm" showItems={true} className="w-10 h-10" />
+                        </button>
+                        <button
+                            onClick={() => navigate('/achievements')}
+                            className="w-10 h-10 bg-slate-50 dark:bg-slate-700 rounded-full flex items-center justify-center border border-slate-100 dark:border-slate-600 text-slate-400 dark:text-slate-300 hover:text-emerald-500 hover:border-emerald-200 transition-colors"
+                        >
+                            <Trophy className="w-5 h-5" />
+                        </button>
+                    </div>
                 </div>
 
                 {/* Total Balance Card */}

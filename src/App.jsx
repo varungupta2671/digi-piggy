@@ -19,6 +19,7 @@ import ChallengesPage from './pages/ChallengesPage';
 import AnalyticsPage from './pages/AnalyticsPage';
 import TimeTraveler from './pages/TimeTraveler';
 import SettingsPage from './pages/SettingsPage';
+import Wardrobe from './pages/Wardrobe';
 
 function AppContent() {
     const { goal, isEditing, isLoading, celebratingMilestone, closeMilestone } = usePiggy();
@@ -55,6 +56,7 @@ function AppContent() {
                 <Route path="/settings" element={<SettingsPage />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/time-travel" element={<TimeTraveler />} />
+                <Route path="/wardrobe" element={<Wardrobe />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>

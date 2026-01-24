@@ -1,12 +1,14 @@
 const DB_NAME = 'PiggyBankDB';
-const DB_VERSION = 3; // Incremented for challenges store
+const DB_VERSION = 4; // Incremented for inventory/avatar
 const STORES = {
     GOALS: 'goals',
     ACCOUNTS: 'accounts',
     TRANSACTIONS: 'transactions',
     ACHIEVEMENTS: 'achievements',
     META: 'meta', // For activeGoalId etc.
-    CHALLENGES: 'challenges'
+    CHALLENGES: 'challenges',
+    INVENTORY: 'inventory', // Unlocked items
+    AVATAR: 'avatar' // Current avatar configuration
 };
 
 export const db = {
@@ -35,6 +37,12 @@ export const db = {
                 }
                 if (!db.objectStoreNames.contains(STORES.CHALLENGES)) {
                     db.createObjectStore(STORES.CHALLENGES, { keyPath: 'id' });
+                }
+                if (!db.objectStoreNames.contains(STORES.INVENTORY)) {
+                    db.createObjectStore(STORES.INVENTORY, { keyPath: 'id' });
+                }
+                if (!db.objectStoreNames.contains(STORES.AVATAR)) {
+                    db.createObjectStore(STORES.AVATAR); // Simple key-value store or single object
                 }
             };
 

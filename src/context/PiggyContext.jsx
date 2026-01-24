@@ -3,6 +3,8 @@ import { db, STORES_CONSTANTS } from '../utils/db';
 import { useToast } from './ToastContext';
 import { Trophy, Target, TrendingUp, Star, Zap, Award } from 'lucide-react';
 import { soundManager } from '../utils/SoundManager';
+import { ITEMS, getRandomItem } from '../data/items';
+
 
 const PiggyContext = createContext();
 
@@ -111,6 +113,18 @@ export function PiggyProvider({ children }) {
     const [isMuted, setIsMuted] = useState(soundManager.isMuted);
     const [notifications, setNotifications] = useState([]); // Notification queue
 
+    // Avatar & Inventory State
+    const [inventory, setInventory] = useState([]); // Array of unlocked item IDs
+    const [avatarConfig, setAvatarConfig] = useState({
+        characterId: 'classic',
+        equipped: {
+            HEAD: null,
+            EYES: null,
+            BODY: null,
+            HAND: null
+        }
+    });
+
     const { addToast } = useToast();
 
     // Derived State: Active Goal & Plan
@@ -167,6 +181,13 @@ export function PiggyProvider({ children }) {
                 setChallenges(dbChallenges);
                 setLongestStreak(dbLongestStreak);
                 setNotifications(dbNotifications);
+
+                // Load Inventory & Avatar
+                const dbInventory = await db.getAll(STORES_CONSTANTS.INVENTORY);
+                const dbAvatar = await db.get(STORES_CONSTANTS.AVATAR, 'config');
+
+                setInventory(dbInventory.map(i => i.id));
+                if (dbAvatar) setAvatarConfig(dbAvatar);
 
                 // Load default account
                 const dbDefaultAccount = await db.get(STORES_CONSTANTS.META, 'defaultAccountId');
@@ -255,6 +276,9 @@ export function PiggyProvider({ children }) {
                     unlockedSet.add(id);
                     addToast(`🏆 Unlocked: ${achievement.title}!`, 'success');
                     soundManager.playSuccess();
+
+                    // Reward: Unlock random item on achievement
+                    await unlockRandomItem();
                 }
             }
         };
@@ -303,6 +327,9 @@ export function PiggyProvider({ children }) {
 
                 // If this is the 3rd goal (current goal becomes complete)
                 if (completedGoals + 1 >= 3) await unlock('piggy_master');
+
+                // Reward: Unlock random item on Goal Completion
+                await unlockRandomItem();
             }
         }
     };
@@ -740,6 +767,40 @@ export function PiggyProvider({ children }) {
         await db.set(STORES_CONSTANTS.META, { key: 'notifications', value: [] });
     };
 
+    // Avatar Actions
+    const unlockItem = async (itemId) => {
+        if (inventory.includes(itemId)) return; // Already unlocked
+
+        const newItem = { id: itemId, unlockedAt: new Date().toISOString() };
+        await db.set(STORES_CONSTANTS.INVENTORY, newItem);
+        setInventory(prev => [...prev, itemId]);
+
+        const itemDef = ITEMS.find(i => i.id === itemId);
+        addToast(`🎁 New Item Unlocked: ${itemDef?.name || 'Unknown Item'}!`, 'success');
+        addNotification({
+            type: 'reward',
+            title: 'New Item Unlocked! 🎁',
+            message: `You earned a ${itemDef?.name}! Check your wardrobe.`
+        });
+        soundManager.playSuccess();
+    };
+
+    const unlockRandomItem = async () => {
+        // Filter out already unlocked items
+        const lockedItems = ITEMS.filter(i => !inventory.includes(i.id));
+        if (lockedItems.length === 0) return; // All unlocked
+
+        const randomItem = lockedItems[Math.floor(Math.random() * lockedItems.length)];
+        await unlockItem(randomItem.id);
+    };
+
+    const updateAvatar = async (newConfig) => {
+        const updated = { ...avatarConfig, ...newConfig };
+        setAvatarConfig(updated);
+        await db.set(STORES_CONSTANTS.AVATAR, { id: 'config', ...updated }); // id: config to mimic key
+    };
+
+
     const updateChallengeProgressTwo = async (amount) => {
         const activeChallenges = challenges.filter(c => c.status === 'active');
 
@@ -799,45 +860,55 @@ export function PiggyProvider({ children }) {
 
     const value = {
         goals,
-        goal: activeGoal, // Expose as 'goal' for backward compatibility with components
-        savingsPlan,
+        activeGoal,
+        activeGoalId,
         accounts,
+        defaultAccountId,
         transactions,
+        savingsPlan,
         unlockedAchievements,
         savingsStreak,
         longestStreak,
         isLoading,
+        isEditing,
+        startEditing,
+        cancelEditing,
         createGoal,
         updateGoal,
         switchGoal,
         addAccount,
         deleteAccount,
-        defaultAccountId,
         setGlobalDefaultAccount,
         makePayment,
-        deleteGoal, // Renamed from resetGoal
-        isEditing,
-        startEditing,
-        cancelEditing,
+        deleteGoal,
+        exportAllData,
         celebratingMilestone,
         closeMilestone,
-        exportAllData,
         challenges,
         startChallenge,
-        activeChallenges,
-        completedChallenges,
         piggyMood,
         isMuted,
         toggleMute,
         notifications,
-        addNotification,
         markNotificationRead,
-        clearAllNotifications
-    };
+        clearAllNotifications,
+        // Avatar
+        inventory,
+        avatarConfig,
+        updateAvatar,
+        unlockItem,
 
+        // Restored Missing Exports
+        goal: activeGoal,
+        addNotification,
+        activeChallenges,
+        completedChallenges
+    };
     return (
         <PiggyContext.Provider value={value}>
             {children}
         </PiggyContext.Provider>
     );
 }
+
+
