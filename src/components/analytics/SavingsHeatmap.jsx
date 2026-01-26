@@ -41,7 +41,7 @@ export default function SavingsHeatmap({ transactions }) {
         // Scales
         const maxVal = d3.max(Object.values(data)) || 100;
         const colorScale = d3.scaleSequential()
-            .interpolator(d3.interpolateEmerald)
+            .interpolator(d3.interpolateGreens)
             .domain([0, maxVal]);
 
         // Tooltip

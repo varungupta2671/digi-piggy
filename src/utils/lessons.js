@@ -231,6 +231,74 @@ Higher potential returns = higher risk. Balance based on your goals and timeline
             }
         ],
         badge: '💼 Investor Initiate'
+    },
+    {
+        id: 'sip_mutual_funds',
+        title: 'SIP & Mutual Funds',
+        icon: TrendingUp,
+        category: 'investing',
+        difficulty: 'intermediate',
+        duration: 8,
+        content: `
+# SIP & Mutual Funds
+
+## What is a Mutual Fund?
+A pool of money collected from many investors to invest in securities like stocks, bonds, and other assets.
+
+## Systemmatic Investment Plan (SIP)
+A method where you invest a fixed amount regularly (monthly/quarterly) in a mutual fund.
+
+## Benefits of SIP
+- **Disciplined Saving**: Automates your investments.
+- **Rupee Cost Averaging**: Buy more units when prices are low and fewer when high.
+- **Compounding**: Small amounts grow significantly over time.
+        `,
+        quiz: [
+            {
+                question: 'SIP stands for:',
+                options: [
+                    'Savings Investment Plan',
+                    'Systematic Investment Plan',
+                    'Secure Interest Plan',
+                    'Single Installment Payment'
+                ],
+                correct: 1
+            }
+        ],
+        badge: '📊 SIP Strategist'
+    },
+    {
+        id: 'risk_management',
+        title: 'Advanced Risk Management',
+        icon: Shield,
+        category: 'investing',
+        difficulty: 'advanced',
+        duration: 15,
+        content: `
+# Advanced Risk Management
+
+## Understanding Volatility
+Market fluctuations are normal. Long-term investors shouldn't panic over short-term dips.
+
+## Asset Allocation
+Dividing your portfolio across different asset classes (Equity, Debt, Gold, Cash) based on your age and risk appetite.
+
+## Portfolio Rebalancing
+Periodically adjusting your portfolio back to your target allocation to maintain your risk level.
+        `,
+        quiz: [
+            {
+                question: 'Asset allocation should be based on:',
+                options: [
+                    'Market trends only',
+                    'Friends advice',
+                    'Age and risk appetite',
+                    'Past performance only'
+                ],
+                correct: 2
+            }
+        ],
+        badge: '🛡️ Portfolio Guardian'
     }
 ];
 

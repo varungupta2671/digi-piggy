@@ -1,5 +1,5 @@
 const DB_NAME = 'PiggyBankDB';
-const DB_VERSION = 4; // Incremented for inventory/avatar
+const DB_VERSION = 5; // Incremented for Bills and Groups
 const STORES = {
     GOALS: 'goals',
     ACCOUNTS: 'accounts',
@@ -8,7 +8,9 @@ const STORES = {
     META: 'meta', // For activeGoalId etc.
     CHALLENGES: 'challenges',
     INVENTORY: 'inventory', // Unlocked items
-    AVATAR: 'avatar' // Current avatar configuration
+    AVATAR: 'avatar', // Current avatar configuration
+    BILLS: 'bills',
+    GROUPS: 'groups'
 };
 
 export const db = {
@@ -43,6 +45,12 @@ export const db = {
                 }
                 if (!db.objectStoreNames.contains(STORES.AVATAR)) {
                     db.createObjectStore(STORES.AVATAR); // Simple key-value store or single object
+                }
+                if (!db.objectStoreNames.contains(STORES.BILLS)) {
+                    db.createObjectStore(STORES.BILLS, { keyPath: 'id' });
+                }
+                if (!db.objectStoreNames.contains(STORES.GROUPS)) {
+                    db.createObjectStore(STORES.GROUPS, { keyPath: 'id' });
                 }
             };
 

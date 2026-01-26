@@ -112,6 +112,10 @@ export function PiggyProvider({ children }) {
     const [piggyMood, setPiggyMood] = useState('neutral'); // neutral, happy, excited, sad
     const [isMuted, setIsMuted] = useState(soundManager.isMuted);
     const [notifications, setNotifications] = useState([]); // Notification queue
+    const [piggyCoins, setPiggyCoins] = useState(0); // Virtual currency
+    const [billReminders, setBillReminders] = useState([]); // Array of bills
+    const [premiumStatus, setPremiumStatus] = useState('free'); // free, premium, pro
+    const [groups, setGroups] = useState([]); // Family groups and competitions
 
     // Avatar & Inventory State
     const [inventory, setInventory] = useState([]); // Array of unlocked item IDs
@@ -143,8 +147,12 @@ export function PiggyProvider({ children }) {
                 const activeId = await db.get(STORES_CONSTANTS.META, 'activeGoalId');
                 const dbTriggeredMilestones = await db.get(STORES_CONSTANTS.META, 'triggeredMilestones') || {};
                 const dbChallenges = await db.getAll(STORES_CONSTANTS.CHALLENGES);
-                const dbLongestStreak = await db.get(STORES_CONSTANTS.META, ' longestStreak') || 0;
+                const dbLongestStreak = await db.get(STORES_CONSTANTS.META, 'longestStreak') || 0;
                 const dbNotifications = await db.get(STORES_CONSTANTS.META, 'notifications') || [];
+                const dbPiggyCoins = await db.get(STORES_CONSTANTS.META, 'piggyCoins') || 0;
+                const dbBillReminders = await db.getAll(STORES_CONSTANTS.BILLS) || [];
+                const dbPremiumStatus = await db.get(STORES_CONSTANTS.META, 'premiumStatus') || 'free';
+                const dbGroups = await db.getAll(STORES_CONSTANTS.GROUPS) || [];
 
                 // HEALER: Check for duplicate Bit IDs in loaded goals
                 const healedGoals = dbGoals.map(g => {
@@ -181,6 +189,10 @@ export function PiggyProvider({ children }) {
                 setChallenges(dbChallenges);
                 setLongestStreak(dbLongestStreak);
                 setNotifications(dbNotifications);
+                setPiggyCoins(dbPiggyCoins);
+                setBillReminders(dbBillReminders);
+                setPremiumStatus(dbPremiumStatus);
+                setGroups(dbGroups);
 
                 // Load Inventory & Avatar
                 const dbInventory = await db.getAll(STORES_CONSTANTS.INVENTORY);
@@ -508,6 +520,12 @@ export function PiggyProvider({ children }) {
         // Trigger Happy Mood
         setPiggyMood('happy');
         soundManager.playCoin();
+
+        // Award Piggy Coins
+        const coinsEarned = Math.floor(activeGoal.targetAmount / 1000) || 10;
+        updatePiggyCoins(coinsEarned);
+        addToast(`💰 Earned ${coinsEarned} Piggy Coins!`, 'success');
+
         setTimeout(() => setPiggyMood('neutral'), 3000);
 
         const bit = savingsPlan.find(b => b.id === bitId);
@@ -800,6 +818,27 @@ export function PiggyProvider({ children }) {
         await db.set(STORES_CONSTANTS.AVATAR, { id: 'config', ...updated }); // id: config to mimic key
     };
 
+    const updatePiggyCoins = async (amount) => {
+        const newTotal = piggyCoins + amount;
+        setPiggyCoins(newTotal);
+        await db.set(STORES_CONSTANTS.META, { key: 'piggyCoins', value: newTotal });
+    };
+
+    const addBillReminder = async (bill) => {
+        const newBill = { id: crypto.randomUUID(), ...bill, status: 'unpaid' };
+        setBillReminders(prev => [...prev, newBill]);
+        await db.set(STORES_CONSTANTS.BILLS, newBill);
+    };
+
+    const updatePremiumStatus = async (status) => {
+        setPremiumStatus(status);
+        await db.set(STORES_CONSTANTS.META, { key: 'premiumStatus', value: status });
+    };
+
+    const joinGroup = async (group) => {
+        setGroups(prev => [...prev, group]);
+        await db.set(STORES_CONSTANTS.GROUPS, group);
+    };
 
     const updateChallengeProgressTwo = async (amount) => {
         const activeChallenges = challenges.filter(c => c.status === 'active');
@@ -887,6 +926,7 @@ export function PiggyProvider({ children }) {
         challenges,
         startChallenge,
         piggyMood,
+        piggyCoins,
         isMuted,
         toggleMute,
         notifications,

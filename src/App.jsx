@@ -20,6 +20,13 @@ import AnalyticsPage from './pages/AnalyticsPage';
 import TimeTraveler from './pages/TimeTraveler';
 import SettingsPage from './pages/SettingsPage';
 import Wardrobe from './pages/Wardrobe';
+import MonetizationHub from './pages/MonetizationHub';
+import BillReminders from './pages/BillReminders';
+import Community from './pages/Community';
+import AdvisorChat from './pages/AdvisorChat';
+import Marketplace from './pages/Marketplace';
+
+import ErrorBoundary from './components/ErrorBoundary';
 
 function AppContent() {
     const { goal, isEditing, isLoading, celebratingMilestone, closeMilestone } = usePiggy();
@@ -35,31 +42,40 @@ function AppContent() {
     // Show goal form if editing (modal mode)
     if (isEditing) {
         return (
-            <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col items-center justify-center p-4">
-                <GoalForm />
-            </div>
+            <ErrorBoundary>
+                <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col items-center justify-center p-4">
+                    <GoalForm />
+                </div>
+            </ErrorBoundary>
         );
     }
 
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-900 pb-20 md:pb-0">
             <Header />
-            <Routes>
-                <Route path="/" element={<GoalsList />} />
-                <Route path="/create" element={<CreateGoal />} />
-                <Route path="/goal/:id" element={<GoalDetail />} />
-                <Route path="/achievements" element={<Achievements />} />
-                <Route path="/analytics" element={<AnalyticsPage />} />
-                <Route path="/challenges" element={<ChallengesPage />} />
-                <Route path="/learn" element={<LearningHub />} />
-                <Route path="/history" element={<History />} />
-                <Route path="/settings" element={<SettingsPage />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/time-travel" element={<TimeTraveler />} />
-                <Route path="/wardrobe" element={<Wardrobe />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
+            <ErrorBoundary>
+                <Routes>
+                    <Route path="/" element={<GoalsList />} />
+                    <Route path="/create" element={<CreateGoal />} />
+                    <Route path="/goal/:id" element={<GoalDetail />} />
+                    <Route path="/achievements" element={<Achievements />} />
+                    <Route path="/analytics" element={<AnalyticsPage />} />
+                    <Route path="/challenges" element={<ChallengesPage />} />
+                    <Route path="/learn" element={<LearningHub />} />
+                    <Route path="/history" element={<History />} />
+                    <Route path="/settings" element={<SettingsPage />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/time-travel" element={<TimeTraveler />} />
+                    <Route path="/wardrobe" element={<Wardrobe />} />
+                    <Route path="/monetization" element={<MonetizationHub />} />
+                    <Route path="/bills" element={<BillReminders />} />
+                    <Route path="/community" element={<Community />} />
+                    <Route path="/advisor" element={<AdvisorChat />} />
+                    <Route path="/marketplace" element={<Marketplace />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+            </ErrorBoundary>
             <BottomNav />
 
             {/* Milestone Celebration Modal */}

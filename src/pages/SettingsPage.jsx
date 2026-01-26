@@ -164,6 +164,35 @@ export default function SettingsPage() {
                         </div>
                     </section>
 
+                    {/* SECTION: BANK LINKING (MOCKED) */}
+                    <section className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl border border-slate-100 dark:border-slate-700 relative overflow-hidden group">
+                        <div className="absolute -top-10 -right-10 p-10 text-emerald-500/5 pointer-events-none group-hover:rotate-12 transition-transform">
+                            <Shield className="w-40 h-40" />
+                        </div>
+
+                        <div className="relative z-10">
+                            <div className="flex items-center justify-between mb-8">
+                                <h2 className="text-lg font-black text-slate-900 dark:text-white flex items-center gap-2 uppercase tracking-tighter">
+                                    <Shield className="w-5 h-5 text-emerald-500" />
+                                    Bank Account Linking
+                                </h2>
+                                <span className="bg-emerald-500/10 text-emerald-600 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-emerald-500/20">Premium</span>
+                            </div>
+
+                            <div className="bg-slate-50 dark:bg-slate-900/50 p-6 rounded-[2rem] border border-dashed border-slate-200 dark:border-slate-700 text-center mb-8">
+                                <div className="w-16 h-16 bg-white dark:bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                                    <RefreshCw className="w-8 h-8 text-slate-400 group-hover:rotate-180 transition-transform duration-1000" />
+                                </div>
+                                <p className="text-sm font-bold text-slate-800 dark:text-white mb-1">No Active Bank Link</p>
+                                <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium px-8 leading-relaxed">Connect your bank for automated transaction syncing and real-time wealth tracking.</p>
+                            </div>
+
+                            <button className="w-full py-4 bg-emerald-500 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-emerald-600 transition-colors shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 group-hover:scale-[1.02] transition-transform">
+                                <Plus className="w-4 h-4" /> Link Securely with Plaid
+                            </button>
+                        </div>
+                    </section>
+
                     {/* SECTION: APP PREFERENCES */}
                     <section className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm border border-slate-100 dark:border-slate-700">
                         <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
